@@ -1,10 +1,13 @@
-import React from "react";
-import { Text, View } from "react-native";
+import LoginScreen from "@/src/screens/login";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default function Login() {
   return (
-    <View>
-      <Text>Login</Text>
-    </View>
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      keyboardShouldPersistTaps="always"
+    >
+      <LoginScreen />
+    </KeyboardAwareScrollView>
   );
 }
