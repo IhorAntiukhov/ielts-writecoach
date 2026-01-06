@@ -15,13 +15,22 @@ export default function AuthNavigator() {
     }
 
     if (session !== null && segments[0] === "(auth)") {
+      router.replace("/(tabs)");
     }
   }, [router, segments, session]);
 
   return (
     <View className="flex-1 bg-background-950">
       <StatusBar style="auto" />
-      <Stack screenOptions={{ headerShown: false }}></Stack>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Protected guard={session === null || session === undefined}>
+          <Stack.Screen name="(auth)/login" />
+        </Stack.Protected>
+
+        <Stack.Protected guard={session !== null}>
+          <Stack.Screen name="(tabs)" />
+        </Stack.Protected>
+      </Stack>
     </View>
   );
 }

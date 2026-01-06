@@ -41,8 +41,6 @@ export default function FormInput<T extends FieldValues>({
     });
   };
 
-  console.log(errors);
-
   return (
     <FormControl isInvalid={!!errors[name]}>
       <VStack space="xs">

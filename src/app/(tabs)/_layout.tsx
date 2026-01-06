@@ -1,10 +1,11 @@
+import { Button, ButtonText } from "@/components/ui/button";
+import supabase from "@/src/api/supabase";
 import React from "react";
-import { Text, View } from "react-native";
 
 export default function TabLayout() {
   return (
-    <View>
-      <Text>TabLayout</Text>
-    </View>
+    <Button onPress={() => supabase.auth.signOut()}>
+      <ButtonText>Logout</ButtonText>
+    </Button>
   );
 }

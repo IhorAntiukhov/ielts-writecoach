@@ -1,7 +1,10 @@
 import supabase from "@/src/api/supabase";
-import * as Linking from "expo-linking";
+import * as AuthSession from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
 
-const redirectToAfterSignUp = Linking.createURL("(auth)/profile");
+WebBrowser.maybeCompleteAuthSession();
+
+const redirectTo = AuthSession.makeRedirectUri();
 
 export async function signIn(email: string, password: string) {
   const { error } = await supabase.auth.signInWithPassword({
@@ -10,6 +13,40 @@ export async function signIn(email: string, password: string) {
   });
 
   if (error) throw error;
+}
+
+export async function signInWithGoogle() {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo,
+      skipBrowserRedirect: true,
+    },
+  });
+
+  if (error) throw error;
+
+  const res = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
+
+  if (res.type === "success" && res.url) {
+    const url = new URL(res.url);
+    const fragment = url.hash.substring(1);
+    const params = new URLSearchParams(fragment);
+
+    const accessToken = params.get("access_token");
+    const refreshToken = params.get("refresh_token");
+
+    if (accessToken && refreshToken) {
+      await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      });
+    } else {
+      throw new Error("Failed to extract accessToken");
+    }
+  } else {
+    throw new Error("Google auth session failed");
+  }
 }
 
 export async function signUp(
@@ -22,9 +59,9 @@ export async function signUp(
     password,
     options: {
       data: {
-        user_name: userName,
+        display_name: userName,
       },
-      emailRedirectTo: redirectToAfterSignUp,
+      emailRedirectTo: redirectTo,
     },
   });
 

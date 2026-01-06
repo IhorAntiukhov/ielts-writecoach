@@ -7,6 +7,7 @@ import { CircleUser, Lock, Mail } from "lucide-react-native";
 import { useForm } from "react-hook-form";
 import { signUp } from "../api/auth";
 import { SignUpFormData, signUpFormSchema } from "../forms/signUpForm";
+import useToast from "@/src/hooks/useToast";
 
 export default function SignUpForm() {
   const {
@@ -17,11 +18,17 @@ export default function SignUpForm() {
     resolver: zodResolver(signUpFormSchema),
   });
 
+  const showToast = useToast();
+
   const { mutate: signUpMutation, isPending } = useMutation({
     mutationFn: ({ userName, email, password }: SignUpFormData) =>
       signUp(userName, email, password),
-    onSuccess: () => {},
-    onError(error, variables, onMutateResult, context) {},
+    onSuccess: () => {
+      showToast("success", "Sign up", "Confirm the user via email");
+    },
+    onError(error) {
+      showToast("error", "Sign up", error.message);
+    },
   });
 
   const handleSignUp = handleSubmit((formData) => {

@@ -1,3 +1,4 @@
+import { gradientColors } from "@/components/ui/gluestack-ui-provider/config";
 import { VStack } from "@/components/ui/vstack";
 import CardBox from "@/src/ui/CardBox";
 import Container from "@/src/ui/Container";
@@ -8,7 +9,6 @@ import { Text } from "react-native";
 import { GradientText } from "universal-gradient-text";
 import SignInForm from "./components/SignInForm";
 import SignUpForm from "./components/SignUpForm";
-import { gradientColors } from "@/components/ui/gluestack-ui-provider/config";
 
 cssInterop(GradientText, {
   className: "style",
@@ -45,7 +45,7 @@ export default function LoginScreen() {
             >
               IELTS WriteCoach
             </GradientText>
-            <Text className="text-lg text-center text-gray-400">
+            <Text className="text-lg text-center text-typography-500">
               Write. Review. Improve. Repeat.
             </Text>
           </VStack>
