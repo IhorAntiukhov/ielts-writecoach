@@ -24,7 +24,7 @@ export default function useToast() {
           nativeID={"toast-" + id}
           action={action}
           variant="solid"
-          className="mb-4"
+          className="max-w-full mb-4"
         >
           <ToastTitle>{title}</ToastTitle>
           <ToastDescription>{text}</ToastDescription>

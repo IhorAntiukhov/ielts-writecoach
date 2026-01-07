@@ -6,7 +6,7 @@ export interface SignInFormData {
   password: string;
 }
 
-export const signInFormSchema = zod.object({
+const zodObject = {
   email: zod.email({
     error: (issue) =>
       !issue.input
@@ -17,4 +17,12 @@ export const signInFormSchema = zod.object({
     .string(formErrorMessages.fieldRequired)
     .nonempty(formErrorMessages.fieldRequired)
     .min(6, formErrorMessages.passwordTooShort),
-});
+};
+
+export const signInFormSchema = zod.object(zodObject);
+
+export interface EmailFormData {
+  email: string;
+}
+
+export const emailFormSchema = zod.object({ email: zodObject.email });

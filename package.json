@@ -11,6 +11,7 @@
     "lint": "expo lint"
   },
   "dependencies": {
+    "@clack/core": "^0.5.0",
     "@expo/html-elements": "^0.10.1",
     "@expo/vector-icons": "^15.0.3",
     "@gluestack-ui/core": "^3.0.10",
@@ -69,6 +70,7 @@
     "babel-plugin-module-resolver": "^5.0.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
+    "gluestack-ui": "^3.0.11",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "react-native-svg-transformer": "^1.5.2",
     "tailwindcss": "^3.4.17",

@@ -14,7 +14,13 @@ import { signIn } from "../api/auth";
 import { SignInFormData, signInFormSchema } from "../forms/signInForm";
 import GoogleSignInButton from "./GoogleSignInButton";
 
-export default function SignInForm() {
+interface SignInFormProps {
+  openForgotPasswordForm: () => void;
+}
+
+export default function SignInForm({
+  openForgotPasswordForm,
+}: SignInFormProps) {
   const {
     control,
     formState: { errors },
@@ -63,7 +69,9 @@ export default function SignInForm() {
               errors={errors}
             />
 
-            <TextButton className="self-end">Forgot password?</TextButton>
+            <TextButton onPress={openForgotPasswordForm} className="self-end">
+              Forgot password?
+            </TextButton>
           </VStack>
         </VStack>
 
