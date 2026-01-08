@@ -15,10 +15,7 @@ export default function RootLayout() {
       <KeyboardProvider>
         <QueryClientProvider client={queryClient}>
           <SafeAreaProvider>
-            <SafeAreaView
-              className="flex-1 bg-secondary-500"
-              edges={["top", "left", "right"]}
-            >
+            <SafeAreaView className="flex-1 bg-secondary-300">
               <AuthProvider>
                 <AuthNavigator />
               </AuthProvider>
