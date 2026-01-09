@@ -1,9 +1,10 @@
-import { Button, ButtonIcon } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
 import useToast from "@/src/hooks/useToast";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
 import FormInput from "@/src/ui/FormInput";
+import cssInteropIcon from "@/src/utils/cssInteropIcon";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { ArrowLeft, Mail } from "lucide-react-native";
@@ -43,6 +44,8 @@ export default function ForgotPasswordForm({
     resetPasswordMutation(formData);
   });
 
+  const BackIcon = cssInteropIcon(ArrowLeft);
+
   return (
     <VStack space="3xl">
       <HStack className="items-center">
@@ -51,11 +54,7 @@ export default function ForgotPasswordForm({
           onPress={openSignInForm}
           className="pl-0 py-0 pr-2"
         >
-          <ButtonIcon
-            as={ArrowLeft}
-            className="text-typography-500"
-            size="lg"
-          />
+          <BackIcon className="text-typography-950 text-2xl" />
         </Button>
 
         <Text className="text-typography-500 text-2xl">Return to sign in</Text>

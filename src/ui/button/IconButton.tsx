@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import clsx from "clsx";
+import { clsx } from "clsx";
 import { PressableProps } from "react-native";
 
 export default function IconButton({

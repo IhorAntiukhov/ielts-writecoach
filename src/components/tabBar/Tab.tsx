@@ -1,8 +1,8 @@
 import { VStack } from "@/components/ui/vstack";
+import cssInteropIcon from "@/src/utils/cssInteropIcon";
 import { clsx } from "clsx";
 import { TabTriggerSlotProps } from "expo-router/ui";
 import { ChartColumn, CircleUser, Handshake, Rows3 } from "lucide-react-native";
-import { cssInterop } from "nativewind";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 
@@ -13,7 +13,7 @@ interface TabProps extends TabTriggerSlotProps {
 
 const Tab = React.forwardRef<View, TabProps>(
   ({ title, icon, isFocused, ...rest }, ref) => {
-    const Icon = cssInterop(
+    const Icon = cssInteropIcon(
       icon === "Handshake"
         ? Handshake
         : icon === "Rows3"
@@ -21,16 +21,6 @@ const Tab = React.forwardRef<View, TabProps>(
           : icon === "ChartColumn"
             ? ChartColumn
             : CircleUser,
-      {
-        className: {
-          target: "style",
-          nativeStyleToProp: {
-            color: true,
-            width: true,
-            height: true,
-          },
-        },
-      },
     );
 
     return (
