@@ -31,15 +31,12 @@ export default function LoginScreen() {
   const url = Linking.useLinkingURL();
 
   useEffect(() => {
-    console.log(url);
     if (!url) return;
 
     const parsedUrl = Linking.parse(url.replaceAll("#", "?"));
 
     if (parsedUrl.queryParams) {
       const { access_token, refresh_token } = parsedUrl.queryParams;
-
-      console.log(access_token, refresh_token);
 
       setSession(access_token as string, refresh_token as string);
     }

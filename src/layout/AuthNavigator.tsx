@@ -22,7 +22,15 @@ export default function AuthNavigator() {
   return (
     <View className="flex-1">
       <StatusBar style="auto" />
-      <Stack screenOptions={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Protected guard={!session}>
+          <Stack.Screen name="(auth)/login" />
+        </Stack.Protected>
+
+        <Stack.Protected guard={!!session}>
+          <Stack.Screen name="(tabs)" />
+        </Stack.Protected>
+      </Stack>
     </View>
   );
 }

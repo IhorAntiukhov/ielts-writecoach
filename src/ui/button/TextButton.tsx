@@ -1,9 +1,9 @@
 import { Button, ButtonText } from "@/components/ui/button";
 import { clsx } from "clsx";
+import React from "react";
 import { PressableProps } from "react-native";
-import ChildrenProp from "../../types/childrenProp";
 
-type TextButtonProps = ChildrenProp & PressableProps;
+type TextButtonProps = React.PropsWithChildren & PressableProps;
 
 export default function TextButton({
   children,

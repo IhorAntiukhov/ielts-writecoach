@@ -1,14 +1,14 @@
 import TabBar from "@/src/components/tabBar";
 import Tab from "@/src/components/tabBar/Tab";
-import Container from "@/src/ui/Container";
+import KeyboardScrollView from "@/src/layout/KeyboardScrollView";
 import { TabList, Tabs, TabSlot, TabTrigger } from "expo-router/ui";
 
 export default function TabLayout() {
   return (
     <Tabs>
-      <Container>
+      <KeyboardScrollView>
         <TabSlot />
-      </Container>
+      </KeyboardScrollView>
 
       <TabList asChild>
         <TabBar>

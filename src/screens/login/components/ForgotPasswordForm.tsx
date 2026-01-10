@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
 import useToast from "@/src/hooks/useToast";
+import IconButton from "@/src/ui/button/IconButton";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
 import FormInput from "@/src/ui/FormInput";
 import cssInteropIcon from "@/src/utils/cssInteropIcon";
@@ -16,6 +16,8 @@ import { EmailFormData, emailFormSchema } from "../forms/signInForm";
 interface ForgotPasswordFormProps {
   openSignInForm: () => void;
 }
+
+const BackIcon = cssInteropIcon(ArrowLeft);
 
 export default function ForgotPasswordForm({
   openSignInForm,
@@ -44,20 +46,18 @@ export default function ForgotPasswordForm({
     resetPasswordMutation(formData);
   });
 
-  const BackIcon = cssInteropIcon(ArrowLeft);
-
   return (
     <VStack space="3xl">
-      <HStack className="items-center">
-        <Button
-          action="default"
+      <HStack className="items-center" space="sm">
+        <IconButton
+          action="secondary"
+          className="bg-transparent"
           onPress={openSignInForm}
-          className="pl-0 py-0 pr-2"
         >
           <BackIcon className="text-typography-950 text-2xl" />
-        </Button>
+        </IconButton>
 
-        <Text className="text-typography-500 text-2xl">Return to sign in</Text>
+        <Text className="text-typography-950 text-2xl">Return to sign in</Text>
       </HStack>
 
       <FormInput

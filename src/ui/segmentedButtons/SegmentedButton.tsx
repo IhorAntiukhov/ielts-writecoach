@@ -28,7 +28,7 @@ export default function SegmentedButton({
           index < length - 1 &&
           "rounded-none border-r-[0.5px] border-l-[0.5px]",
         index === length - 1 && "rounded-tr-lg rounded-l-none border-l-[0.5px]",
-        index === selectedIndex && "bg-primary-600",
+        index === selectedIndex && "bg-background-info",
       )}
       onPress={() => onPress(index)}
     >

@@ -1,20 +1,36 @@
-import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
-import { PressableProps } from "react-native";
+import {
+  Button,
+  ButtonIcon,
+  ButtonSpinner,
+  ButtonText,
+} from "@/components/ui/button";
+import { LucideIcon } from "lucide-react-native";
+import React from "react";
 
-type SecondaryButtonProps = {
+interface SecondaryButtonProps extends React.ComponentProps<typeof Button> {
   children: string;
-  isLoading: boolean;
-} & PressableProps;
+  isLoading?: boolean;
+  icon?: LucideIcon;
+}
 
 export default function SecondaryButton({
   children,
   isLoading,
+  icon,
+  action,
   ...rest
 }: SecondaryButtonProps) {
   return (
-    <Button action="secondary" isDisabled={isLoading} {...rest}>
+    <Button action={action || "secondary"} isDisabled={isLoading} {...rest}>
       {isLoading && <ButtonSpinner />}
-      <ButtonText>{children}</ButtonText>
+      {icon && <ButtonIcon as={icon} />}
+      <ButtonText
+        action={
+          action === "default" || action === undefined ? "secondary" : action
+        }
+      >
+        {children}
+      </ButtonText>
     </Button>
   );
 }

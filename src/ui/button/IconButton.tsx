@@ -1,16 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { clsx } from "clsx";
-import { PressableProps } from "react-native";
+import React from "react";
 
 export default function IconButton({
   children,
   className,
   ...rest
-}: PressableProps) {
+}: React.ComponentProps<typeof Button>) {
   return (
     <Button
       variant="solid"
-      className={clsx("w-auto aspect-square rounded-full", className)}
+      className={clsx("w-auto aspect-square rounded-full p-2", className)}
       {...rest}
     >
       {children}

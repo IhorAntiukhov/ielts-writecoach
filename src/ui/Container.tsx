@@ -1,10 +1,19 @@
+import { clsx } from "clsx";
 import React from "react";
 import { View } from "react-native";
-import ChildrenProp from "../types/childrenProp";
 
-export default function Container({ children }: ChildrenProp) {
+interface ContainerProps extends React.PropsWithChildren {
+  topAlignment?: boolean;
+}
+
+export default function Container({ topAlignment, children }: ContainerProps) {
   return (
-    <View className="flex-1 flex justify-center items-center px-5 py-6 bg-background-50">
+    <View
+      className={clsx(
+        "flex-1 flex items-center px-5 py-8 bg-background-50",
+        !topAlignment && "justify-center",
+      )}
+    >
       {children}
     </View>
   );

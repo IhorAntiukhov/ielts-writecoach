@@ -4,7 +4,7 @@ import * as WebBrowser from "expo-web-browser";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const redirectTo = AuthSession.makeRedirectUri({ path: "/(auth)" });
+const redirectTo = AuthSession.makeRedirectUri({ path: "/(auth)/login" });
 
 export async function signIn(email: string, password: string) {
   const { error } = await supabase.auth.signInWithPassword({
@@ -16,6 +16,8 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function signInWithGoogle() {
+  console.log(redirectTo);
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
@@ -52,7 +54,7 @@ export async function signUp(
     password,
     options: {
       data: {
-        display_name: userName,
+        name: userName,
       },
       emailRedirectTo: redirectTo,
     },

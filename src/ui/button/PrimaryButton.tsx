@@ -3,14 +3,14 @@ import { gradientColors } from "@/components/ui/gluestack-ui-provider/config";
 import { clsx } from "clsx";
 import { LinearGradient } from "expo-linear-gradient";
 import { cssInterop, useColorScheme } from "nativewind";
+import React from "react";
 import { PressableProps } from "react-native";
-import ChildrenProp from "../../types/childrenProp";
 
 cssInterop(LinearGradient, {
   className: "style",
 });
 
-type PrimaryButtonProps = ChildrenProp &
+type PrimaryButtonProps = React.PropsWithChildren &
   PressableProps & { isLoading?: boolean };
 
 export default function PrimaryButton({

@@ -1,8 +1,7 @@
 import { Card } from "@/components/ui/card/index";
 import React from "react";
-import ChildrenProp from "../types/childrenProp";
 
-export default function CardBox({ children }: ChildrenProp) {
+export default function CardBox({ children }: React.PropsWithChildren) {
   return (
     <Card
       size="md"
