@@ -1,7 +1,7 @@
 import { VStack } from "@/components/ui/vstack";
 import useToast from "@/src/hooks/useToast";
 import PrimaryButton from "@/src/ui/button/PrimaryButton";
-import FormInput from "@/src/ui/FormInput";
+import OutlineInput from "@/src/ui/input/OutlineInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { CircleUser, Lock, Mail, UserRoundPlus } from "lucide-react-native";
@@ -38,7 +38,7 @@ export default function SignUpForm() {
   return (
     <VStack space="3xl">
       <VStack space="md">
-        <FormInput
+        <OutlineInput
           name="userName"
           control={control}
           icon={CircleUser}
@@ -47,7 +47,7 @@ export default function SignUpForm() {
           errors={errors}
         />
 
-        <FormInput
+        <OutlineInput
           name="email"
           control={control}
           icon={Mail}
@@ -58,7 +58,7 @@ export default function SignUpForm() {
       </VStack>
 
       <VStack space="md">
-        <FormInput
+        <OutlineInput
           name="password"
           control={control}
           icon={Lock}
@@ -67,7 +67,7 @@ export default function SignUpForm() {
           errors={errors}
         />
 
-        <FormInput
+        <OutlineInput
           name="confirmPassword"
           control={control}
           icon={Lock}

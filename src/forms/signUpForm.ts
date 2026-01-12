@@ -8,6 +8,10 @@ export interface SignUpFormData {
   confirmPassword: string;
 }
 
+export interface UserNameFormData {
+  userName: string;
+}
+
 export interface ChangePasswordFormData {
   password: string;
   confirmPassword: string;
@@ -36,6 +40,10 @@ export const signUpFormSchema = zod
     error: formErrorMessages.passwordsUnmatch,
     path: ["confirmPassword"],
   });
+
+export const userNameFormSchema = zod.object({
+  userName: zodObject.userName,
+});
 
 export const changePasswordFormSchema = zod
   .object({

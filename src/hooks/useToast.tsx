@@ -4,9 +4,12 @@ import {
   ToastTitle,
   useToast as useRawToast,
 } from "@/components/ui/toast";
+import clsx from "clsx";
+import { useSegments } from "expo-router";
 
 export default function useToast() {
   const toast = useRawToast();
+  const segments = useSegments();
 
   return (
     action: "error" | "warning" | "success" | "info" | "muted",
@@ -24,7 +27,10 @@ export default function useToast() {
           nativeID={"toast-" + id}
           action={action}
           variant="solid"
-          className="max-w-full mb-4"
+          className={clsx(
+            "max-w-full",
+            segments[0] === "(auth)" ? "mb-4" : "mb-[6.5rem]",
+          )}
         >
           <ToastTitle>{title}</ToastTitle>
           <ToastDescription>{text}</ToastDescription>

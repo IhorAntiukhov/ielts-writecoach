@@ -1,5 +1,6 @@
 import { VStack } from "@/components/ui/vstack";
 import { AuthContext } from "@/src/context/AuthProvider";
+import { EmailFormData, emailFormSchema } from "@/src/forms/signInForm";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
 import CardBox from "@/src/ui/CardBox";
 import Container from "@/src/ui/Container";
@@ -10,8 +11,9 @@ import { Lock, LogOut } from "lucide-react-native";
 import { cssInterop } from "nativewind";
 import { use } from "react";
 import { Text, View } from "react-native";
-import { signOut } from "./api/user";
+import { changeUserProperties, signOut } from "./api/user";
 import UserProperty from "./components/UserProperty";
+import { userNameFormSchema, UserNameFormData } from "@/src/forms/signUpForm";
 
 cssInterop(Image, { className: "style" });
 
@@ -36,8 +38,33 @@ export default function ProfileScreen() {
               />
             </View>
 
-            <UserProperty name="User name" value={user.user_metadata.name} />
-            <UserProperty name="Email" value={user.email || ""} />
+            <UserProperty<UserNameFormData>
+              name="User name"
+              value={user.user_metadata.name || "Unknown"}
+              controlName="userName"
+              schema={userNameFormSchema}
+              mutationFn={({ userName }: UserNameFormData) =>
+                changeUserProperties({ userName })
+              }
+              placeholder="Type new user name"
+              keyboardType="default"
+              toastTitle="User name change"
+              toastSuccessMessage="User name changed successfully"
+            />
+
+            <UserProperty<EmailFormData>
+              name="Email"
+              value={user.email || "Unknown"}
+              controlName="email"
+              schema={emailFormSchema}
+              mutationFn={({ email }: EmailFormData) =>
+                changeUserProperties({ email })
+              }
+              placeholder="Type new email"
+              keyboardType="email-address"
+              toastTitle="Email change"
+              toastSuccessMessage="Confirm the new email"
+            />
           </VStack>
         </CardBox>
 

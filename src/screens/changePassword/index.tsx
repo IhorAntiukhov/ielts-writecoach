@@ -7,7 +7,7 @@ import useToast from "@/src/hooks/useToast";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
 import CardBox from "@/src/ui/CardBox";
 import Container from "@/src/ui/Container";
-import FormInput from "@/src/ui/FormInput";
+import OutlineInput from "@/src/ui/input/OutlineInput";
 import TopBar from "@/src/ui/TopBar";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -54,7 +54,7 @@ export default function ChangePasswordScreen() {
           <TopBar title="Back to the profile" onBack={() => router.back()} />
 
           <VStack space="md">
-            <FormInput
+            <OutlineInput
               name="password"
               control={control}
               icon={Lock}
@@ -63,7 +63,7 @@ export default function ChangePasswordScreen() {
               errors={errors}
             />
 
-            <FormInput
+            <OutlineInput
               name="confirmPassword"
               control={control}
               icon={Lock}

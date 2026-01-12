@@ -1,7 +1,7 @@
 import { VStack } from "@/components/ui/vstack";
 import useToast from "@/src/hooks/useToast";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
-import FormInput from "@/src/ui/FormInput";
+import OutlineInput from "@/src/ui/input/OutlineInput";
 import TopBar from "@/src/ui/TopBar";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -45,7 +45,7 @@ export default function ForgotPasswordForm({
     <VStack space="3xl">
       <TopBar title="Return to sign in" onBack={openSignInForm} />
 
-      <FormInput
+      <OutlineInput
         name="email"
         control={control}
         icon={Mail}

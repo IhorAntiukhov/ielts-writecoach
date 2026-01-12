@@ -26,7 +26,7 @@ interface InputProps<T extends FieldValues> {
   errors: FieldErrors<T>;
 }
 
-export default function FormInput<T extends FieldValues>({
+export default function OutlineInput<T extends FieldValues>({
   name,
   control,
   icon,

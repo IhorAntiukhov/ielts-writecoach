@@ -1,7 +1,7 @@
 import { Divider } from "@/components/ui/divider";
 import { VStack } from "@/components/ui/vstack";
 import useToast from "@/src/hooks/useToast";
-import FormInput from "@/src/ui/FormInput";
+import OutlineInput from "@/src/ui/input/OutlineInput";
 import PrimaryButton from "@/src/ui/button/PrimaryButton";
 import TextButton from "@/src/ui/button/TextButton";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -50,7 +50,7 @@ export default function SignInForm({
     <VStack space="4xl">
       <VStack space="3xl">
         <VStack space="md">
-          <FormInput
+          <OutlineInput
             name="email"
             control={control}
             icon={Mail}
@@ -60,7 +60,7 @@ export default function SignInForm({
           />
 
           <VStack>
-            <FormInput
+            <OutlineInput
               name="password"
               control={control}
               icon={Lock}
