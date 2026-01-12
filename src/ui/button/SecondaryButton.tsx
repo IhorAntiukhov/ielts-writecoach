@@ -9,14 +9,14 @@ import React from "react";
 
 interface SecondaryButtonProps extends React.ComponentProps<typeof Button> {
   children: string;
+  icon: LucideIcon;
   isLoading?: boolean;
-  icon?: LucideIcon;
 }
 
 export default function SecondaryButton({
   children,
-  isLoading,
   icon,
+  isLoading,
   action,
   ...rest
 }: SecondaryButtonProps) {

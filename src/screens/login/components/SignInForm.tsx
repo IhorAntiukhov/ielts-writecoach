@@ -6,12 +6,12 @@ import PrimaryButton from "@/src/ui/button/PrimaryButton";
 import TextButton from "@/src/ui/button/TextButton";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Lock, Mail } from "lucide-react-native";
+import { Lock, LogIn, Mail } from "lucide-react-native";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Text, View } from "react-native";
+import { SignInFormData, signInFormSchema } from "../../../forms/signInForm";
 import { signIn } from "../api/auth";
-import { SignInFormData, signInFormSchema } from "../forms/signInForm";
 import GoogleSignInButton from "./GoogleSignInButton";
 
 interface SignInFormProps {
@@ -75,7 +75,11 @@ export default function SignInForm({
           </VStack>
         </VStack>
 
-        <PrimaryButton onPress={handleSignIn} isLoading={isPending}>
+        <PrimaryButton
+          onPress={handleSignIn}
+          icon={LogIn}
+          isLoading={isPending}
+        >
           Sign in
         </PrimaryButton>
       </VStack>

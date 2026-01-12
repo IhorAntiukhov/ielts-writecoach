@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { AuthContext } from "../context/AuthProvider";
 
 export default function AuthNavigator() {
-  const session = use(AuthContext);
+  const { session, authIntent, setAuthIntent } = use(AuthContext);
   const segments = useSegments();
   const router = useRouter();
 
@@ -15,9 +15,12 @@ export default function AuthNavigator() {
     }
 
     if (session !== null && segments[0] === "(auth)") {
-      router.replace("/(tabs)");
+      router.replace(
+        authIntent === "normal" ? "/(tabs)" : "/(tabs)/profile/change-password",
+      );
+      if (authIntent === "password-reset") setAuthIntent?.("normal");
     }
-  }, [router, segments, session]);
+  }, [router, segments, session, authIntent, setAuthIntent]);
 
   return (
     <View className="flex-1">

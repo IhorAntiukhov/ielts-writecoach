@@ -3,23 +3,25 @@ import { AuthContext } from "@/src/context/AuthProvider";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
 import CardBox from "@/src/ui/CardBox";
 import Container from "@/src/ui/Container";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Image } from "expo-image";
-import { LogOut } from "lucide-react-native";
+import { useRouter } from "expo-router";
+import { Lock, LogOut } from "lucide-react-native";
 import { cssInterop } from "nativewind";
 import { use } from "react";
 import { Text, View } from "react-native";
-import { getUserData, signOut } from "./api/user";
+import { signOut } from "./api/user";
 import UserProperty from "./components/UserProperty";
 
 cssInterop(Image, { className: "style" });
 
 export default function ProfileScreen() {
-  const { user } = use(AuthContext)!;
-  const { data } = useQuery({
-    queryKey: [user.id],
-    queryFn: () => getUserData(user.id),
+  const { user } = use(AuthContext).session!;
+  const { mutate: signOutMutation } = useMutation({
+    mutationFn: signOut,
+    onError: () => {},
   });
+  const router = useRouter();
 
   return (
     <Container topAlignment>
@@ -34,7 +36,7 @@ export default function ProfileScreen() {
               />
             </View>
 
-            <UserProperty name="User name" value={data?.user_name || ""} />
+            <UserProperty name="User name" value={user.user_metadata.name} />
             <UserProperty name="Email" value={user.email || ""} />
           </VStack>
         </CardBox>
@@ -44,14 +46,25 @@ export default function ProfileScreen() {
             <VStack space="3xl">
               <Text className="text-2xl text-red-500 font-bold">Security</Text>
 
-              <SecondaryButton
-                isLoading={false}
-                icon={LogOut}
-                onPress={signOut}
-                action="negative"
-              >
-                Logout
-              </SecondaryButton>
+              <VStack space="md">
+                <SecondaryButton
+                  isLoading={false}
+                  icon={Lock}
+                  onPress={() => router.push("/(tabs)/profile/change-password")}
+                  action="negative"
+                >
+                  Change password
+                </SecondaryButton>
+
+                <SecondaryButton
+                  isLoading={false}
+                  icon={LogOut}
+                  onPress={() => signOutMutation()}
+                  action="negative"
+                >
+                  Logout
+                </SecondaryButton>
+              </VStack>
             </VStack>
           </CardBox>
         </View>

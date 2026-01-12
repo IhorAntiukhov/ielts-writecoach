@@ -3,15 +3,14 @@ import { VStack } from "@/components/ui/vstack";
 import CardBox from "@/src/ui/CardBox";
 import Container from "@/src/ui/Container";
 import SegmentedButtons from "@/src/ui/segmentedButtons";
-import * as Linking from "expo-linking";
 import { cssInterop, useColorScheme } from "nativewind";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Text } from "react-native";
 import { GradientText } from "universal-gradient-text";
-import { setSession } from "./api/auth";
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
 import SignInForm from "./components/SignInForm";
 import SignUpForm from "./components/SignUpForm";
+import useResetPassword from "./hooks/useResetPassword";
 
 cssInterop(GradientText, {
   className: "style",
@@ -28,19 +27,8 @@ export default function LoginScreen() {
     SelectedMode.signIn,
   );
   const { colorScheme } = useColorScheme();
-  const url = Linking.useLinkingURL();
 
-  useEffect(() => {
-    if (!url) return;
-
-    const parsedUrl = Linking.parse(url.replaceAll("#", "?"));
-
-    if (parsedUrl.queryParams) {
-      const { access_token, refresh_token } = parsedUrl.queryParams;
-
-      setSession(access_token as string, refresh_token as string);
-    }
-  }, [url]);
+  useResetPassword();
 
   return (
     <Container>

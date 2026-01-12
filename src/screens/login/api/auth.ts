@@ -66,6 +66,7 @@ export async function signUp(
 }
 
 export async function resetPassword(email: string) {
+  console.log(redirectTo);
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo,
   });

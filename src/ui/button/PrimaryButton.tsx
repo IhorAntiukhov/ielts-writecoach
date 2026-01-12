@@ -1,20 +1,29 @@
-import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
+import {
+  Button,
+  ButtonIcon,
+  ButtonSpinner,
+  ButtonText,
+} from "@/components/ui/button";
 import { gradientColors } from "@/components/ui/gluestack-ui-provider/config";
 import { clsx } from "clsx";
 import { LinearGradient } from "expo-linear-gradient";
+import { LucideIcon } from "lucide-react-native";
 import { cssInterop, useColorScheme } from "nativewind";
 import React from "react";
-import { PressableProps } from "react-native";
 
 cssInterop(LinearGradient, {
   className: "style",
 });
 
-type PrimaryButtonProps = React.PropsWithChildren &
-  PressableProps & { isLoading?: boolean };
+interface PrimaryButtonProps extends React.ComponentProps<typeof Button> {
+  children: string;
+  icon: LucideIcon;
+  isLoading?: boolean;
+}
 
 export default function PrimaryButton({
   children,
+  icon,
   isLoading,
   className,
   ...rest
@@ -38,6 +47,7 @@ export default function PrimaryButton({
         {...rest}
       >
         {isLoading && <ButtonSpinner color="white" />}
+        {icon && <ButtonIcon as={icon} className="text-lg text-white" />}
         <ButtonText className="text-center align-middle text-lg text-white font-bold">
           {children}
         </ButtonText>

@@ -1,13 +1,13 @@
 import { VStack } from "@/components/ui/vstack";
+import useToast from "@/src/hooks/useToast";
 import PrimaryButton from "@/src/ui/button/PrimaryButton";
 import FormInput from "@/src/ui/FormInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { CircleUser, Lock, Mail } from "lucide-react-native";
+import { CircleUser, Lock, Mail, UserRoundPlus } from "lucide-react-native";
 import { useForm } from "react-hook-form";
+import { SignUpFormData, signUpFormSchema } from "../../../forms/signUpForm";
 import { signUp } from "../api/auth";
-import { SignUpFormData, signUpFormSchema } from "../forms/signUpForm";
-import useToast from "@/src/hooks/useToast";
 
 export default function SignUpForm() {
   const {
@@ -77,7 +77,11 @@ export default function SignUpForm() {
         />
       </VStack>
 
-      <PrimaryButton onPress={handleSignUp} isLoading={isPending}>
+      <PrimaryButton
+        onPress={handleSignUp}
+        icon={UserRoundPlus}
+        isLoading={isPending}
+      >
         Sign up
       </PrimaryButton>
     </VStack>

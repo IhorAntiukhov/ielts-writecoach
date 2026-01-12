@@ -1,9 +1,13 @@
 import * as zod from "zod";
-import formErrorMessages from "../constants/formErrorMessages";
+import formErrorMessages from "../screens/login/constants/formErrorMessages";
 
 export interface SignInFormData {
   email: string;
   password: string;
+}
+
+export interface EmailFormData {
+  email: string;
 }
 
 const zodObject = {
@@ -20,9 +24,5 @@ const zodObject = {
 };
 
 export const signInFormSchema = zod.object(zodObject);
-
-export interface EmailFormData {
-  email: string;
-}
 
 export const emailFormSchema = zod.object({ email: zodObject.email });
