@@ -43,7 +43,7 @@ export default function PrimaryButton({
       <Button
         action="default"
         disabled={isLoading}
-        className={clsx("px-6", className)}
+        className={clsx("px-6 web:data-[hover=true]:bg-transparent", className)}
         {...rest}
       >
         {isLoading && <ButtonSpinner color="white" />}

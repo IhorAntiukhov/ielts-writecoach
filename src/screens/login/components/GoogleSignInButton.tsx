@@ -30,7 +30,7 @@ export default function GoogleSignInButton() {
     >
       <ButtonIcon as={Google} />
       <ButtonText>Sign in with Google</ButtonText>
-      {isPending && <ButtonSpinner />}
+      {isPending && <ButtonSpinner color="white" />}
     </Button>
   );
 }

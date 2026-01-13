@@ -4,12 +4,13 @@ import {
   ToastTitle,
   useToast as useRawToast,
 } from "@/components/ui/toast";
-import clsx from "clsx";
-import { useSegments } from "expo-router";
+import { clsx } from "clsx";
+import { use } from "react";
+import { AuthContext } from "../context/AuthProvider";
 
 export default function useToast() {
+  const { session } = use(AuthContext);
   const toast = useRawToast();
-  const segments = useSegments();
 
   return (
     action: "error" | "warning" | "success" | "info" | "muted",
@@ -27,10 +28,7 @@ export default function useToast() {
           nativeID={"toast-" + id}
           action={action}
           variant="solid"
-          className={clsx(
-            "max-w-full",
-            segments[0] === "(auth)" ? "mb-4" : "mb-[6.5rem]",
-          )}
+          className={clsx("max-w-full", session ? "mb-[6.5rem]" : "mb-4")}
         >
           <ToastTitle>{title}</ToastTitle>
           <ToastDescription>{text}</ToastDescription>

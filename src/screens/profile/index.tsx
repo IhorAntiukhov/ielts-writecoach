@@ -1,6 +1,7 @@
 import { VStack } from "@/components/ui/vstack";
 import { AuthContext } from "@/src/context/AuthProvider";
 import { EmailFormData, emailFormSchema } from "@/src/forms/signInForm";
+import { UserNameFormData, userNameFormSchema } from "@/src/forms/signUpForm";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
 import CardBox from "@/src/ui/CardBox";
 import Container from "@/src/ui/Container";
@@ -13,7 +14,6 @@ import { use } from "react";
 import { Text, View } from "react-native";
 import { changeUserProperties, signOut } from "./api/user";
 import UserProperty from "./components/UserProperty";
-import { userNameFormSchema, UserNameFormData } from "@/src/forms/signUpForm";
 
 cssInterop(Image, { className: "style" });
 
@@ -27,7 +27,7 @@ export default function ProfileScreen() {
 
   return (
     <Container topAlignment>
-      <VStack space="2xl">
+      <VStack space="2xl" className="items-center w-full">
         <CardBox>
           <VStack space="3xl">
             <View className="-mx-8 -mt-6">
@@ -68,7 +68,7 @@ export default function ProfileScreen() {
           </VStack>
         </CardBox>
 
-        <View>
+        <View className="items-center w-full">
           <CardBox>
             <VStack space="3xl">
               <Text className="text-2xl text-red-500 font-bold">Security</Text>

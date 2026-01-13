@@ -6,7 +6,7 @@ export default function CardBox({ children }: React.PropsWithChildren) {
     <Card
       size="md"
       variant="elevated"
-      className="w-full px-8 py-6 bg-background-0 rounded-lg"
+      className="w-full max-w-[600px] px-8 py-6 bg-background-0 rounded-lg"
     >
       {children}
     </Card>

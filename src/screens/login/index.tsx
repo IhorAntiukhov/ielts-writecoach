@@ -10,7 +10,6 @@ import { GradientText } from "universal-gradient-text";
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
 import SignInForm from "./components/SignInForm";
 import SignUpForm from "./components/SignUpForm";
-import useResetPassword from "./hooks/useResetPassword";
 
 cssInterop(GradientText, {
   className: "style",
@@ -27,8 +26,6 @@ export default function LoginScreen() {
     SelectedMode.signIn,
   );
   const { colorScheme } = useColorScheme();
-
-  useResetPassword();
 
   return (
     <Container>

@@ -3,11 +3,14 @@ import { StatusBar } from "expo-status-bar";
 import React, { use, useEffect } from "react";
 import { View } from "react-native";
 import { AuthContext } from "../context/AuthProvider";
+import useResetPassword from "../screens/login/hooks/useResetPassword";
 
 export default function AuthNavigator() {
   const { session, authIntent, setAuthIntent } = use(AuthContext);
   const segments = useSegments();
   const router = useRouter();
+
+  useResetPassword();
 
   useEffect(() => {
     if (session === null && segments[0] !== "(auth)") {
@@ -15,12 +18,21 @@ export default function AuthNavigator() {
     }
 
     if (session !== null && segments[0] === "(auth)") {
-      router.replace(
-        authIntent === "normal" ? "/(tabs)" : "/(tabs)/profile/change-password",
-      );
-      if (authIntent === "password-reset") setAuthIntent?.("normal");
+      router.replace("/(tabs)");
     }
   }, [router, segments, session, authIntent, setAuthIntent]);
+
+  useEffect(() => {
+    if (!session || authIntent !== "password-reset" || segments[0] !== "(tabs)")
+      return;
+
+    router.push("/(tabs)/profile");
+    router.push("/(tabs)/profile/change-password");
+
+    requestAnimationFrame(() => {
+      setAuthIntent?.("normal");
+    });
+  }, [router, session, segments, authIntent, setAuthIntent]);
 
   return (
     <View className="flex-1">

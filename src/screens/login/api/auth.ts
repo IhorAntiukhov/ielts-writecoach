@@ -1,10 +1,10 @@
 import supabase from "@/src/api/supabase";
-import * as AuthSession from "expo-auth-session";
+import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const redirectTo = AuthSession.makeRedirectUri({ path: "/(auth)/login" });
+const redirectTo = Linking.createURL("/(auth)/login");
 
 export async function signIn(email: string, password: string) {
   const { error } = await supabase.auth.signInWithPassword({
@@ -16,8 +16,6 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function signInWithGoogle() {
-  console.log(redirectTo);
-
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
@@ -78,11 +76,11 @@ export async function setSession(
   refreshToken: string | null,
 ) {
   if (accessToken && refreshToken) {
-    await supabase.auth.setSession({
+    const { error } = await supabase.auth.setSession({
       access_token: accessToken,
       refresh_token: refreshToken,
     });
-  } else {
-    throw new Error("Failed to extract access and refresh tokens");
+
+    if (error) throw new Error("Failed to set session");
   }
 }
