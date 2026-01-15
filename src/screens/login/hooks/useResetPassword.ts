@@ -1,7 +1,7 @@
+import { setSession } from "@/src/api/auth";
 import { AuthContext } from "@/src/context/AuthProvider";
 import * as Linking from "expo-linking";
 import { use, useEffect } from "react";
-import { setSession } from "../api/auth";
 
 export default function useResetPassword() {
   const { setAuthIntent } = use(AuthContext);

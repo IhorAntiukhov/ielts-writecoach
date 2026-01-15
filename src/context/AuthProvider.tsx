@@ -1,6 +1,6 @@
 import { Session } from "@supabase/supabase-js";
 import React, { createContext, useEffect, useState } from "react";
-import supabase from "../api/supabase";
+import supabase from "../api/supabaseClient";
 
 type SessionState = Session | null | undefined;
 type AuthIntent = "normal" | "password-reset";

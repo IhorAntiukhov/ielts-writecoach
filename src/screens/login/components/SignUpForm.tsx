@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { CircleUser, Lock, Mail, UserRoundPlus } from "lucide-react-native";
 import { useForm } from "react-hook-form";
 import { SignUpFormData, signUpFormSchema } from "../../../forms/signUpForm";
-import { signUp } from "../api/auth";
+import { signUp } from "@/src/api/auth";
 
 export default function SignUpForm() {
   const {

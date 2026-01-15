@@ -1,4 +1,4 @@
-import supabase from "@/src/api/supabase";
+import supabase from "@/src/api/supabaseClient";
 import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
 
@@ -53,6 +53,7 @@ export async function signUp(
     options: {
       data: {
         name: userName,
+        avatar_timestamp: Date.now(),
       },
       emailRedirectTo: redirectTo,
     },
@@ -83,4 +84,36 @@ export async function setSession(
 
     if (error) throw new Error("Failed to set session");
   }
+}
+
+interface ChangeUserPropertiesType {
+  userName?: string;
+  email?: string;
+  password?: string;
+  avatarUrl?: string;
+}
+
+export async function changeUserProperties({
+  userName,
+  email,
+  password,
+  avatarUrl,
+}: ChangeUserPropertiesType) {
+  const { error } = await supabase.auth.updateUser({
+    email,
+    password,
+    data: {
+      name: userName,
+      avatar_url: avatarUrl,
+      avatar_timestamp: avatarUrl ? Date.now() : undefined,
+    },
+  });
+
+  if (error) throw error;
+}
+
+export async function signOut() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) throw error;
 }

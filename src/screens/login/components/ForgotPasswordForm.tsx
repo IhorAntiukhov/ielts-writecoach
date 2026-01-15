@@ -8,7 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Mail } from "lucide-react-native";
 import { useForm } from "react-hook-form";
 import { EmailFormData, emailFormSchema } from "../../../forms/signInForm";
-import { resetPassword } from "../api/auth";
+import { resetPassword } from "@/src/api/auth";
 
 interface ForgotPasswordFormProps {
   openSignInForm: () => void;

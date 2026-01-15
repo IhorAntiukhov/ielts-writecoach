@@ -11,7 +11,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Text, View } from "react-native";
 import { SignInFormData, signInFormSchema } from "../../../forms/signInForm";
-import { signIn } from "../api/auth";
+import { signIn } from "@/src/api/auth";
 import GoogleSignInButton from "./GoogleSignInButton";
 
 interface SignInFormProps {

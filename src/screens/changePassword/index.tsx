@@ -1,4 +1,5 @@
 import { VStack } from "@/components/ui/vstack";
+import { changeUserProperties } from "@/src/api/auth";
 import {
   ChangePasswordFormData,
   changePasswordFormSchema,
@@ -14,7 +15,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { Lock, RefreshCw } from "lucide-react-native";
 import { useForm } from "react-hook-form";
-import changePassword from "./api/changePassword";
 
 export default function ChangePasswordScreen() {
   const router = useRouter();
@@ -30,7 +30,7 @@ export default function ChangePasswordScreen() {
 
   const { mutate: changePasswordMutation, isPending } = useMutation({
     mutationFn: ({ password }: ChangePasswordFormData) =>
-      changePassword(password),
+      changeUserProperties({ password }),
     onSuccess: () => {
       showToast(
         "success",

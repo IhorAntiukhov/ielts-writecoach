@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/button";
 import useToast from "@/src/hooks/useToast";
 import { useMutation } from "@tanstack/react-query";
-import { signInWithGoogle } from "../api/auth";
+import { signInWithGoogle } from "@/src/api/auth";
 
 export default function GoogleSignInButton() {
   const showToast = useToast();

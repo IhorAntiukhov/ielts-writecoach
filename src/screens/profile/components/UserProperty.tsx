@@ -1,5 +1,5 @@
-import { ButtonSpinner } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
+import { Spinner } from "@/components/ui/spinner";
 import { VStack } from "@/components/ui/vstack";
 import useToast from "@/src/hooks/useToast";
 import IconButton from "@/src/ui/button/IconButton";
@@ -100,7 +100,7 @@ export default function UserProperty<T extends FieldValues>({
         disabled={isPending}
       >
         {isPending ? (
-          <ButtonSpinner color="white" className="text-xl" />
+          <Spinner className="text-typography-950" size={24} />
         ) : (
           <Icon className="text-typography-950 text-xl" />
         )}

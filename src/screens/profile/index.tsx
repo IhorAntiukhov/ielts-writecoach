@@ -12,7 +12,8 @@ import { Lock, LogOut } from "lucide-react-native";
 import { cssInterop } from "nativewind";
 import { use } from "react";
 import { Text, View } from "react-native";
-import { changeUserProperties, signOut } from "./api/user";
+import { changeUserProperties, signOut } from "@/src/api/auth";
+import UserAvatar from "./components/UserAvatar";
 import UserProperty from "./components/UserProperty";
 
 cssInterop(Image, { className: "style" });
@@ -30,12 +31,13 @@ export default function ProfileScreen() {
       <VStack space="2xl" className="items-center w-full">
         <CardBox>
           <VStack space="3xl">
-            <View className="-mx-8 -mt-6">
+            <View className="relative -mx-8 -mt-6">
               <Image
                 source={require("@/assets/images/profile-cover.jpg")}
                 className="w-full aspect-[5/2] rounded-lg"
                 contentFit="cover"
               />
+              <UserAvatar />
             </View>
 
             <UserProperty<UserNameFormData>
