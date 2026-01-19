@@ -1,5 +1,5 @@
 import * as zod from "zod";
-import formErrorMessages from "../screens/login/constants/formErrorMessages";
+import formErrorMessages from "./formErrorMessages";
 
 export interface SignInFormData {
   email: string;

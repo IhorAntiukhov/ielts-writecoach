@@ -1,4 +1,5 @@
 import { VStack } from "@/components/ui/vstack";
+import { resetPassword } from "@/src/api/auth";
 import useToast from "@/src/hooks/useToast";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
 import OutlineInput from "@/src/ui/input/OutlineInput";
@@ -8,15 +9,8 @@ import { useMutation } from "@tanstack/react-query";
 import { Mail } from "lucide-react-native";
 import { useForm } from "react-hook-form";
 import { EmailFormData, emailFormSchema } from "../../../forms/signInForm";
-import { resetPassword } from "@/src/api/auth";
 
-interface ForgotPasswordFormProps {
-  openSignInForm: () => void;
-}
-
-export default function ForgotPasswordForm({
-  openSignInForm,
-}: ForgotPasswordFormProps) {
+export default function ForgotPasswordForm() {
   const {
     control,
     formState: { errors },
@@ -43,7 +37,7 @@ export default function ForgotPasswordForm({
 
   return (
     <VStack space="3xl">
-      <TopBar title="Return to sign in" onBack={openSignInForm} />
+      <TopBar title="Return to sign in" backToHref="/(auth)/login" />
 
       <OutlineInput
         name="email"

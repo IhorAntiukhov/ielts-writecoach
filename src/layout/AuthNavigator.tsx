@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { use, useEffect } from "react";
 import { View } from "react-native";
 import { AuthContext } from "../context/AuthProvider";
-import useResetPassword from "../screens/login/hooks/useResetPassword";
+import useResetPassword from "../hooks/useResetPassword";
 
 export default function AuthNavigator() {
   const { session, authIntent, setAuthIntent } = use(AuthContext);
@@ -26,7 +26,6 @@ export default function AuthNavigator() {
     if (!session || authIntent !== "password-reset" || segments[0] !== "(tabs)")
       return;
 
-    router.push("/(tabs)/profile");
     router.push("/(tabs)/profile/change-password");
 
     requestAnimationFrame(() => {
@@ -39,7 +38,7 @@ export default function AuthNavigator() {
       <StatusBar style="auto" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Protected guard={!session}>
-          <Stack.Screen name="(auth)/login" />
+          <Stack.Screen name="(auth)" />
         </Stack.Protected>
 
         <Stack.Protected guard={!!session}>

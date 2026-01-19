@@ -11,8 +11,12 @@ export default function useResetPassword() {
       if (!url) return;
 
       const parsedUrl = Linking.parse(url.replaceAll("#", "?"));
+      console.log(parsedUrl);
 
-      if (parsedUrl.queryParams) {
+      if (
+        parsedUrl.queryParams &&
+        parsedUrl.path === "(auth)/forgot-password"
+      ) {
         const { access_token, refresh_token } = parsedUrl.queryParams;
 
         setAuthIntent?.("password-reset");

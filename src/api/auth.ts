@@ -4,7 +4,8 @@ import * as WebBrowser from "expo-web-browser";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const redirectTo = Linking.createURL("/(auth)/login");
+const redirectToLogin = Linking.createURL("/(auth)/login");
+const redirectToForgotPassword = Linking.createURL("/(auth)/forgot-password");
 
 export async function signIn(email: string, password: string) {
   const { error } = await supabase.auth.signInWithPassword({
@@ -19,14 +20,14 @@ export async function signInWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo,
+      redirectTo: redirectToLogin,
       skipBrowserRedirect: true,
     },
   });
 
   if (error) throw error;
 
-  const res = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
+  const res = await WebBrowser.openAuthSessionAsync(data.url, redirectToLogin);
 
   if (res.type === "success" && res.url) {
     const url = new URL(res.url);
@@ -55,7 +56,7 @@ export async function signUp(
         name: userName,
         avatar_timestamp: Date.now(),
       },
-      emailRedirectTo: redirectTo,
+      emailRedirectTo: redirectToLogin,
     },
   });
 
@@ -66,7 +67,7 @@ export async function signUp(
 
 export async function resetPassword(email: string) {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo,
+    redirectTo: redirectToForgotPassword,
   });
 
   if (error) throw error;

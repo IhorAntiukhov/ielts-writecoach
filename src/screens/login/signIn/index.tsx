@@ -1,26 +1,21 @@
 import { Divider } from "@/components/ui/divider";
 import { VStack } from "@/components/ui/vstack";
+import { signIn } from "@/src/api/auth";
 import useToast from "@/src/hooks/useToast";
-import OutlineInput from "@/src/ui/input/OutlineInput";
 import PrimaryButton from "@/src/ui/button/PrimaryButton";
 import TextButton from "@/src/ui/button/TextButton";
+import OutlineInput from "@/src/ui/input/OutlineInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
 import { Lock, LogIn, Mail } from "lucide-react-native";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Text, View } from "react-native";
 import { SignInFormData, signInFormSchema } from "../../../forms/signInForm";
-import { signIn } from "@/src/api/auth";
 import GoogleSignInButton from "./GoogleSignInButton";
 
-interface SignInFormProps {
-  openForgotPasswordForm: () => void;
-}
-
-export default function SignInForm({
-  openForgotPasswordForm,
-}: SignInFormProps) {
+export default function SignInForm() {
   const {
     control,
     formState: { errors },
@@ -30,6 +25,7 @@ export default function SignInForm({
   });
 
   const showToast = useToast();
+  const router = useRouter();
 
   const { mutate: signInMutation, isPending } = useMutation({
     mutationFn: ({ email, password }: SignInFormData) =>
@@ -69,7 +65,10 @@ export default function SignInForm({
               errors={errors}
             />
 
-            <TextButton onPress={openForgotPasswordForm} className="self-end">
+            <TextButton
+              onPress={() => router.push("/(auth)/forgot-password")}
+              className="self-end"
+            >
               Forgot password?
             </TextButton>
           </VStack>

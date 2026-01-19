@@ -12,12 +12,10 @@ import OutlineInput from "@/src/ui/input/OutlineInput";
 import TopBar from "@/src/ui/TopBar";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "expo-router";
 import { Lock, RefreshCw } from "lucide-react-native";
 import { useForm } from "react-hook-form";
 
 export default function ChangePasswordScreen() {
-  const router = useRouter();
   const {
     control,
     formState: { errors },
@@ -51,7 +49,7 @@ export default function ChangePasswordScreen() {
     <Container topAlignment>
       <CardBox>
         <VStack space="3xl">
-          <TopBar title="Back to the profile" onBack={() => router.back()} />
+          <TopBar title="Back to the profile" backToHref="/(tabs)/profile" />
 
           <VStack space="md">
             <OutlineInput
