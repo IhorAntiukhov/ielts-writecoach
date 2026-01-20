@@ -4,7 +4,7 @@ import * as WebBrowser from "expo-web-browser";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const redirectToLogin = Linking.createURL("/(auth)/login");
+const redirectToLogin = Linking.createURL("/(auth)");
 const redirectToForgotPassword = Linking.createURL("/(auth)/forgot-password");
 
 export async function signIn(email: string, password: string) {

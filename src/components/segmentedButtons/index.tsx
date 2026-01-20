@@ -1,34 +1,43 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Href } from "expo-router";
-import { TabTrigger } from "expo-router/ui";
+import { clsx } from "clsx";
 import React from "react";
 import { View } from "react-native";
 import SegmentedButton from "./SegmentedButton";
 
-interface SegmentedButtonsProps {
+interface SegmentedButtonsProps<T extends string> {
   buttons: {
     title: string;
-    name: string;
-    href: Href;
+    pageName: T;
   }[];
+  currentPage: T;
+  setPage: (value: T) => void;
+  noCard?: boolean;
 }
 
-export default function SegmentedButtons({ buttons }: SegmentedButtonsProps) {
+export default function SegmentedButtons<T extends string>({
+  buttons,
+  currentPage,
+  setPage,
+  noCard,
+}: SegmentedButtonsProps<T>) {
   return (
-    <View className="relative -mx-8 -mt-6">
+    <View className={clsx("relative", !noCard && "-mx-8 -mt-6")}>
       <View className="flex flex-row">
-        {buttons.map(({ title, name, href }, index) => (
-          <TabTrigger key={index} name={name} href={href} asChild>
-            <SegmentedButton
-              index={index}
-              length={buttons.length}
-              label={title}
-            />
-          </TabTrigger>
+        {buttons.map(({ title, pageName }, index) => (
+          <SegmentedButton
+            key={index}
+            index={index}
+            length={buttons.length}
+            label={title}
+            isSelected={pageName === currentPage}
+            onPress={() => setPage(pageName)}
+          />
         ))}
-        <Avatar className="absolute t-0 -translate-y-1/2 left-1/2 -translate-x-1/2">
-          <AvatarImage source={require("@/assets/images/icon.png")} />
-        </Avatar>
+        {!noCard && (
+          <Avatar className="absolute t-0 -translate-y-1/2 left-1/2 -translate-x-1/2">
+            <AvatarImage source={require("@/assets/images/icon.png")} />
+          </Avatar>
+        )}
       </View>
     </View>
   );

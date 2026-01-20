@@ -37,7 +37,7 @@ export default function ForgotPasswordForm() {
 
   return (
     <VStack space="3xl">
-      <TopBar title="Return to sign in" backToHref="/(auth)/login" />
+      <TopBar title="Return to sign in" backToHref="/(auth)" />
 
       <OutlineInput
         name="email"

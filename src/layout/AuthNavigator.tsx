@@ -14,7 +14,7 @@ export default function AuthNavigator() {
 
   useEffect(() => {
     if (session === null && segments[0] !== "(auth)") {
-      router.replace("/(auth)/login");
+      router.replace("/(auth)");
     }
 
     if (session !== null && segments[0] === "(auth)") {

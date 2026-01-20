@@ -1,4 +1,4 @@
-import ChangePasswordScreen from "../../../screens/changePassword";
+import ChangePasswordScreen from "../../../screens/profile/changePassword";
 
 export default function ChangePassword() {
   return <ChangePasswordScreen />;

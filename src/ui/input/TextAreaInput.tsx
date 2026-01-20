@@ -1,9 +1,9 @@
-import { Input, InputField } from "@/components/ui/input";
+import { Textarea, TextareaInput } from "@/components/ui/textarea";
 import { Controller, FieldValues } from "react-hook-form";
 import FormWrapper from "./components/FormWrapper";
 import InputProps from "./types/inputProps";
 
-export default function UnderlinedInput<T extends FieldValues>({
+export default function TextAreaInput<T extends FieldValues>({
   name,
   control,
   placeholder,
@@ -12,12 +12,12 @@ export default function UnderlinedInput<T extends FieldValues>({
 }: InputProps<T>) {
   return (
     <FormWrapper name={name} errors={errors}>
-      <Input variant="underlined" size="md">
+      <Textarea>
         <Controller
           name={name}
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
-            <InputField
+            <TextareaInput
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -28,7 +28,7 @@ export default function UnderlinedInput<T extends FieldValues>({
             />
           )}
         />
-      </Input>
+      </Textarea>
     </FormWrapper>
   );
 }
