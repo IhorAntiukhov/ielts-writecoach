@@ -39,6 +39,56 @@ export type Database = {
   };
   public: {
     Tables: {
+      essays: {
+        Row: {
+          created_at: string;
+          id: number;
+          image: string | null;
+          instructions: string;
+          is_public: boolean;
+          response: string;
+          time: number | null;
+          type: Database["public"]["Enums"]["EssayType"];
+          updated_at: string;
+          user_id: string;
+          word_count: number;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          image?: string | null;
+          instructions: string;
+          is_public?: boolean;
+          response: string;
+          time?: number | null;
+          type: Database["public"]["Enums"]["EssayType"];
+          updated_at?: string;
+          user_id: string;
+          word_count: number;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          image?: string | null;
+          instructions?: string;
+          is_public?: boolean;
+          response?: string;
+          time?: number | null;
+          type?: Database["public"]["Enums"]["EssayType"];
+          updated_at?: string;
+          user_id?: string;
+          word_count?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "essays_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       profiles: {
         Row: {
           avatar_url: string | null;
@@ -68,7 +118,7 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      [_ in never]: never;
+      EssayType: "task-1G" | "task-1A" | "task-2";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -201,6 +251,8 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      EssayType: ["task-1G", "task-1A", "task-2"],
+    },
   },
 } as const;

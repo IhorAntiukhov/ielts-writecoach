@@ -3,7 +3,6 @@ import { EyeIcon, EyeOffIcon } from "lucide-react-native";
 import { useState } from "react";
 import { Controller, FieldValues } from "react-hook-form";
 import FormWrapper from "./components/FormWrapper";
-import InputProps from "./types/inputProps";
 import OutlineInputProps from "./types/outlineInputProps";
 
 export default function OutlineInput<T extends FieldValues>({

@@ -4,12 +4,16 @@ import Pager from "@/src/components/Pager";
 import SegmentedButtons from "@/src/components/segmentedButtons";
 import SignInForm from "@/src/screens/login/components/SignInForm";
 import SignUpForm from "@/src/screens/login/components/SignUpForm";
-import { useColorScheme } from "nativewind";
+import { cssInterop, useColorScheme } from "nativewind";
 import React, { useState } from "react";
 import { Text } from "react-native";
 import { GradientText } from "universal-gradient-text";
 
 type Page = "sign-in" | "sign-up";
+
+cssInterop(GradientText, {
+  className: "style",
+});
 
 export default function LoginScreen() {
   const { colorScheme } = useColorScheme();

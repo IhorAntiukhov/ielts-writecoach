@@ -1,7 +1,8 @@
 import { Textarea, TextareaInput } from "@/components/ui/textarea";
+import { clsx } from "clsx";
 import { Controller, FieldValues } from "react-hook-form";
 import FormWrapper from "./components/FormWrapper";
-import InputProps from "./types/inputProps";
+import TextAreaInputProps from "./types/textAreaInputProps";
 
 export default function TextAreaInput<T extends FieldValues>({
   name,
@@ -9,10 +10,18 @@ export default function TextAreaInput<T extends FieldValues>({
   placeholder,
   keyboardType,
   errors,
-}: InputProps<T>) {
+  maxLength,
+  autoCorrect,
+  largeTextArea,
+}: TextAreaInputProps<T>) {
   return (
     <FormWrapper name={name} errors={errors}>
-      <Textarea>
+      <Textarea
+        className={clsx(
+          "bg-background-50 rounded-lg px-1.5 pt-1.5 pb-4",
+          largeTextArea && `h-72`,
+        )}
+      >
         <Controller
           name={name}
           control={control}
@@ -25,6 +34,8 @@ export default function TextAreaInput<T extends FieldValues>({
               keyboardType={
                 keyboardType === "password" ? undefined : keyboardType
               }
+              autoCorrect={autoCorrect}
+              maxLength={maxLength}
             />
           )}
         />

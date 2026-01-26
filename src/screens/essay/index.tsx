@@ -3,6 +3,7 @@ import Pager from "@/src/components/Pager";
 import SegmentedButtons from "@/src/components/segmentedButtons";
 import Container from "@/src/ui/Container";
 import TopBar from "@/src/ui/TopBar";
+import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import ReactionsForm from "./components/ReactionsForm";
 import ReviewForm from "./components/ReviewForm";
@@ -11,11 +12,18 @@ import WriteForm from "./components/WriteForm";
 type Page = "write" | "review" | "reactions";
 
 export default function EssayScreen() {
+  const { id } = useLocalSearchParams();
+  const isNewEssay = id === "new-essay";
+
   const [page, setPage] = useState<Page>("write");
 
   return (
     <>
-      <TopBar title="New essay" backToHref="/(tabs)/private" solidBackground />
+      <TopBar
+        title={`${isNewEssay ? "New" : "Edit"} essay`}
+        backToHref="/(tabs)/private"
+        solidBackground
+      />
 
       <Container topAlignment>
         <VStack space="2xl">

@@ -13,6 +13,7 @@ export default function KeyboardScrollView({
     <StyledKeyboardAwareScrollView
       contentContainerClassName="flex-grow bg-background-50"
       keyboardShouldPersistTaps="always"
+      bottomOffset={40}
     >
       {children}
     </StyledKeyboardAwareScrollView>

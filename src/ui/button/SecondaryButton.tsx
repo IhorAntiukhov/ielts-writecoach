@@ -21,7 +21,7 @@ export default function SecondaryButton({
   ...rest
 }: SecondaryButtonProps) {
   return (
-    <Button action={action || "secondary"} isDisabled={isLoading} {...rest}>
+    <Button action={action || "secondary"} disabled={isLoading} {...rest}>
       {isLoading && <ButtonSpinner />}
       {icon && <ButtonIcon as={icon} />}
       <ButtonText

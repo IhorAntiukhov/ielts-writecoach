@@ -1,12 +1,16 @@
+import formErrorMessages from "@/src/forms/formErrorMessages";
 import * as zod from "zod";
 
 export interface WritingFormData {
-  type: string;
-  task: string;
-  image?: string;
+  instructions: string;
   response: string;
 }
 
-const zodObject = {};
-
-export const signInFormSchema = zod.object(zodObject);
+export const writingFormSchema = zod.object({
+  instructions: zod
+    .string(formErrorMessages.fieldRequired)
+    .nonempty(formErrorMessages.fieldRequired),
+  response: zod
+    .string(formErrorMessages.fieldRequired)
+    .nonempty(formErrorMessages.fieldRequired),
+});

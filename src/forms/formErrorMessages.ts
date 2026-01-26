@@ -3,6 +3,7 @@ const formErrorMessages = {
   invalidEmail: "Enter a valid email",
   passwordTooShort: "Password must be at least 6 characters long",
   passwordsUnmatch: "Passwords do not match",
+  lengthLimit: "Length limit exceeded",
 } as const;
 
 export default formErrorMessages;

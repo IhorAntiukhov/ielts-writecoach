@@ -31,27 +31,30 @@ export default function PrimaryButton({
   const { colorScheme } = useColorScheme();
 
   return (
-    <LinearGradient
-      className="py-1 rounded-lg active:opacity-70 duration-100"
-      colors={[
-        `rgb(${gradientColors.start[colorScheme || "light"]})`,
-        `rgb(${gradientColors.end[colorScheme || "light"]})`,
-      ]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+    <Button
+      action="secondary"
+      disabled={isLoading}
+      className={clsx(
+        "flex flex-row items-stretch px-0 flex-grow active:opacity-70 bg-transparent data-[active=true]:bg-transparent web:data-[hover=true]:bg-transparent gap-2",
+        className,
+      )}
+      {...rest}
     >
-      <Button
-        action="default"
-        disabled={isLoading}
-        className={clsx("px-6 web:data-[hover=true]:bg-transparent", className)}
-        {...rest}
+      <LinearGradient
+        className="flex-grow flex flex-row items-center justify-center rounded-md gap-2"
+        colors={[
+          `rgb(${gradientColors.start[colorScheme || "light"]})`,
+          `rgb(${gradientColors.end[colorScheme || "light"]})`,
+        ]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
       >
         {isLoading && <ButtonSpinner color="white" />}
         {icon && <ButtonIcon as={icon} className="text-lg text-white" />}
         <ButtonText className="text-center align-middle text-lg text-white font-bold">
           {children}
         </ButtonText>
-      </Button>
-    </LinearGradient>
+      </LinearGradient>
+    </Button>
   );
 }

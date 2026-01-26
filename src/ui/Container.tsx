@@ -10,7 +10,7 @@ export default function Container({ topAlignment, children }: ContainerProps) {
   return (
     <View
       className={clsx(
-        "flex-1 flex flex-col px-5 py-8 bg-background-50",
+        "flex-1 flex flex-col px-5 pt-8 pb-12 bg-background-50",
         !topAlignment && "justify-center",
       )}
     >
