@@ -4,6 +4,18 @@ import {
 } from "../screens/essay/types/saveEssayParams";
 import supabase from "./supabaseClient";
 
+export async function getEssay(id: number) {
+  const { data, error } = await supabase
+    .from("essays")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) throw error;
+
+  return data;
+}
+
 export async function insertEssay({
   type,
   instructions,
@@ -34,9 +46,19 @@ export async function insertEssay({
 
 export async function updateEssay(
   id: number,
-  data: Omit<UpdateEssayParams, "mimeType">,
+  data: Partial<Omit<UpdateEssayParams, "mimeType">>,
 ) {
-  const { error } = await supabase.from("essays").update(data).eq("id", id);
+  const { error } = await supabase
+    .from("essays")
+    .update({
+      type: data.type,
+      instructions: data.instructions,
+      image: data.image,
+      time: data.time,
+      word_count: data.wordCount,
+      response: data.response,
+    })
+    .eq("id", id);
 
   if (error) throw error;
 }

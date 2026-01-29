@@ -11,4 +11,13 @@ export interface InsertEssayParams {
   userId: string;
 }
 
-export type UpdateEssayParams = Partial<Omit<InsertEssayParams, "userId">>;
+export interface InsertEssayWithAnalysisParams extends InsertEssayParams {
+  base64?: string;
+}
+
+export type UpdateEssayParams = Omit<InsertEssayParams, "userId">;
+
+export type UpdateEssayWithAnalysisParams = Omit<
+  InsertEssayWithAnalysisParams,
+  "userId"
+>;

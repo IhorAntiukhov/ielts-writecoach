@@ -1,7 +1,8 @@
 import { VStack } from "@/components/ui/vstack";
+import { changeUserProperties, signOut } from "@/src/api/auth";
 import { AuthContext } from "@/src/context/AuthProvider";
-import { EmailFormData, emailFormSchema } from "@/src/forms/signInForm";
-import { UserNameFormData, userNameFormSchema } from "@/src/forms/signUpForm";
+import { EmailFormData, emailFormSchema } from "@/src/schemas/signInForm";
+import { UserNameFormData, userNameFormSchema } from "@/src/schemas/signUpForm";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
 import CardBox from "@/src/ui/CardBox";
 import Container from "@/src/ui/Container";
@@ -12,7 +13,6 @@ import { Lock, LogOut } from "lucide-react-native";
 import { cssInterop } from "nativewind";
 import { use } from "react";
 import { Text, View } from "react-native";
-import { changeUserProperties, signOut } from "@/src/api/auth";
 import UserAvatar from "./components/UserAvatar";
 import UserProperty from "./components/UserProperty";
 

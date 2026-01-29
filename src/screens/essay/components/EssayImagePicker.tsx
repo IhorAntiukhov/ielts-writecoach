@@ -7,7 +7,6 @@ import selectImage from "@/src/utils/selectImage";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { ImageIcon, X } from "lucide-react-native";
-import { useState } from "react";
 import { Pressable, Text } from "react-native";
 import ImageData from "../types/imageData";
 import ImageDimensions from "../types/imageDimensions";
@@ -18,20 +17,26 @@ cssInteropIcon(X);
 interface EssayImagePickerProps {
   imageData: ImageData;
   setImageData: React.Dispatch<React.SetStateAction<ImageData>>;
+  imageDimensions: ImageDimensions;
+  setImageDimensions: React.Dispatch<React.SetStateAction<ImageDimensions>>;
 }
 
 export default function EssayImagePicker({
   imageData,
   setImageData,
+  imageDimensions,
+  setImageDimensions,
 }: EssayImagePickerProps) {
-  const [imageDimensions, setImageDimensions] = useState<ImageDimensions>(null);
-
   const toast = useToast();
 
   const { mutate: handleSelectImage } = useMutation({
-    mutationFn: () => selectImage(),
-    onSuccess: ({ uri, mimeType, width, height }) => {
-      setImageData({ uri, mimeType: mimeType || "image/jpeg" });
+    mutationFn: () => selectImage(undefined, undefined, true),
+    onSuccess: ({ uri, mimeType, base64, width, height }) => {
+      setImageData({
+        uri,
+        mimeType: mimeType || "image/jpeg",
+        base64: base64 || "",
+      });
       setImageDimensions({
         width,
         height,
@@ -44,7 +49,6 @@ export default function EssayImagePicker({
 
   const clearImage = () => {
     setImageData(null);
-    setImageDimensions(null);
   };
 
   return (

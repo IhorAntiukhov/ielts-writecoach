@@ -12,7 +12,7 @@ export default function NewEssayButton() {
     router.push({
       pathname: "/(tabs)/private/[id]",
       params: {
-        id: "new-essay",
+        id: "15",
       },
     });
   };

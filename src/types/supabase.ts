@@ -110,12 +110,79 @@ export type Database = {
         };
         Relationships: [];
       };
+      reviews: {
+        Row: {
+          coherence_band: number;
+          coherence_feedback: string;
+          created_at: string;
+          essay_id: number;
+          grammar_band: number;
+          grammar_feedback: string;
+          id: number;
+          task_response_band: number;
+          task_response_feedback: string;
+          user_id: string;
+          vocabulary_band: number;
+          vocabulary_feedback: string;
+        };
+        Insert: {
+          coherence_band: number;
+          coherence_feedback: string;
+          created_at?: string;
+          essay_id: number;
+          grammar_band: number;
+          grammar_feedback: string;
+          id?: number;
+          task_response_band: number;
+          task_response_feedback: string;
+          user_id: string;
+          vocabulary_band: number;
+          vocabulary_feedback: string;
+        };
+        Update: {
+          coherence_band?: number;
+          coherence_feedback?: string;
+          created_at?: string;
+          essay_id?: number;
+          grammar_band?: number;
+          grammar_feedback?: string;
+          id?: number;
+          task_response_band?: number;
+          task_response_feedback?: string;
+          user_id?: string;
+          vocabulary_band?: number;
+          vocabulary_feedback?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reviews_essay_id_fkey";
+            columns: ["essay_id"];
+            isOneToOne: false;
+            referencedRelation: "essays";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      save_essay_analysis: {
+        Args: {
+          coherence_band: number;
+          coherence_feedback: string;
+          essay_id: number;
+          grammar_band: number;
+          grammar_feedback: string;
+          task_response_band: number;
+          task_response_feedback: string;
+          user_id: string;
+          vocabulary_band: number;
+          vocabulary_feedback: string;
+        };
+        Returns: undefined;
+      };
     };
     Enums: {
       EssayType: "task-1G" | "task-1A" | "task-2";

@@ -3,6 +3,7 @@ import * as ImagePicker from "expo-image-picker";
 export default async function selectImage(
   aspect?: [number, number],
   quality?: number,
+  includeBase64?: boolean,
 ) {
   const permissionResult =
     await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -15,6 +16,7 @@ export default async function selectImage(
     allowsEditing: true,
     aspect: aspect,
     quality: quality,
+    base64: includeBase64,
   });
   const image = result.assets?.[0];
 

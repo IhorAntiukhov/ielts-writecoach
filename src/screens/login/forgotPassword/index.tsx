@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Mail } from "lucide-react-native";
 import { useForm } from "react-hook-form";
-import { EmailFormData, emailFormSchema } from "../../../forms/signInForm";
+import { EmailFormData, emailFormSchema } from "../../../schemas/signInForm";
 
 export default function ForgotPasswordForm() {
   const {

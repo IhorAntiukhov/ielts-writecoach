@@ -12,7 +12,7 @@ import { Lock, LogIn, Mail } from "lucide-react-native";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Text, View } from "react-native";
-import { SignInFormData, signInFormSchema } from "../../../forms/signInForm";
+import { SignInFormData, signInFormSchema } from "../../../schemas/signInForm";
 import GoogleSignInButton from "./GoogleSignInButton";
 
 export default function SignInForm() {

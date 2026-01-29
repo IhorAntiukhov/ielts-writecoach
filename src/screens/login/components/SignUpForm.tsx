@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { CircleUser, Lock, Mail, UserRoundPlus } from "lucide-react-native";
 import { useForm } from "react-hook-form";
-import { SignUpFormData, signUpFormSchema } from "../../../forms/signUpForm";
+import { SignUpFormData, signUpFormSchema } from "../../../schemas/signUpForm";
 
 export default function SignUpForm() {
   const {

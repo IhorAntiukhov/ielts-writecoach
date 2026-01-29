@@ -1,4 +1,4 @@
-import formErrorMessages from "@/src/forms/formErrorMessages";
+import formErrorMessages from "@/src/schemas/formErrorMessages";
 import * as zod from "zod";
 
 export interface WritingFormData {

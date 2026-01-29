@@ -1,10 +1,10 @@
 import { VStack } from "@/components/ui/vstack";
 import { changeUserProperties } from "@/src/api/auth";
-import {
-  ChangePasswordFormData,
-  changePasswordFormSchema,
-} from "@/src/forms/signUpForm";
 import useToast from "@/src/hooks/useToast";
+import {
+    ChangePasswordFormData,
+    changePasswordFormSchema,
+} from "@/src/schemas/signUpForm";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
 import CardBox from "@/src/ui/CardBox";
 import Container from "@/src/ui/Container";
