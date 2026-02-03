@@ -1,15 +1,12 @@
 import EssayType from "@/src/types/essayType";
 
-interface DatabaseImageData {
-  uri: string;
-  aspectRatio: number;
-  mimeType: string;
-}
-
 export interface InsertEssayParams {
   type: EssayType;
   instructions: string;
-  imageData?: DatabaseImageData;
+  imageUrl?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  mimeType?: string;
   time?: number;
   wordCount: number;
   response: string;

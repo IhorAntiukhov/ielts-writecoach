@@ -75,7 +75,12 @@ export default function EssayBaseCard({ type, data }: EssayBaseCardProps) {
         <Image
           source={{ uri: data.image_url }}
           className="w-full rounded-lg border border-y border-outline-300"
-          style={{ aspectRatio: data.image_aspect_ratio || 1920 / 1080 }}
+          style={{
+            aspectRatio:
+              data.image_width && data.image_height
+                ? data.image_width / data.image_height
+                : 1920 / 1080,
+          }}
           contentFit="contain"
         />
       )}

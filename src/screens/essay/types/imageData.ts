@@ -1,6 +1,9 @@
 type ImageData = {
   uri: string;
-  aspectRatio: number;
+  imageDimensions: {
+    width: number;
+    height: number;
+  };
   mimeType: string;
   base64: string;
 } | null;

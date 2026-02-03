@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { ImagePlus } from "lucide-react-native";
 import { use, useState } from "react";
 import { View } from "react-native";
-import uploadAvatar from "../utils/uploadAvatar";
+import uploadAvatar from "../api/uploadAvatar";
 
 const Icon = cssInteropIcon(ImagePlus);
 

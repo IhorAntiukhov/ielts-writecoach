@@ -1,8 +1,11 @@
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
+import useOpenNewEssay from "@/src/hooks/useOpenNewEssay";
 import EssayFeedContext from "@/src/screens/private/context/EssayFeedContext";
+import PrimaryButton from "@/src/ui/button/PrimaryButton";
 import IndicatorText from "@/src/ui/IndicatorText";
 import SkeletonCard from "@/src/ui/SkeletonCard";
+import { Plus } from "lucide-react-native";
 import { use } from "react";
 import { FlatList } from "react-native";
 import FilterSelect from "../filterSelect";
@@ -13,8 +16,11 @@ import SearchBar from "./components/SearchBar";
 export default function EssayFeed() {
   const {
     filteringCriteria,
+    sortingCriteria,
     apiData: { data, isPending, error, isError },
   } = use(EssayFeedContext)!;
+
+  const { openNewEssay } = useOpenNewEssay();
 
   return (
     <VStack className="flex-1" space="2xl">
@@ -36,7 +42,7 @@ export default function EssayFeed() {
         </IndicatorText>
       ) : !data?.length ? (
         <IndicatorText>
-          {filteringCriteria.length
+          {filteringCriteria.length || sortingCriteria === "average_band_score"
             ? "You do not have any essays that meet the selected filter criteria."
             : "You haven't created any essays yet."}
         </IndicatorText>
@@ -45,6 +51,11 @@ export default function EssayFeed() {
           data={data}
           renderItem={({ item }) => <PrivateEssayCard data={item} />}
           contentContainerClassName="gap-4"
+          ListHeaderComponent={() => (
+            <PrimaryButton icon={Plus} onPress={openNewEssay} className="mb-4">
+              New essay
+            </PrimaryButton>
+          )}
         />
       )}
     </VStack>

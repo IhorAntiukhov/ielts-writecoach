@@ -2,7 +2,6 @@ import { HStack } from "@/components/ui/hstack";
 import { Skeleton } from "@/components/ui/skeleton";
 import { VStack } from "@/components/ui/vstack";
 import { AuthContext } from "@/src/context/AuthProvider";
-import useToast from "@/src/hooks/useToast";
 import EssayType from "@/src/types/essayType";
 import PopoverButton from "@/src/ui/button/PopoverButton";
 import PrimaryButton from "@/src/ui/button/PrimaryButton";
@@ -14,13 +13,22 @@ import TextAreaInput from "@/src/ui/input/TextAreaInput";
 import SmallCardBox from "@/src/ui/SmallCardBox";
 import { getNounByNumber } from "@/src/utils/getNounByNumber";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import { useLocalSearchParams } from "expo-router";
 import { Save, Sparkles, Users } from "lucide-react-native";
-import { use, useEffect, useRef, useState } from "react";
+import { use, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Text } from "react-native";
+import {
+  saveExistingEssayWithAnalysis,
+  uploadNewEssayWithAnalysis,
+} from "../api/analyzeEssay";
+import getEssayWithImageData from "../api/getEssayWithImageData";
+import { saveExistingEssay, uploadNewEssay } from "../api/saveEssay";
 import { WritingFormData, writingFormSchema } from "../forms/writingForm";
+import useSetFormData from "../hooks/useSetFormData";
+import useUpdateEssayMutation from "../hooks/useUpdateEssayMutation";
+import useUploadEssayMutation from "../hooks/useUploadEssayMutation";
 import ImageData from "../types/imageData";
 import {
   InsertEssayParams,
@@ -28,13 +36,7 @@ import {
   UpdateEssayParams,
   UpdateEssayWithAnalysisParams,
 } from "../types/saveEssayParams";
-import {
-  saveExistingEssayWithAnalysis,
-  uploadNewEssayWithAnalysis,
-} from "../utils/analyzeEssay";
-import getEssayWithImageData from "../utils/getEssayWithImageData";
 import getWordCount from "../utils/getWordCount";
-import { saveExistingEssay, uploadNewEssay } from "../utils/saveEssay";
 import EssayImagePicker from "./EssayImagePicker";
 import Timer from "./Timer";
 
@@ -48,15 +50,9 @@ export default function WriteForm() {
   const [imageData, setImageData] = useState<ImageData>(null);
 
   const [secondsFromStart, setSecondsFromStart] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-
-  const isInitialDataSetRef = useRef(false);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
 
   const { user } = use(AuthContext).session!;
-
-  const toast = useToast();
-  const router = useRouter();
-  const queryClient = useQueryClient();
 
   const {
     control,
@@ -76,116 +72,55 @@ export default function WriteForm() {
     enabled: !isNewEssay,
   });
 
-  useEffect(() => {
-    const setData = async () => {
-      if (data && !isInitialDataSetRef.current) {
-        reset({
-          instructions: data.instructions,
-          response: data.response,
-        });
-        setType(data.type);
-        setSecondsFromStart(data.time || 0);
-
-        if (data.imageData) setImageData(data.imageData);
-
-        isInitialDataSetRef.current = true;
-      }
-    };
-
-    setData();
-  }, [data, reset]);
+  useSetFormData({
+    data,
+    reset,
+    setType,
+    setSecondsFromStart,
+    setImageData,
+  });
 
   const { mutate: saveEssayAsDraftMutation, isPending: isSavingEssayPending } =
-    useMutation({
+    useUploadEssayMutation({
       mutationFn: (data: InsertEssayParams) => uploadNewEssay(data),
-      onMutate: () => {
-        setIsRunning(false);
-      },
-      onSuccess: (id) => {
-        toast("success", "Save essay", "Essay was saved as draft");
-
-        queryClient.invalidateQueries({
-          queryKey: ["private", "essay", id],
-        });
-
-        router.navigate({
-          pathname: "/(tabs)/private/[id]",
-          params: {
-            id,
-          },
-        });
-      },
-      onError: (error) => {
-        toast("error", "Save essay", error.message);
-      },
+      setIsTimerRunning,
+      toastTitle: "Save essay",
+      toastSuccessMessage: "Essay was saved as draft",
+      redirectToReview: false,
     });
 
   const {
     mutate: saveExistingEssayAsDraftMutation,
     isPending: isSavingExistingEssayPending,
-  } = useMutation({
+  } = useUpdateEssayMutation({
     mutationFn: (data: UpdateEssayParams) =>
       saveExistingEssay(data, Number(id as string), user.id),
-    onMutate: () => {
-      setIsRunning(false);
-    },
-    onSuccess: () => {
-      toast("success", "Save essay", "Essay was saved as draft");
-
-      queryClient.invalidateQueries({
-        queryKey: ["private", "essay", id],
-      });
-    },
-    onError: (error) => {
-      toast("error", "Save essay", error.message);
-    },
+    setIsTimerRunning,
+    toastTitle: "Save essay",
+    toastSuccessMessage: "Essay was saved as draft",
+    redirectToReview: false,
   });
 
   const { mutate: analyzeEssayMutation, isPending: isEssayAnalysisPending } =
-    useMutation({
+    useUploadEssayMutation({
       mutationFn: (data: InsertEssayWithAnalysisParams) =>
         uploadNewEssayWithAnalysis(data),
-      onMutate: () => {
-        setIsRunning(false);
-      },
-      onSuccess: (id) => {
-        toast("success", "Analyze essay", "Essay was successfully analyzed");
-
-        queryClient.invalidateQueries({
-          queryKey: ["private", "essay", id],
-        });
-
-        router.navigate({
-          pathname: "/(tabs)/private/[id]",
-          params: {
-            id,
-          },
-        });
-      },
-      onError: (error) => {
-        toast("error", "Analyze essay", error.message);
-      },
+      setIsTimerRunning,
+      toastTitle: "Analyze essay",
+      toastSuccessMessage: "Essay was analyzed",
+      redirectToReview: true,
     });
 
   const {
     mutate: analyzeExistingEssayMutation,
     isPending: isExistingEssayAnalysisPending,
-  } = useMutation({
+  } = useUpdateEssayMutation({
     mutationFn: (data: UpdateEssayWithAnalysisParams) =>
       saveExistingEssayWithAnalysis(data, Number(id as string), user.id),
-    onMutate: () => {
-      setIsRunning(false);
-    },
-    onSuccess: () => {
-      toast("success", "Analyze essay", "Essay was successfully analyzed");
-
-      queryClient.invalidateQueries({
-        queryKey: ["private", "essay", id],
-      });
-    },
-    onError: (error) => {
-      toast("error", "Analyze essay", error.message);
-    },
+    setIsTimerRunning,
+    toastTitle: "Analyze essay",
+    toastSuccessMessage: "Essay was analyzed",
+    redirectToReview: true,
   });
 
   if (isError) {
@@ -196,16 +131,16 @@ export default function WriteForm() {
     );
   }
 
-  const getEssayDataToSave = ({ instructions, response }: WritingFormData) => ({
+  const getEssayDataToSave = ({
+    instructions,
+    response,
+  }: WritingFormData): UpdateEssayParams => ({
     type,
     instructions,
-    imageData: imageData?.uri
-      ? {
-          uri: imageData.uri,
-          aspectRatio: imageData.aspectRatio,
-          mimeType: imageData.mimeType,
-        }
-      : undefined,
+    imageUrl: imageData?.uri,
+    imageWidth: imageData?.imageDimensions.width,
+    imageHeight: imageData?.imageDimensions.height,
+    mimeType: imageData?.mimeType,
     time: secondsFromStart,
     wordCount: responseWordCount,
     response,
@@ -263,7 +198,7 @@ export default function WriteForm() {
 
           <Skeleton
             variant="rounded"
-            isLoaded={!isPending}
+            isLoaded={!isPending || isNewEssay}
             className="rounded-lg h-[6.25rem]"
           >
             <TextAreaInput
@@ -279,7 +214,7 @@ export default function WriteForm() {
           {type === "task-1A" && (
             <Skeleton
               variant="rounded"
-              isLoaded={!isPending}
+              isLoaded={!isPending || isNewEssay}
               className="w-full h-auto rounded-lg aspect-video"
             >
               <EssayImagePicker
@@ -297,8 +232,8 @@ export default function WriteForm() {
             <Timer
               secondsFromStart={secondsFromStart}
               setSecondsFromStart={setSecondsFromStart}
-              isRunning={isRunning}
-              setIsRunning={setIsRunning}
+              isRunning={isTimerRunning}
+              setIsRunning={setIsTimerRunning}
             />
 
             <SmallCardBox className="flex-grow">
@@ -310,7 +245,7 @@ export default function WriteForm() {
 
           <Skeleton
             variant="rounded"
-            isLoaded={!isPending}
+            isLoaded={!isPending || isNewEssay}
             className=" rounded-lg h-72"
           >
             <TextAreaInput

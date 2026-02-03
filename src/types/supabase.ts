@@ -43,8 +43,9 @@ export type Database = {
         Row: {
           created_at: string;
           id: number;
-          image_aspect_ratio: number | null;
+          image_height: number | null;
           image_url: string | null;
+          image_width: number | null;
           instructions: string;
           is_public: boolean;
           response: string;
@@ -56,8 +57,9 @@ export type Database = {
         Insert: {
           created_at?: string;
           id?: number;
-          image_aspect_ratio?: number | null;
+          image_height?: number | null;
           image_url?: string | null;
+          image_width?: number | null;
           instructions: string;
           is_public?: boolean;
           response: string;
@@ -69,8 +71,9 @@ export type Database = {
         Update: {
           created_at?: string;
           id?: number;
-          image_aspect_ratio?: number | null;
+          image_height?: number | null;
           image_url?: string | null;
+          image_width?: number | null;
           instructions?: string;
           is_public?: boolean;
           response?: string;

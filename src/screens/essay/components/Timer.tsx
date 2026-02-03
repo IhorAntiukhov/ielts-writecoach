@@ -1,10 +1,11 @@
 import { HStack } from "@/components/ui/hstack";
+import { AlertDialogContext } from "@/src/context/AlertDialogProvider";
 import IconButton from "@/src/ui/button/IconButton";
 import SmallCardBox from "@/src/ui/SmallCardBox";
 import cssInteropIcon from "@/src/utils/cssInteropIcon";
 import { clsx } from "clsx";
 import { Pause, Play, Square } from "lucide-react-native";
-import React, { useEffect, useRef } from "react";
+import React, { use, useEffect, useRef } from "react";
 import { Text } from "react-native";
 import formatSeconds from "../utils/formatSeconds";
 
@@ -27,6 +28,8 @@ export default function Timer({
 }: TimerProps) {
   const intervalIdRef = useRef<number | null>(null);
 
+  const { showDialog } = use(AlertDialogContext)!;
+
   useEffect(() => {
     const clearIntervalByRef = () => {
       intervalIdRef.current && clearInterval(intervalIdRef.current);
@@ -48,8 +51,15 @@ export default function Timer({
   };
 
   const handleStop = () => {
-    setIsRunning(false);
-    setSecondsFromStart(0);
+    showDialog({
+      title: "Stop timer",
+      content: "Are you sure you want to stop the timer?",
+      confirmButtonText: "Stop",
+      onConfirm() {
+        setIsRunning(false);
+        setSecondsFromStart(0);
+      },
+    });
   };
 
   const PlayOrPauseIcon = isRunning ? Pause : Play;

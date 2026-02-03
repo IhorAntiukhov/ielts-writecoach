@@ -74,13 +74,17 @@ export default function ReviewCategory({
           </Progress>
         </VStack>
 
-        <View className="-mx-8">
-          <Divider />
-        </View>
+        {detailedFeedback && (
+          <>
+            <View className="-mx-8">
+              <Divider />
+            </View>
 
-        <Text className="text-md text-typography-950">
-          {detailedFeedback ? formatFeedback(detailedFeedback) : ""}
-        </Text>
+            <Text className="text-md text-typography-950">
+              {formatFeedback(detailedFeedback)}
+            </Text>
+          </>
+        )}
       </VStack>
     </CardBox>
   );

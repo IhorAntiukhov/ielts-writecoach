@@ -22,8 +22,6 @@ export default function FilterSelect() {
   const { filteringCriteria, setFilteringCriteria } = use(EssayFeedContext)!;
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log("filter", filteringCriteria);
-
   const Icon = filteringCriteria.length ? FunnelX : FunnelPlus;
 
   const handleOpen = () => {

@@ -13,6 +13,7 @@ import { Text } from "react-native";
 interface ShowDialogParams {
   title: string;
   content: string;
+  confirmButtonText?: string;
   onConfirm: () => void;
 }
 
@@ -28,10 +29,16 @@ export default function AlertDialogProvider({
   const [isOpen, setIsOpen] = useState(false);
   const [params, setParams] = useState<ShowDialogParams | null>(null);
 
-  const showDialog = ({ title, content, onConfirm }: ShowDialogParams) => {
+  const showDialog = ({
+    title,
+    content,
+    confirmButtonText,
+    onConfirm,
+  }: ShowDialogParams) => {
     setParams({
       title,
       content,
+      confirmButtonText,
       onConfirm,
     });
     setIsOpen(true);
@@ -70,7 +77,7 @@ export default function AlertDialogProvider({
               </Button>
 
               <Button variant="solid" action="negative" onPress={handleConfirm}>
-                <ButtonText>Delete</ButtonText>
+                <ButtonText>{params.confirmButtonText || "Delete"}</ButtonText>
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

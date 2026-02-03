@@ -18,8 +18,10 @@ export default function ReviewForm() {
 
   return (
     <VStack space="2xl">
-      {!data && !isPending ? (
-        <IndicatorText>You don&apos;t have an AI essay review</IndicatorText>
+      {!data && (!isPending || isNewEssay) ? (
+        <IndicatorText>
+          You haven&apos;t generated an AI essay yet
+        </IndicatorText>
       ) : isError ? (
         <IndicatorText isError>
           Failed to get the review data: {error.message}
@@ -51,6 +53,16 @@ export default function ReviewForm() {
             title="Grammatical range & Accuracy"
             bandScore={data?.grammar_band}
             detailedFeedback={data?.grammar_feedback}
+            isLoading={isPending}
+          />
+
+          <ReviewCategory
+            title="Overall Estimated Band"
+            bandScore={
+              data?.average_band_score
+                ? Math.round(data?.average_band_score * 2) / 2
+                : undefined
+            }
             isLoading={isPending}
           />
         </>

@@ -3,11 +3,13 @@ import { getEssay } from "@/src/api/essaysRepo";
 export default async function getEssayWithImageData(id: number) {
   const data = await getEssay(id);
 
+  let mimeType = "image/jpeg";
+  let base64 = "";
+
   if (data.image_url) {
     const response = await fetch(data.image_url);
     const blob = await response.blob();
-    const mimeType = blob.type;
-    let base64 = "";
+    mimeType = blob.type;
 
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -20,17 +22,11 @@ export default async function getEssayWithImageData(id: number) {
       );
     };
     reader.readAsDataURL(blob);
-
-    return {
-      ...data,
-      imageData: {
-        uri: data.image_url,
-        aspectRatio: data.image_aspect_ratio || 1920 / 1080,
-        mimeType,
-        base64,
-      },
-    };
   }
 
-  return { ...data, imageData: undefined };
+  return {
+    ...data,
+    mimeType,
+    base64,
+  };
 }

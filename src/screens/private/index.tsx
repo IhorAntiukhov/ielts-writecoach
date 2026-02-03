@@ -24,8 +24,6 @@ export default function PrivateScreen() {
       getPrivateEssays(user.id, filteringCriteria, sortingCriteria),
   });
 
-  console.log("screen", filteringCriteria);
-
   return (
     <Container topAlignment>
       <EssayFeedContext.Provider

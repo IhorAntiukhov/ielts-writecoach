@@ -4,10 +4,11 @@ import SegmentedButtons from "@/src/components/segmentedButtons";
 import Container from "@/src/ui/Container";
 import TopBar from "@/src/ui/TopBar";
 import { useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import ReactionsForm from "./components/ReactionsForm";
 import ReviewForm from "./components/ReviewForm";
 import WriteForm from "./components/WriteForm";
+import { EssayNavigationContext } from "./context/EssayNavigationProvider";
 
 type Page = "write" | "review" | "reactions";
 
@@ -16,6 +17,17 @@ export default function EssayScreen() {
   const isNewEssay = id === "new-essay";
 
   const [page, setPage] = useState<Page>("write");
+
+  const { navigationIntent, setNavigationIntent } = use(
+    EssayNavigationContext,
+  )!;
+
+  useEffect(() => {
+    if (navigationIntent === "review") {
+      setPage("review");
+      setNavigationIntent?.(null);
+    }
+  }, [navigationIntent, setNavigationIntent]);
 
   return (
     <>

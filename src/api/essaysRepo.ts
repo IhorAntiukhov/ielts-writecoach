@@ -23,12 +23,10 @@ export async function getPrivateEssays(
   filteringCriteria: FilteringValue[],
   sortingCriteria: SortingValue,
 ) {
-  console.log("repo", filteringCriteria);
-
   let query = supabase
     .from("essays")
     .select(
-      `*, reviews${filteringCriteria.includes("not-analyzed") || sortingCriteria === "average_band_score" ? "!inner" : ""} ( * )`,
+      `*, reviews${sortingCriteria === "average_band_score" ? "!inner" : ""} ( * )`,
     )
     .eq("user_id", userId);
 
@@ -37,9 +35,9 @@ export async function getPrivateEssays(
       filter === "task-1A" || filter === "task-1G" || filter === "task-2",
   );
   if (essayTypeFilters.length) query = query.in("type", essayTypeFilters);
+  if (filteringCriteria.includes("not-analyzed"))
+    query = query.is("reviews", null);
   if (filteringCriteria.includes("public")) query = query.eq("is_public", true);
-
-  console.log(sortingCriteria);
 
   query = query.order(sortingCriteria, {
     referencedTable:
@@ -59,7 +57,9 @@ export type PrivateEssay = Awaited<ReturnType<typeof getPrivateEssays>>[number];
 export async function insertEssay({
   type,
   instructions,
-  imageData,
+  imageUrl,
+  imageWidth,
+  imageHeight,
   time,
   wordCount,
   response,
@@ -70,8 +70,9 @@ export async function insertEssay({
     .insert({
       type,
       instructions,
-      image_url: imageData?.uri,
-      image_aspect_ratio: imageData?.aspectRatio,
+      image_url: imageUrl,
+      image_width: imageWidth,
+      image_height: imageHeight,
       time,
       word_count: wordCount,
       response,
@@ -87,15 +88,16 @@ export async function insertEssay({
 
 export async function updateEssay(
   id: number,
-  data: Partial<Omit<UpdateEssayParams, "mimeType">>,
+  data: Partial<UpdateEssayParams>,
 ) {
   const { error } = await supabase
     .from("essays")
     .update({
       type: data.type,
       instructions: data.instructions,
-      image_url: data.imageData?.uri,
-      image_aspect_ratio: data.imageData?.aspectRatio,
+      image_url: data.imageUrl,
+      image_width: data.imageWidth,
+      image_height: data.imageHeight,
       time: data.time,
       word_count: data.wordCount,
       response: data.response,

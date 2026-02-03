@@ -11,7 +11,6 @@ export default function useResetPassword() {
       if (!url) return;
 
       const parsedUrl = Linking.parse(url.replaceAll("#", "?"));
-      console.log(parsedUrl);
 
       if (
         parsedUrl.queryParams &&

@@ -30,7 +30,10 @@ export default function EssayImagePicker({
     onSuccess: ({ uri, mimeType, base64, width, height }) => {
       setImageData({
         uri,
-        aspectRatio: width / height,
+        imageDimensions: {
+          width,
+          height,
+        },
         mimeType: mimeType || "image/jpeg",
         base64: base64 || "",
       });
@@ -52,7 +55,9 @@ export default function EssayImagePicker({
             source={{ uri: imageData.uri }}
             className="w-full rounded-lg border border-y border-outline-300"
             style={{
-              aspectRatio: imageData.aspectRatio,
+              aspectRatio:
+                imageData.imageDimensions.width /
+                imageData.imageDimensions.height,
             }}
             contentFit="contain"
           />

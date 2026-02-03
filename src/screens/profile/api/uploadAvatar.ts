@@ -1,17 +1,17 @@
 import { changeUserProperties } from "@/src/api/auth";
+import uploadImageByUri from "@/src/api/uploadImageByUri";
 import selectImage from "@/src/utils/selectImage";
-import uploadImageByUri from "@/src/utils/uploadImageByUri";
 
 export default async function uploadAvatar(userId: string) {
   const image = await selectImage([1, 1], 0.7);
 
-  const avatarUrl = await uploadImageByUri(
-    image.uri,
+  const avatarUrl = await uploadImageByUri({
+    uri: image.uri,
+    bucket: "avatars",
+    fileName: "avatar",
     userId,
-    "avatars",
-    "avatar",
-    image.mimeType,
-  );
+    mimeType: image.mimeType,
+  });
 
   await changeUserProperties({ avatarUrl });
 
