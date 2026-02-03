@@ -1,15 +1,15 @@
 import { VStack } from "@/components/ui/vstack";
 import useToast from "@/src/hooks/useToast";
 import IconButton from "@/src/ui/button/IconButton";
+import IndicatorText from "@/src/ui/IndicatorText";
 import SmallCardBox from "@/src/ui/SmallCardBox";
 import cssInteropIcon from "@/src/utils/cssInteropIcon";
 import selectImage from "@/src/utils/selectImage";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { ImageIcon, X } from "lucide-react-native";
-import { Pressable, Text } from "react-native";
+import { Pressable } from "react-native";
 import ImageData from "../types/imageData";
-import ImageDimensions from "../types/imageDimensions";
 
 cssInteropIcon(ImageIcon);
 cssInteropIcon(X);
@@ -17,15 +17,11 @@ cssInteropIcon(X);
 interface EssayImagePickerProps {
   imageData: ImageData;
   setImageData: React.Dispatch<React.SetStateAction<ImageData>>;
-  imageDimensions: ImageDimensions;
-  setImageDimensions: React.Dispatch<React.SetStateAction<ImageDimensions>>;
 }
 
 export default function EssayImagePicker({
   imageData,
   setImageData,
-  imageDimensions,
-  setImageDimensions,
 }: EssayImagePickerProps) {
   const toast = useToast();
 
@@ -34,12 +30,9 @@ export default function EssayImagePicker({
     onSuccess: ({ uri, mimeType, base64, width, height }) => {
       setImageData({
         uri,
+        aspectRatio: width / height,
         mimeType: mimeType || "image/jpeg",
         base64: base64 || "",
-      });
-      setImageDimensions({
-        width,
-        height,
       });
     },
     onError: (error) => {
@@ -53,13 +46,13 @@ export default function EssayImagePicker({
 
   return (
     <Pressable onPress={() => handleSelectImage()} className="relative">
-      {imageData && imageDimensions ? (
+      {imageData ? (
         <>
           <Image
             source={{ uri: imageData.uri }}
             className="w-full rounded-lg border border-y border-outline-300"
             style={{
-              aspectRatio: imageDimensions.width / imageDimensions.height,
+              aspectRatio: imageData.aspectRatio,
             }}
             contentFit="contain"
           />
@@ -75,11 +68,11 @@ export default function EssayImagePicker({
       ) : (
         <SmallCardBox className="py-0 px-0 aspect-video">
           <VStack className="items-center" space="sm">
-            <ImageIcon className="w-12 h-12 text-typography-600" />
+            <ImageIcon className="w-12 h-12 text-typography-500" />
 
-            <Text className="text-typography-600 text-lg font-bold">
+            <IndicatorText className="font-bold">
               Select the task image
-            </Text>
+            </IndicatorText>
           </VStack>
         </SmallCardBox>
       )}

@@ -1,5 +1,5 @@
-import Container from "@/src/ui/Container";
+import PrivateScreen from "@/src/screens/private";
 
 export default function Private() {
-  return <Container></Container>;
+  return <PrivateScreen />;
 }

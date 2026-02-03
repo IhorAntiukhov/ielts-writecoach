@@ -1,16 +1,13 @@
 import { getEssay } from "@/src/api/essaysRepo";
-import { Image } from "react-native";
 
 export default async function getEssayWithImageData(id: number) {
   const data = await getEssay(id);
 
-  if (data.image) {
-    const response = await fetch(data.image);
+  if (data.image_url) {
+    const response = await fetch(data.image_url);
     const blob = await response.blob();
     const mimeType = blob.type;
     let base64 = "";
-
-    const { width, height } = await Image.getSize(data.image);
 
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -27,16 +24,13 @@ export default async function getEssayWithImageData(id: number) {
     return {
       ...data,
       imageData: {
-        uri: data.image,
+        uri: data.image_url,
+        aspectRatio: data.image_aspect_ratio || 1920 / 1080,
         mimeType,
         base64,
-      },
-      imageDimensions: {
-        width,
-        height,
       },
     };
   }
 
-  return { ...data, imageData: undefined, imageDimensions: undefined };
+  return { ...data, imageData: undefined };
 }

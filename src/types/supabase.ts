@@ -43,39 +43,39 @@ export type Database = {
         Row: {
           created_at: string;
           id: number;
-          image: string | null;
+          image_aspect_ratio: number | null;
+          image_url: string | null;
           instructions: string;
           is_public: boolean;
           response: string;
           time: number | null;
           type: Database["public"]["Enums"]["EssayType"];
-          updated_at: string;
           user_id: string;
           word_count: number;
         };
         Insert: {
           created_at?: string;
           id?: number;
-          image?: string | null;
+          image_aspect_ratio?: number | null;
+          image_url?: string | null;
           instructions: string;
           is_public?: boolean;
           response: string;
           time?: number | null;
           type: Database["public"]["Enums"]["EssayType"];
-          updated_at?: string;
           user_id: string;
           word_count: number;
         };
         Update: {
           created_at?: string;
           id?: number;
-          image?: string | null;
+          image_aspect_ratio?: number | null;
+          image_url?: string | null;
           instructions?: string;
           is_public?: boolean;
           response?: string;
           time?: number | null;
           type?: Database["public"]["Enums"]["EssayType"];
-          updated_at?: string;
           user_id?: string;
           word_count?: number;
         };
@@ -112,9 +112,9 @@ export type Database = {
       };
       reviews: {
         Row: {
+          average_band_score: number | null;
           coherence_band: number;
           coherence_feedback: string;
-          created_at: string;
           essay_id: number;
           grammar_band: number;
           grammar_feedback: string;
@@ -126,9 +126,9 @@ export type Database = {
           vocabulary_feedback: string;
         };
         Insert: {
+          average_band_score?: number | null;
           coherence_band: number;
           coherence_feedback: string;
-          created_at?: string;
           essay_id: number;
           grammar_band: number;
           grammar_feedback: string;
@@ -140,9 +140,9 @@ export type Database = {
           vocabulary_feedback: string;
         };
         Update: {
+          average_band_score?: number | null;
           coherence_band?: number;
           coherence_feedback?: string;
-          created_at?: string;
           essay_id?: number;
           grammar_band?: number;
           grammar_feedback?: string;

@@ -5,17 +5,21 @@ import { InsertEssayParams, UpdateEssayParams } from "../types/saveEssayParams";
 export async function uploadNewEssay(data: InsertEssayParams) {
   const { id: essayId } = await insertEssay(data);
 
-  if (data.image && data.mimeType) {
+  if (data.imageData) {
     const imageUrl = await uploadImageByUri(
-      data.image,
+      data.imageData.uri,
       data.userId,
       "essay_images",
       essayId.toString(),
-      data.mimeType,
+      data.imageData.mimeType,
     );
 
     await updateEssay(essayId, {
-      image: imageUrl,
+      imageData: {
+        uri: imageUrl,
+        aspectRatio: data.imageData.aspectRatio,
+        mimeType: data.imageData.mimeType,
+      },
     });
   }
 
@@ -29,18 +33,25 @@ export async function saveExistingEssay(
 ) {
   let imageUrl: string | undefined = undefined;
 
-  if (data.image && data.mimeType) {
+  if (data.imageData) {
     imageUrl = await uploadImageByUri(
-      data.image,
+      data.imageData.uri,
       userId,
       "essay_images",
       essayId.toString(),
-      data.mimeType,
+      data.imageData.mimeType,
     );
   }
 
   await updateEssay(essayId, {
     ...data,
-    image: imageUrl,
+    imageData:
+      imageUrl && data.imageData
+        ? {
+            uri: imageUrl,
+            aspectRatio: data.imageData.aspectRatio,
+            mimeType: data.imageData.mimeType,
+          }
+        : undefined,
   });
 }

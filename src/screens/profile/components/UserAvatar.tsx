@@ -55,7 +55,7 @@ export default function UserAvatar() {
           variant="solid"
           action="secondary"
           onPress={() => uploadAvatarMutation(user.id)}
-          className="absolute right-0 bottom-0"
+          className="absolute right-0 bottom-0 px-1.5 py-1.5"
         >
           <Icon className="text-sm text-typography-950" />
         </IconButton>

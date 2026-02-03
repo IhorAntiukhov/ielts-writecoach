@@ -9,6 +9,7 @@ import PrimaryButton from "@/src/ui/button/PrimaryButton";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
 import CardBox from "@/src/ui/CardBox";
 import Dropdown from "@/src/ui/Dropdown";
+import IndicatorText from "@/src/ui/IndicatorText";
 import TextAreaInput from "@/src/ui/input/TextAreaInput";
 import SmallCardBox from "@/src/ui/SmallCardBox";
 import { getNounByNumber } from "@/src/utils/getNounByNumber";
@@ -21,7 +22,6 @@ import { useForm } from "react-hook-form";
 import { Text } from "react-native";
 import { WritingFormData, writingFormSchema } from "../forms/writingForm";
 import ImageData from "../types/imageData";
-import ImageDimensions from "../types/imageDimensions";
 import {
   InsertEssayParams,
   InsertEssayWithAnalysisParams,
@@ -46,10 +46,6 @@ export default function WriteForm() {
   const [type, setType] = useState<EssayType>("task-1A");
 
   const [imageData, setImageData] = useState<ImageData>(null);
-  const [imageDimensions, setImageDimensions] = useState<ImageDimensions>({
-    width: 1920,
-    height: 1080,
-  });
 
   const [secondsFromStart, setSecondsFromStart] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -91,7 +87,6 @@ export default function WriteForm() {
         setSecondsFromStart(data.time || 0);
 
         if (data.imageData) setImageData(data.imageData);
-        if (data.imageDimensions) setImageDimensions(data.imageDimensions);
 
         isInitialDataSetRef.current = true;
       }
@@ -108,6 +103,10 @@ export default function WriteForm() {
       },
       onSuccess: (id) => {
         toast("success", "Save essay", "Essay was saved as draft");
+
+        queryClient.invalidateQueries({
+          queryKey: ["private", "essay", id],
+        });
 
         router.navigate({
           pathname: "/(tabs)/private/[id]",
@@ -134,7 +133,7 @@ export default function WriteForm() {
       toast("success", "Save essay", "Essay was saved as draft");
 
       queryClient.invalidateQueries({
-        queryKey: ["essay", id],
+        queryKey: ["private", "essay", id],
       });
     },
     onError: (error) => {
@@ -151,6 +150,10 @@ export default function WriteForm() {
       },
       onSuccess: (id) => {
         toast("success", "Analyze essay", "Essay was successfully analyzed");
+
+        queryClient.invalidateQueries({
+          queryKey: ["private", "essay", id],
+        });
 
         router.navigate({
           pathname: "/(tabs)/private/[id]",
@@ -177,7 +180,7 @@ export default function WriteForm() {
       toast("success", "Analyze essay", "Essay was successfully analyzed");
 
       queryClient.invalidateQueries({
-        queryKey: ["review", id],
+        queryKey: ["private", "essay", id],
       });
     },
     onError: (error) => {
@@ -187,17 +190,22 @@ export default function WriteForm() {
 
   if (isError) {
     return (
-      <Text className="text-error-950 text-xl text-center">
+      <IndicatorText isError>
         Failed to get the essay data: {error.message}
-      </Text>
+      </IndicatorText>
     );
   }
 
   const getEssayDataToSave = ({ instructions, response }: WritingFormData) => ({
     type,
     instructions,
-    image: imageData?.uri ?? undefined,
-    mimeType: imageData?.mimeType ?? undefined,
+    imageData: imageData?.uri
+      ? {
+          uri: imageData.uri,
+          aspectRatio: imageData.aspectRatio,
+          mimeType: imageData.mimeType,
+        }
+      : undefined,
     time: secondsFromStart,
     wordCount: responseWordCount,
     response,
@@ -277,8 +285,6 @@ export default function WriteForm() {
               <EssayImagePicker
                 imageData={imageData}
                 setImageData={setImageData}
-                imageDimensions={imageDimensions}
-                setImageDimensions={setImageDimensions}
               />
             </Skeleton>
           )}

@@ -10,7 +10,7 @@ export default function IconButton({
   return (
     <Button
       variant="solid"
-      className={clsx("w-auto aspect-square rounded-full p-2", className)}
+      className={clsx("rounded-full px-2 py-2 w-auto h-auto", className)}
       {...rest}
     >
       {children}

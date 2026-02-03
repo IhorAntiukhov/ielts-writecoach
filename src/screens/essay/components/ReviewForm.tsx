@@ -1,8 +1,8 @@
 import { VStack } from "@/components/ui/vstack";
 import { getEssayReview } from "@/src/api/reviewsRepo";
+import IndicatorText from "@/src/ui/IndicatorText";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
-import { Text } from "react-native";
 import ReviewCategory from "./ReviewCategory";
 
 export default function ReviewForm() {
@@ -19,13 +19,11 @@ export default function ReviewForm() {
   return (
     <VStack space="2xl">
       {!data && !isPending ? (
-        <Text className="text-typography-500 text-xl text-center">
-          You don&apos;t have an AI essay review
-        </Text>
+        <IndicatorText>You don&apos;t have an AI essay review</IndicatorText>
       ) : isError ? (
-        <Text className="text-error-950 text-xl text-center">
+        <IndicatorText isError>
           Failed to get the review data: {error.message}
-        </Text>
+        </IndicatorText>
       ) : (
         <>
           <ReviewCategory

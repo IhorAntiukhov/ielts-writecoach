@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useColorScheme } from "react-native";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import "react-native-reanimated";
+import AlertDialogProvider from "../context/AlertDialogProvider";
 import AuthProvider from "../context/AuthProvider";
 import AuthNavigator from "../layout/AuthNavigator";
 import SafeArea from "../layout/SafeArea";
@@ -15,15 +16,17 @@ export default function RootLayout() {
 
   return (
     <GluestackUIProvider mode={scheme || "light"}>
-      <KeyboardProvider>
+      <AlertDialogProvider>
         <QueryClientProvider client={queryClient}>
-          <SafeArea>
-            <AuthProvider>
-              <AuthNavigator />
-            </AuthProvider>
-          </SafeArea>
+          <KeyboardProvider>
+            <SafeArea>
+              <AuthProvider>
+                <AuthNavigator />
+              </AuthProvider>
+            </SafeArea>
+          </KeyboardProvider>
         </QueryClientProvider>
-      </KeyboardProvider>
+      </AlertDialogProvider>
     </GluestackUIProvider>
   );
 }

@@ -1,9 +1,9 @@
 import { Divider } from "@/components/ui/divider";
 import { HStack } from "@/components/ui/hstack";
 import { Progress, ProgressFilledTrack } from "@/components/ui/progress";
-import { SkeletonText } from "@/components/ui/skeleton";
 import { VStack } from "@/components/ui/vstack";
 import CardBox from "@/src/ui/CardBox";
+import SkeletonCard from "@/src/ui/SkeletonCard";
 import { clsx } from "clsx";
 import { cssInterop } from "nativewind";
 import { Text, View } from "react-native";
@@ -24,12 +24,7 @@ export default function ReviewCategory({
   bandScore,
   detailedFeedback,
 }: ReviewCategoryProps) {
-  if (isLoading || !bandScore)
-    return (
-      <View className="w-full max-w-[600px] px-8 py-6 bg-background-100 rounded-lg">
-        <SkeletonText _lines={3} className="h-2" />
-      </View>
-    );
+  if (isLoading || !bandScore) return <SkeletonCard />;
 
   return (
     <CardBox>

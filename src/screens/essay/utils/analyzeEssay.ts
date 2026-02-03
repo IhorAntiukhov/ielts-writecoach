@@ -67,7 +67,7 @@ async function generateAndParseEssayReview(
     taskType,
     data.response,
     data.base64,
-    data.mimeType,
+    data.imageData?.mimeType,
   );
 
   const feedback = response.candidates?.[0].content?.parts?.[0].text;
