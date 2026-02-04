@@ -1,12 +1,26 @@
 import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";
 import EssayFeedContext from "@/src/screens/private/context/EssayFeedContext";
 import { Search, X } from "lucide-react-native";
-import { use } from "react";
+import { use, useEffect, useRef, useState } from "react";
 
 export default function SearchBar() {
-  const { searchPrompt, setSearchPrompt } = use(EssayFeedContext)!;
+  const [text, setText] = useState("");
+  const timeoutId = useRef<number | undefined>(null);
+
+  const { setSearchPrompt } = use(EssayFeedContext)!;
+
+  useEffect(() => {
+    if (timeoutId.current !== null) clearTimeout(timeoutId.current);
+
+    timeoutId.current = setTimeout(() => {
+      setSearchPrompt(text);
+    }, 500);
+
+    return () => clearTimeout(timeoutId.current ?? undefined);
+  }, [text, setSearchPrompt]);
 
   const handleClear = () => {
+    setText("");
     setSearchPrompt("");
   };
 
@@ -16,8 +30,8 @@ export default function SearchBar() {
         <InputIcon as={Search} />
       </InputSlot>
       <InputField
-        onChangeText={setSearchPrompt}
-        value={searchPrompt}
+        onChangeText={setText}
+        value={text}
         placeholder="Search for essays..."
         keyboardType="default"
         returnKeyType="search"

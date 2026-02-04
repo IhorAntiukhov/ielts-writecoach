@@ -19,9 +19,20 @@ export default function PrivateScreen() {
   const { user } = use(AuthContext).session!;
 
   const { data, isPending, error, isError } = useQuery({
-    queryKey: ["private", user.id, filteringCriteria, sortingCriteria],
+    queryKey: [
+      "private",
+      user.id,
+      filteringCriteria,
+      searchPrompt,
+      sortingCriteria,
+    ],
     queryFn: () =>
-      getPrivateEssays(user.id, filteringCriteria, sortingCriteria),
+      getPrivateEssays(
+        user.id,
+        filteringCriteria,
+        searchPrompt,
+        sortingCriteria,
+      ),
   });
 
   return (

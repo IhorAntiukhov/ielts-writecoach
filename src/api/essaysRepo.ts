@@ -21,6 +21,7 @@ export async function getEssay(id: number) {
 export async function getPrivateEssays(
   userId: string,
   filteringCriteria: FilteringValue[],
+  searchPrompt: string,
   sortingCriteria: SortingValue,
 ) {
   let query = supabase
@@ -38,6 +39,11 @@ export async function getPrivateEssays(
   if (filteringCriteria.includes("not-analyzed"))
     query = query.is("reviews", null);
   if (filteringCriteria.includes("public")) query = query.eq("is_public", true);
+
+  if (searchPrompt)
+    query = query.textSearch("ts_vector", searchPrompt, {
+      type: "websearch",
+    });
 
   query = query.order(sortingCriteria, {
     referencedTable:

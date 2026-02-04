@@ -50,6 +50,7 @@ export type Database = {
           is_public: boolean;
           response: string;
           time: number | null;
+          ts_vector: unknown;
           type: Database["public"]["Enums"]["EssayType"];
           user_id: string;
           word_count: number;
@@ -64,6 +65,7 @@ export type Database = {
           is_public?: boolean;
           response: string;
           time?: number | null;
+          ts_vector?: unknown;
           type: Database["public"]["Enums"]["EssayType"];
           user_id: string;
           word_count: number;
@@ -78,6 +80,7 @@ export type Database = {
           is_public?: boolean;
           response?: string;
           time?: number | null;
+          ts_vector?: unknown;
           type?: Database["public"]["Enums"]["EssayType"];
           user_id?: string;
           word_count?: number;

@@ -16,6 +16,7 @@ import SearchBar from "./components/SearchBar";
 export default function EssayFeed() {
   const {
     filteringCriteria,
+    searchPrompt,
     sortingCriteria,
     apiData: { data, isPending, error, isError },
   } = use(EssayFeedContext)!;
@@ -43,8 +44,10 @@ export default function EssayFeed() {
       ) : !data?.length ? (
         <IndicatorText>
           {filteringCriteria.length || sortingCriteria === "average_band_score"
-            ? "You do not have any essays that meet the selected filter criteria."
-            : "You haven't created any essays yet."}
+            ? "You do not have any essays that meet the selected filter criteria"
+            : searchPrompt
+              ? "No essays found"
+              : "You haven't created any essays yet"}
         </IndicatorText>
       ) : (
         <FlatList
