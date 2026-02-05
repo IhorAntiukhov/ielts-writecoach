@@ -25,7 +25,6 @@ export default function useSetFormData({
   useEffect(() => {
     const setData = async () => {
       if (data && !isInitialDataSetRef.current) {
-        console.log("useEffect", isInitialDataSetRef.current);
         reset({
           instructions: data.instructions,
           response: data.response,

@@ -15,6 +15,9 @@ interface EssayFeedContextProps {
     isPending: boolean;
     error: Error | null;
     isError: boolean;
+    hasNextPage: boolean;
+    fetchNextPage: () => any;
+    isFetchingNextPage: boolean;
   };
 }
 

@@ -6,6 +6,8 @@ import {
 } from "../screens/essay/types/saveEssayParams";
 import supabase from "./supabaseClient";
 
+const PAGE_SIZE = 4;
+
 export async function getEssay(id: number) {
   const { data, error } = await supabase
     .from("essays")
@@ -23,13 +25,13 @@ export async function getPrivateEssays(
   filteringCriteria: FilteringValue[],
   searchPrompt: string,
   sortingCriteria: SortingValue,
+  cursor?: { createdAt: string; bandScore: number },
 ) {
   let query = supabase
-    .from("essays")
-    .select(
-      `*, reviews${sortingCriteria === "average_band_score" ? "!inner" : ""} ( * )`,
-    )
-    .eq("user_id", userId);
+    .from("essay_feed")
+    .select("*")
+    .eq("user_id", userId)
+    .limit(PAGE_SIZE + 1);
 
   const essayTypeFilters = filteringCriteria.filter(
     (filter) =>
@@ -37,7 +39,7 @@ export async function getPrivateEssays(
   );
   if (essayTypeFilters.length) query = query.in("type", essayTypeFilters);
   if (filteringCriteria.includes("not-analyzed"))
-    query = query.is("reviews", null);
+    query = query.is("review_id", null);
   if (filteringCriteria.includes("public")) query = query.eq("is_public", true);
 
   if (searchPrompt)
@@ -46,19 +48,46 @@ export async function getPrivateEssays(
     });
 
   query = query.order(sortingCriteria, {
-    referencedTable:
-      sortingCriteria === "average_band_score" ? "reviews" : undefined,
     ascending: false,
   });
+  if (sortingCriteria !== "created_at")
+    query = query.order("created_at", {
+      ascending: false,
+    });
+
+  if (cursor?.createdAt) {
+    if (sortingCriteria === "created_at")
+      query = query.lte("created_at", cursor.createdAt);
+    else {
+      const mainSortingComparison = (operator: "lt" | "eq") =>
+        `${sortingCriteria}.${operator}.${sortingCriteria === "average_band_score" ? cursor.bandScore : cursor.bandScore}`;
+      query = query.or(
+        `${mainSortingComparison("lt")},and(${mainSortingComparison("eq")},created_at.lte.${cursor.createdAt})`,
+      );
+    }
+  }
 
   const { data, error } = await query;
 
   if (error) throw error;
 
-  return data;
+  const hasNextPage = data.length > PAGE_SIZE;
+  const items = data.slice(0, PAGE_SIZE);
+
+  return {
+    items,
+    nextCursor: hasNextPage
+      ? {
+          createdAt: data[data.length - 1].created_at!,
+          bandScore: data[data.length - 1].average_band_score!,
+        }
+      : null,
+  };
 }
 
-export type PrivateEssay = Awaited<ReturnType<typeof getPrivateEssays>>[number];
+export type PrivateEssay = Awaited<
+  ReturnType<typeof getPrivateEssays>
+>["items"][number];
 
 export async function insertEssay({
   type,

@@ -1,4 +1,5 @@
 import { HStack } from "@/components/ui/hstack";
+import { Spinner } from "@/components/ui/spinner";
 import { VStack } from "@/components/ui/vstack";
 import useOpenNewEssay from "@/src/hooks/useOpenNewEssay";
 import EssayFeedContext from "@/src/screens/private/context/EssayFeedContext";
@@ -18,7 +19,15 @@ export default function EssayFeed() {
     filteringCriteria,
     searchPrompt,
     sortingCriteria,
-    apiData: { data, isPending, error, isError },
+    apiData: {
+      data,
+      isPending,
+      error,
+      isError,
+      hasNextPage,
+      fetchNextPage,
+      isFetchingNextPage,
+    },
   } = use(EssayFeedContext)!;
 
   const { openNewEssay } = useOpenNewEssay();
@@ -59,6 +68,15 @@ export default function EssayFeed() {
               New essay
             </PrimaryButton>
           )}
+          onEndReached={() => {
+            if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+          }}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={() =>
+            isFetchingNextPage && (
+              <Spinner size={32} className="text-typography-950" />
+            )
+          }
         />
       )}
     </VStack>

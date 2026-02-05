@@ -15,7 +15,7 @@ export default function IndicatorText({
   return (
     <Text
       className={clsx(
-        "text-lg text-center",
+        "text-lg text-center px-6",
         isError ? "text-error-950" : "text-typography-500",
         className,
       )}

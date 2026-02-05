@@ -1,3 +1,4 @@
+import queryKeyPrefixes from "@/src/constants/queryKeyPrefixes";
 import useToast from "@/src/hooks/useToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { use } from "react";
@@ -26,7 +27,8 @@ export default function useUpdateEssayMutation<T extends UpdateEssayParams>({
       toast("success", toastTitle, toastSuccessMessage);
 
       queryClient.invalidateQueries({
-        queryKey: ["private"],
+        predicate: ({ queryKey }) =>
+          queryKey[0] === queryKeyPrefixes.privateFeed,
       });
 
       redirectToReview && setNavigationIntent?.("review");

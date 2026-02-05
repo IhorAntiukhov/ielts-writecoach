@@ -15,6 +15,12 @@ export async function uploadImage(
   if (error) throw error;
 }
 
+export async function deleteImage(bucket: string, path: string) {
+  const { error } = await supabase.storage.from(bucket).remove([path]);
+
+  if (error) throw error;
+}
+
 export async function getPublicUrl(bucket: string, path: string) {
   const {
     data: { publicUrl },

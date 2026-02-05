@@ -1,6 +1,7 @@
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
-import { deleteEssay, PrivateEssay } from "@/src/api/essaysRepo";
+import { PrivateEssay } from "@/src/api/essaysRepo";
+import queryKeyPrefixes from "@/src/constants/queryKeyPrefixes";
 import { AlertDialogContext } from "@/src/context/AlertDialogProvider";
 import useToast from "@/src/hooks/useToast";
 import IconButton from "@/src/ui/button/IconButton";
@@ -12,6 +13,7 @@ import { useRouter } from "expo-router";
 import { Pencil, Trash } from "lucide-react-native";
 import { use } from "react";
 import { Text } from "react-native";
+import deleteEssayWithImage from "../api/deleteEssay";
 import EssayBaseCard from "./EssayBaseCard";
 
 cssInteropIcon(Pencil);
@@ -30,7 +32,8 @@ export default function PrivateEssayCard({ data }: PrivateEssayCardProps) {
   const showToast = useToast();
 
   const { mutate: deleteEssayMutation } = useMutation({
-    mutationFn: () => deleteEssay(data.id),
+    mutationFn: () =>
+      deleteEssayWithImage(data.id!, data.image_url ?? undefined),
     onError: (error) => {
       showToast("error", "Failed to delete essay", error.message);
     },
@@ -38,7 +41,8 @@ export default function PrivateEssayCard({ data }: PrivateEssayCardProps) {
       showToast("success", "Delete essay", "Essay was successfully deleted");
 
       queryClient.invalidateQueries({
-        queryKey: ["private"],
+        predicate: ({ queryKey }) =>
+          queryKey[0] === queryKeyPrefixes.privateFeed,
       });
     },
   });
@@ -47,7 +51,7 @@ export default function PrivateEssayCard({ data }: PrivateEssayCardProps) {
     router.push({
       pathname: "/(tabs)/private/[id]",
       params: {
-        id: data.id,
+        id: data.id!.toString(),
       },
     });
   };
@@ -66,9 +70,11 @@ export default function PrivateEssayCard({ data }: PrivateEssayCardProps) {
     <CardBox>
       <VStack space="lg">
         <HStack space="sm" className="items-center justify-between">
-          <Text className="text-typography-500 text-md">
-            {formatDate(data.created_at)}
-          </Text>
+          {data.created_at && (
+            <Text className="text-typography-500 text-md">
+              {formatDate(data.created_at)}
+            </Text>
+          )}
 
           <HStack space="sm" className="-mr-2">
             <IconButton

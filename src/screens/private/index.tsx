@@ -2,9 +2,10 @@ import { getPrivateEssays } from "@/src/api/essaysRepo";
 import EssayFeed from "@/src/components/essayFeed";
 import FilteringValue from "@/src/components/filterSelect/types/filteringValue";
 import SortingValue from "@/src/components/sortSelect/types/sortingValue";
+import queryKeyPrefixes from "@/src/constants/queryKeyPrefixes";
 import { AuthContext } from "@/src/context/AuthProvider";
 import Container from "@/src/ui/Container";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { use, useState } from "react";
 import EssayFeedContext from "./context/EssayFeedContext";
 
@@ -18,21 +19,35 @@ export default function PrivateScreen() {
 
   const { user } = use(AuthContext).session!;
 
-  const { data, isPending, error, isError } = useQuery({
+  const {
+    data,
+    isPending,
+    error,
+    isError,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: [
-      "private",
+      queryKeyPrefixes.privateFeed,
       user.id,
       filteringCriteria,
       searchPrompt,
       sortingCriteria,
     ],
-    queryFn: () =>
+    queryFn: ({ pageParam }) =>
       getPrivateEssays(
         user.id,
         filteringCriteria,
         searchPrompt,
         sortingCriteria,
+        pageParam,
       ),
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialPageParam: {
+      createdAt: "",
+      bandScore: 0,
+    },
   });
 
   return (
@@ -46,10 +61,13 @@ export default function PrivateScreen() {
           sortingCriteria,
           setSortingCriteria,
           apiData: {
-            data,
+            data: data?.pages.flatMap((page) => page.items),
             isPending,
             error,
             isError,
+            hasNextPage,
+            fetchNextPage,
+            isFetchingNextPage,
           },
         }}
       >

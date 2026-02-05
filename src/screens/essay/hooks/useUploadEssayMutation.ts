@@ -1,3 +1,4 @@
+import queryKeyPrefixes from "@/src/constants/queryKeyPrefixes";
 import useToast from "@/src/hooks/useToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
@@ -28,7 +29,8 @@ export default function useUploadEssayMutation<T extends InsertEssayParams>({
       toast("success", toastTitle, toastSuccessMessage);
 
       queryClient.invalidateQueries({
-        queryKey: ["private"],
+        predicate: ({ queryKey }) =>
+          queryKey[0] === queryKeyPrefixes.privateFeed,
       });
 
       router.navigate({

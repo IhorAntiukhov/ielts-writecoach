@@ -10,7 +10,7 @@ export async function uploadNewEssay(data: InsertEssayParams) {
     const imageUrl = await uploadImageByUri({
       uri: data.imageUrl,
       bucket: "essay_images",
-      fileName: essayId.toString(),
+      fileName: `essay${essayId.toString()}`,
       userId: data.userId,
       mimeType: data.mimeType,
     });

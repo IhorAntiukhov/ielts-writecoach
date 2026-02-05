@@ -52,15 +52,13 @@ export default function EssayBaseCard({ type, data }: EssayBaseCardProps) {
     router.push({
       pathname: "/(tabs)/private/[id]",
       params: {
-        id: data.id,
+        id: data.id!.toString(),
       },
     });
   };
 
   const gradientEndColor =
     colorScheme === "dark" ? "rgb(18, 18, 18)" : "rgb(255, 255, 255)";
-
-  const review = data.reviews[0];
 
   return (
     <VStack space="2xl">
@@ -101,24 +99,24 @@ export default function EssayBaseCard({ type, data }: EssayBaseCardProps) {
         )}
       </View>
 
-      {review && (
+      {data.review_id && (
         <HStack space="sm" className="w-full flex-wrap">
           <EssayBandScore
             category="Task Response"
-            bandScore={review.task_response_band}
+            bandScore={data.task_response_band!}
           />
 
           <EssayBandScore
             category="Coherence"
-            bandScore={review.coherence_band}
+            bandScore={data.coherence_band!}
           />
 
           <EssayBandScore
             category="Vocabulary"
-            bandScore={review.vocabulary_band}
+            bandScore={data.vocabulary_band!}
           />
 
-          <EssayBandScore category="Grammar" bandScore={review.grammar_band} />
+          <EssayBandScore category="Grammar" bandScore={data.grammar_band!} />
         </HStack>
       )}
     </VStack>

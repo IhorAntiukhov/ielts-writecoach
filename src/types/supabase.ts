@@ -164,6 +164,13 @@ export type Database = {
             foreignKeyName: "reviews_essay_id_fkey";
             columns: ["essay_id"];
             isOneToOne: false;
+            referencedRelation: "essay_feed";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reviews_essay_id_fkey";
+            columns: ["essay_id"];
+            isOneToOne: false;
             referencedRelation: "essays";
             referencedColumns: ["id"];
           },
@@ -171,7 +178,36 @@ export type Database = {
       };
     };
     Views: {
-      [_ in never]: never;
+      essay_feed: {
+        Row: {
+          average_band_score: number | null;
+          coherence_band: number | null;
+          created_at: string | null;
+          grammar_band: number | null;
+          id: number | null;
+          image_height: number | null;
+          image_url: string | null;
+          image_width: number | null;
+          instructions: string | null;
+          is_public: boolean | null;
+          response: string | null;
+          review_id: number | null;
+          task_response_band: number | null;
+          ts_vector: unknown;
+          type: Database["public"]["Enums"]["EssayType"] | null;
+          user_id: string | null;
+          vocabulary_band: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "essays_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Functions: {
       save_essay_analysis: {
