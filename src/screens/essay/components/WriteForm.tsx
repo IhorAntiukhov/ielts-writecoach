@@ -3,7 +3,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { VStack } from "@/components/ui/vstack";
 import { AuthContext } from "@/src/context/AuthProvider";
 import EssayType from "@/src/types/essayType";
-import PopoverButton from "@/src/ui/button/PopoverButton";
 import PrimaryButton from "@/src/ui/button/PrimaryButton";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
 import CardBox from "@/src/ui/CardBox";
@@ -15,7 +14,7 @@ import { getNounByNumber } from "@/src/utils/getNounByNumber";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
-import { Save, Sparkles, Users } from "lucide-react-native";
+import { Save, Sparkles } from "lucide-react-native";
 import { use, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Text } from "react-native";
@@ -39,6 +38,7 @@ import {
 import getWordCount from "../utils/getWordCount";
 import EssayImagePicker from "./EssayImagePicker";
 import Timer from "./Timer";
+import UpdateEssayPrivacyButton from "./UpdateEssayPrivacyButton";
 
 export default function WriteForm() {
   const { id } = useLocalSearchParams();
@@ -51,6 +51,8 @@ export default function WriteForm() {
 
   const [secondsFromStart, setSecondsFromStart] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  const [isPublic, setIsPublic] = useState(false);
 
   const { user } = use(AuthContext).session!;
 
@@ -78,6 +80,7 @@ export default function WriteForm() {
     setType,
     setSecondsFromStart,
     setImageData,
+    setIsPublic,
   });
 
   const { mutate: saveEssayAsDraftMutation, isPending: isSavingEssayPending } =
@@ -99,6 +102,7 @@ export default function WriteForm() {
     toastTitle: "Save essay",
     toastSuccessMessage: "Essay was saved as draft",
     redirectToReview: false,
+    isPublic,
   });
 
   const { mutate: analyzeEssayMutation, isPending: isEssayAnalysisPending } =
@@ -121,6 +125,7 @@ export default function WriteForm() {
     toastTitle: "Analyze essay",
     toastSuccessMessage: "Essay was analyzed",
     redirectToReview: true,
+    isPublic,
   });
 
   if (isError) {
@@ -284,16 +289,11 @@ export default function WriteForm() {
             </PrimaryButton>
           </HStack>
 
-          {isNewEssay ? (
-            <PopoverButton
-              icon={Users}
-              buttonTitle="Share with others"
-              placement="top"
-              popoverContent="You must save your essay before making it public"
-            />
-          ) : (
-            <SecondaryButton icon={Users}>Share with others</SecondaryButton>
-          )}
+          <UpdateEssayPrivacyButton
+            id={id}
+            isPublic={isPublic}
+            setIsPublic={setIsPublic}
+          />
         </VStack>
       </CardBox>
     </VStack>

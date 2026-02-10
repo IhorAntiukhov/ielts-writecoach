@@ -12,6 +12,7 @@ export default function useUpdateEssayMutation<T extends UpdateEssayParams>({
   toastTitle,
   toastSuccessMessage,
   redirectToReview,
+  isPublic,
 }: UseEssayMutationParams<T, void>) {
   const queryClient = useQueryClient();
   const toast = useToast();
@@ -28,7 +29,8 @@ export default function useUpdateEssayMutation<T extends UpdateEssayParams>({
 
       queryClient.invalidateQueries({
         predicate: ({ queryKey }) =>
-          queryKey[0] === queryKeyPrefixes.privateFeed,
+          queryKey[0] === queryKeyPrefixes.privateFeed ||
+          !!(isPublic && queryKey[0] === queryKeyPrefixes.publicFeed),
       });
 
       redirectToReview && setNavigationIntent?.("review");

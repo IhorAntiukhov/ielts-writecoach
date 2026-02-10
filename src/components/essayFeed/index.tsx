@@ -1,36 +1,43 @@
 import { HStack } from "@/components/ui/hstack";
 import { Spinner } from "@/components/ui/spinner";
 import { VStack } from "@/components/ui/vstack";
-import useOpenNewEssay from "@/src/hooks/useOpenNewEssay";
-import EssayFeedContext from "@/src/screens/private/context/EssayFeedContext";
-import PrimaryButton from "@/src/ui/button/PrimaryButton";
+import EssayFeedContext from "@/src/components/essayFeed/context/EssayFeedContext";
 import IndicatorText from "@/src/ui/IndicatorText";
 import SkeletonCard from "@/src/ui/SkeletonCard";
-import { Plus } from "lucide-react-native";
 import { use } from "react";
 import { FlatList } from "react-native";
 import FilterSelect from "../filterSelect";
 import SortSelect from "../sortSelect";
+import NewEssayButton from "./components/NewEssayButton";
 import PrivateEssayCard from "./components/PrivateEssayCard";
+import PublicEssayCard from "./components/PublicEssayCard";
 import SearchBar from "./components/SearchBar";
 
 export default function EssayFeed() {
   const {
+    type,
     filteringCriteria,
     searchPrompt,
-    sortingCriteria,
-    apiData: {
-      data,
-      isPending,
-      error,
-      isError,
-      hasNextPage,
-      fetchNextPage,
-      isFetchingNextPage,
-    },
+    data,
+    isPending,
+    error,
+    isError,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
   } = use(EssayFeedContext)!;
 
-  const { openNewEssay } = useOpenNewEssay();
+  const flatListProps = {
+    contentContainerClassName: "gap-4",
+    onEndReached: () => {
+      if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+    },
+    onEndReachedThreshold: 0.4,
+    ListFooterComponent: () =>
+      isFetchingNextPage && (
+        <Spinner size={32} className="text-typography-950" />
+      ),
+  };
 
   return (
     <VStack className="flex-1" space="2xl">
@@ -52,31 +59,24 @@ export default function EssayFeed() {
         </IndicatorText>
       ) : !data?.length ? (
         <IndicatorText>
-          {filteringCriteria.length || sortingCriteria === "average_band_score"
-            ? "You do not have any essays that meet the selected filter criteria"
+          {filteringCriteria.length
+            ? `${type === "public" ? "There are no" : "You do not have any"} essays that meet the selected filter criteria`
             : searchPrompt
               ? "No essays found"
-              : "You haven't created any essays yet"}
+              : `${type === "public" ? "There are no" : "You haven't created any"} essays yet`}
         </IndicatorText>
+      ) : type === "public" ? (
+        <FlatList
+          data={data}
+          renderItem={({ item }) => <PublicEssayCard data={item} />}
+          {...flatListProps}
+        />
       ) : (
         <FlatList
           data={data}
           renderItem={({ item }) => <PrivateEssayCard data={item} />}
-          contentContainerClassName="gap-4"
-          ListHeaderComponent={() => (
-            <PrimaryButton icon={Plus} onPress={openNewEssay} className="mb-4">
-              New essay
-            </PrimaryButton>
-          )}
-          onEndReached={() => {
-            if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-          }}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={() =>
-            isFetchingNextPage && (
-              <Spinner size={32} className="text-typography-950" />
-            )
-          }
+          ListHeaderComponent={<NewEssayButton />}
+          {...flatListProps}
         />
       )}
     </VStack>

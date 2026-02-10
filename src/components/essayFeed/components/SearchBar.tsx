@@ -1,5 +1,5 @@
 import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";
-import EssayFeedContext from "@/src/screens/private/context/EssayFeedContext";
+import EssayFeedContext from "@/src/components/essayFeed/context/EssayFeedContext";
 import { Search, X } from "lucide-react-native";
 import { use, useEffect, useRef, useState } from "react";
 

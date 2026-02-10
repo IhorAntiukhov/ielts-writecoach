@@ -1,5 +1,10 @@
-import filteringOptions from "../constants/filteringOptions";
+import {
+  privateFilteringOptions,
+  publicFilteringOptions,
+} from "../constants/filteringOptions";
 
-type FilteringValue = (typeof filteringOptions)[number]["value"];
+export type PrivateFilteringValue =
+  (typeof privateFilteringOptions)[number]["value"];
 
-export default FilteringValue;
+export type PublicFilteringValue =
+  (typeof publicFilteringOptions)[number]["value"];

@@ -1,5 +1,5 @@
 import { HStack } from "@/components/ui/hstack";
-import EssayFeedContext from "@/src/screens/private/context/EssayFeedContext";
+import EssayFeedContext from "@/src/components/essayFeed/context/EssayFeedContext";
 import React, { use } from "react";
 import { ScrollView } from "react-native";
 import SortingOption from "./components/SortingOption";

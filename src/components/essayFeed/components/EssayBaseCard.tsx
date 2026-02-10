@@ -1,9 +1,12 @@
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
-import { PrivateEssay } from "@/src/api/essaysRepo";
+import {
+  PrivateEssay,
+  PublicEssay,
+} from "@/src/api/essaysRepo/types/essayTypes";
+import useOpenEssay from "@/src/hooks/useOpenEssay";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRouter } from "expo-router";
 import { cssInterop, useColorScheme } from "nativewind";
 import { useState } from "react";
 import { Pressable, Text, TextLayoutEvent, View } from "react-native";
@@ -20,7 +23,7 @@ interface PrivateEssayCardProps {
 
 interface PublicEssayCardProps {
   type: "public";
-  data: PrivateEssay;
+  data: PublicEssay;
 }
 
 type EssayBaseCardProps = PrivateEssayCardProps | PublicEssayCardProps;
@@ -29,8 +32,6 @@ export default function EssayBaseCard({ type, data }: EssayBaseCardProps) {
   const [isOverflowing, setIsOverflowing] = useState(false);
 
   const { colorScheme } = useColorScheme();
-
-  const router = useRouter();
 
   const essayType =
     data.type === "task-1A"
@@ -48,21 +49,18 @@ export default function EssayBaseCard({ type, data }: EssayBaseCardProps) {
     setIsOverflowing(height > 200);
   };
 
-  const handleOpenEssay = () => {
-    router.push({
-      pathname: "/(tabs)/private/[id]",
-      params: {
-        id: data.id!.toString(),
-      },
-    });
-  };
+  const { openEssay } = useOpenEssay(
+    type === "private",
+    data.id!,
+    data.user_id!,
+  );
 
   const gradientEndColor =
     colorScheme === "dark" ? "rgb(18, 18, 18)" : "rgb(255, 255, 255)";
 
   return (
     <VStack space="2xl">
-      <Pressable onPress={handleOpenEssay}>
+      <Pressable onPress={openEssay}>
         <Text className="text-typography-950 text-lg">
           <Text className="font-bold">{`${essayType}: `}</Text>
           {data.instructions}

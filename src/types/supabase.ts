@@ -39,9 +39,63 @@ export type Database = {
   };
   public: {
     Tables: {
+      comments: {
+        Row: {
+          created_at: string;
+          essay_id: number;
+          id: number;
+          text: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          essay_id: number;
+          id?: number;
+          text: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          essay_id?: number;
+          id?: number;
+          text?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "comments_essay_id_fkey";
+            columns: ["essay_id"];
+            isOneToOne: false;
+            referencedRelation: "essays";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comments_essay_id_fkey";
+            columns: ["essay_id"];
+            isOneToOne: false;
+            referencedRelation: "private_essay_feed";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comments_essay_id_fkey";
+            columns: ["essay_id"];
+            isOneToOne: false;
+            referencedRelation: "public_essay_feed";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comments_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       essays: {
         Row: {
           created_at: string;
+          feedback_availability: Database["public"]["Enums"]["FeedbackAvailability"];
           id: number;
           image_height: number | null;
           image_url: string | null;
@@ -57,6 +111,7 @@ export type Database = {
         };
         Insert: {
           created_at?: string;
+          feedback_availability?: Database["public"]["Enums"]["FeedbackAvailability"];
           id?: number;
           image_height?: number | null;
           image_url?: string | null;
@@ -72,6 +127,7 @@ export type Database = {
         };
         Update: {
           created_at?: string;
+          feedback_availability?: Database["public"]["Enums"]["FeedbackAvailability"];
           id?: number;
           image_height?: number | null;
           image_url?: string | null;
@@ -115,6 +171,59 @@ export type Database = {
           user_name?: string;
         };
         Relationships: [];
+      };
+      reactions: {
+        Row: {
+          created_at: string;
+          essay_id: number;
+          id: number;
+          reaction_type: Database["public"]["Enums"]["ReactionType"];
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          essay_id: number;
+          id?: number;
+          reaction_type: Database["public"]["Enums"]["ReactionType"];
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          essay_id?: number;
+          id?: number;
+          reaction_type?: Database["public"]["Enums"]["ReactionType"];
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reactions_essay_id_fkey";
+            columns: ["essay_id"];
+            isOneToOne: false;
+            referencedRelation: "essays";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reactions_essay_id_fkey";
+            columns: ["essay_id"];
+            isOneToOne: false;
+            referencedRelation: "private_essay_feed";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reactions_essay_id_fkey";
+            columns: ["essay_id"];
+            isOneToOne: false;
+            referencedRelation: "public_essay_feed";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reactions_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       reviews: {
         Row: {
@@ -164,25 +273,36 @@ export type Database = {
             foreignKeyName: "reviews_essay_id_fkey";
             columns: ["essay_id"];
             isOneToOne: false;
-            referencedRelation: "essay_feed";
+            referencedRelation: "essays";
             referencedColumns: ["id"];
           },
           {
             foreignKeyName: "reviews_essay_id_fkey";
             columns: ["essay_id"];
             isOneToOne: false;
-            referencedRelation: "essays";
+            referencedRelation: "private_essay_feed";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reviews_essay_id_fkey";
+            columns: ["essay_id"];
+            isOneToOne: false;
+            referencedRelation: "public_essay_feed";
             referencedColumns: ["id"];
           },
         ];
       };
     };
     Views: {
-      essay_feed: {
+      private_essay_feed: {
         Row: {
           average_band_score: number | null;
           coherence_band: number | null;
+          comments_count: number | null;
           created_at: string | null;
+          feedback_availability:
+            | Database["public"]["Enums"]["FeedbackAvailability"]
+            | null;
           grammar_band: number | null;
           id: number | null;
           image_height: number | null;
@@ -190,12 +310,51 @@ export type Database = {
           image_width: number | null;
           instructions: string | null;
           is_public: boolean | null;
+          reactions_count: number | null;
           response: string | null;
           review_id: number | null;
           task_response_band: number | null;
+          top_reaction: Database["public"]["Enums"]["ReactionType"] | null;
           ts_vector: unknown;
           type: Database["public"]["Enums"]["EssayType"] | null;
           user_id: string | null;
+          vocabulary_band: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "essays_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      public_essay_feed: {
+        Row: {
+          avatar_url: string | null;
+          average_band_score: number | null;
+          coherence_band: number | null;
+          comments_count: number | null;
+          created_at: string | null;
+          feedback_availability:
+            | Database["public"]["Enums"]["FeedbackAvailability"]
+            | null;
+          grammar_band: number | null;
+          id: number | null;
+          image_height: number | null;
+          image_url: string | null;
+          image_width: number | null;
+          instructions: string | null;
+          reactions_count: number | null;
+          response: string | null;
+          review_id: number | null;
+          task_response_band: number | null;
+          top_reaction: Database["public"]["Enums"]["ReactionType"] | null;
+          ts_vector: unknown;
+          type: Database["public"]["Enums"]["EssayType"] | null;
+          user_id: string | null;
+          user_name: string | null;
           vocabulary_band: number | null;
         };
         Relationships: [
@@ -228,6 +387,16 @@ export type Database = {
     };
     Enums: {
       EssayType: "task-1G" | "task-1A" | "task-2";
+      FeedbackAvailability:
+        | "no-feedback"
+        | "reactions-only"
+        | "reactions-and-comments";
+      ReactionType:
+        | "Clear and Natural"
+        | "Good Ideas"
+        | "Well Structured"
+        | "Language needs Work"
+        | "Hard to Follow";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -362,6 +531,18 @@ export const Constants = {
   public: {
     Enums: {
       EssayType: ["task-1G", "task-1A", "task-2"],
+      FeedbackAvailability: [
+        "no-feedback",
+        "reactions-only",
+        "reactions-and-comments",
+      ],
+      ReactionType: [
+        "Clear and Natural",
+        "Good Ideas",
+        "Well Structured",
+        "Language needs Work",
+        "Hard to Follow",
+      ],
     },
   },
 } as const;

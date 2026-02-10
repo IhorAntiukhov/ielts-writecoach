@@ -1,21 +1,22 @@
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
-import { PrivateEssay } from "@/src/api/essaysRepo";
+import { PrivateEssay } from "@/src/api/essaysRepo/types/essayTypes";
 import queryKeyPrefixes from "@/src/constants/queryKeyPrefixes";
 import { AlertDialogContext } from "@/src/context/AlertDialogProvider";
+import useOpenEssay from "@/src/hooks/useOpenEssay";
 import useToast from "@/src/hooks/useToast";
 import IconButton from "@/src/ui/button/IconButton";
 import CardBox from "@/src/ui/CardBox";
 import cssInteropIcon from "@/src/utils/cssInteropIcon";
 import formatDate from "@/src/utils/formatDate";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "expo-router";
-import { Pencil, Trash } from "lucide-react-native";
+import { Eye, Pencil, Trash } from "lucide-react-native";
 import { use } from "react";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import deleteEssayWithImage from "../api/deleteEssay";
 import EssayBaseCard from "./EssayBaseCard";
 
+cssInteropIcon(Eye);
 cssInteropIcon(Pencil);
 cssInteropIcon(Trash);
 
@@ -25,8 +26,6 @@ interface PrivateEssayCardProps {
 
 export default function PrivateEssayCard({ data }: PrivateEssayCardProps) {
   const queryClient = useQueryClient();
-
-  const router = useRouter();
 
   const { showDialog } = use(AlertDialogContext)!;
   const showToast = useToast();
@@ -47,14 +46,7 @@ export default function PrivateEssayCard({ data }: PrivateEssayCardProps) {
     },
   });
 
-  const handleOpenEssay = () => {
-    router.push({
-      pathname: "/(tabs)/private/[id]",
-      params: {
-        id: data.id!.toString(),
-      },
-    });
-  };
+  const { openEssay } = useOpenEssay(true, data.id!, data.user_id!);
 
   const handleDeleteEssay = () => {
     showDialog({
@@ -70,17 +62,26 @@ export default function PrivateEssayCard({ data }: PrivateEssayCardProps) {
     <CardBox>
       <VStack space="lg">
         <HStack space="sm" className="items-center justify-between">
-          {data.created_at && (
+          <VStack space="md">
+            {
+              <View className="px-3 py-0.5 rounded-full bg-green-600">
+                <HStack space="sm" className="items-center">
+                  <Eye className="text-typography-white" size={20} />
+                  <Text className="text-typography-white">Public</Text>
+                </HStack>
+              </View>
+            }
+
             <Text className="text-typography-500 text-md">
-              {formatDate(data.created_at)}
+              {formatDate(data.created_at!)}
             </Text>
-          )}
+          </VStack>
 
           <HStack space="sm" className="-mr-2">
             <IconButton
               action="secondary"
               className="bg-transparent"
-              onPress={handleOpenEssay}
+              onPress={openEssay}
             >
               <Pencil className="text-typography-950" size={20} />
             </IconButton>

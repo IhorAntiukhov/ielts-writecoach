@@ -1,23 +1,20 @@
-import { getPrivateEssays } from "@/src/api/essaysRepo";
+import { getPublicEssays } from "@/src/api/essaysRepo";
 import EssayFeed from "@/src/components/essayFeed";
-import { PrivateFilteringValue } from "@/src/components/filterSelect/types/filteringValue";
+import EssayFeedContext from "@/src/components/essayFeed/context/EssayFeedContext";
+import { PublicFilteringValue } from "@/src/components/filterSelect/types/filteringValue";
 import SortingValue from "@/src/components/sortSelect/types/sortingValue";
 import queryKeyPrefixes from "@/src/constants/queryKeyPrefixes";
-import { AuthContext } from "@/src/context/AuthProvider";
 import Container from "@/src/ui/Container";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { use, useState } from "react";
-import EssayFeedContext from "../../components/essayFeed/context/EssayFeedContext";
+import { useState } from "react";
 
-export default function PrivateScreen() {
+export default function HomeScreen() {
   const [searchPrompt, setSearchPrompt] = useState("");
   const [filteringCriteria, setFilteringCriteria] = useState<
-    PrivateFilteringValue[]
+    PublicFilteringValue[]
   >([]);
   const [sortingCriteria, setSortingCriteria] =
     useState<SortingValue>("created_at");
-
-  const { user } = use(AuthContext).session!;
 
   const {
     data,
@@ -29,15 +26,13 @@ export default function PrivateScreen() {
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: [
-      queryKeyPrefixes.privateFeed,
-      user.id,
+      queryKeyPrefixes.publicFeed,
       filteringCriteria,
       searchPrompt,
       sortingCriteria,
     ],
     queryFn: ({ pageParam }) =>
-      getPrivateEssays(
-        user.id,
+      getPublicEssays(
         filteringCriteria,
         searchPrompt,
         sortingCriteria,
@@ -55,7 +50,7 @@ export default function PrivateScreen() {
     <Container topAlignment>
       <EssayFeedContext.Provider
         value={{
-          type: "private",
+          type: "public",
           searchPrompt,
           setSearchPrompt,
           filteringCriteria,

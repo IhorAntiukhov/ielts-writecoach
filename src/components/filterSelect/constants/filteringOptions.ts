@@ -1,4 +1,4 @@
-const filteringOptions = [
+export const publicFilteringOptions = [
   {
     label: "General Task 1",
     value: "task-1G",
@@ -15,10 +15,12 @@ const filteringOptions = [
     label: "Not analyzed",
     value: "not-analyzed",
   },
+] as const;
+
+export const privateFilteringOptions = [
+  ...publicFilteringOptions,
   {
     label: "Public",
     value: "public",
   },
 ] as const;
-
-export default filteringOptions;

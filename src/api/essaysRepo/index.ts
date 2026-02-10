@@ -1,12 +1,25 @@
-import FilteringValue from "../components/filterSelect/types/filteringValue";
-import SortingValue from "../components/sortSelect/types/sortingValue";
+import {
+  PrivateFilteringValue,
+  PublicFilteringValue,
+} from "@/src/components/filterSelect/types/filteringValue";
+import SortingValue from "@/src/components/sortSelect/types/sortingValue";
 import {
   InsertEssayParams,
   UpdateEssayParams,
-} from "../screens/essay/types/saveEssayParams";
-import supabase from "./supabaseClient";
-
-const PAGE_SIZE = 4;
+} from "@/src/screens/essay/types/saveEssayParams";
+import supabase from "../supabaseClient";
+import {
+  createPrivateFeedBaseQuery,
+  createPublicFeedBaseQuery,
+} from "./constants/baseQueries";
+import PAGE_SIZE from "./constants/pageSize";
+import { ApplyFiltersParams } from "./types/applyFiltersParams";
+import {
+  PrivateFeedBaseQueryType,
+  PublicFeedBaseQueryType,
+} from "./types/baseQueryTypes";
+import Cursor from "./types/cursorType";
+import { PrivateEssay, PublicEssay } from "./types/essayTypes";
 
 export async function getEssay(id: number) {
   const { data, error } = await supabase
@@ -20,29 +33,77 @@ export async function getEssay(id: number) {
   return data;
 }
 
-export async function getPrivateEssays(
-  userId: string,
-  filteringCriteria: FilteringValue[],
+export async function getPublicEssays(
+  filteringCriteria: PublicFilteringValue[],
   searchPrompt: string,
   sortingCriteria: SortingValue,
-  cursor?: { createdAt: string; bandScore: number },
+  cursor?: Cursor,
 ) {
-  let query = supabase
-    .from("essay_feed")
-    .select("*")
-    .eq("user_id", userId)
-    .limit(PAGE_SIZE + 1);
+  let query = createPublicFeedBaseQuery();
 
+  query = applyFilters({
+    type: "public",
+    query,
+    filteringCriteria,
+    searchPrompt,
+    sortingCriteria,
+    cursor,
+  }) as PublicFeedBaseQueryType;
+
+  const { data, error } = await query;
+
+  if (error) throw error;
+
+  return getItemsWithNextCursor(data);
+}
+
+export async function getPrivateEssays(
+  userId: string,
+  filteringCriteria: PrivateFilteringValue[],
+  searchPrompt: string,
+  sortingCriteria: SortingValue,
+  cursor?: Cursor,
+) {
+  let query = createPrivateFeedBaseQuery(userId);
+
+  query = applyFilters({
+    type: "private",
+    query,
+    filteringCriteria,
+    searchPrompt,
+    sortingCriteria,
+    cursor,
+  }) as PrivateFeedBaseQueryType;
+
+  const { data, error } = await query;
+
+  if (error) throw error;
+
+  return getItemsWithNextCursor(data);
+}
+
+function applyFilters({
+  type,
+  query,
+  filteringCriteria,
+  searchPrompt,
+  sortingCriteria,
+  cursor,
+}: ApplyFiltersParams) {
   const essayTypeFilters = filteringCriteria.filter(
     (filter) =>
       filter === "task-1A" || filter === "task-1G" || filter === "task-2",
-  );
+  ) as ("task-1A" | "task-1G" | "task-2")[];
   if (essayTypeFilters.length) query = query.in("type", essayTypeFilters);
   if (filteringCriteria.includes("not-analyzed"))
     query = query.is("review_id", null);
-  if (filteringCriteria.includes("public")) query = query.eq("is_public", true);
+  if (
+    type === "private" &&
+    (filteringCriteria as PrivateFilteringValue[]).includes("public")
+  )
+    query = query.eq("is_public", true);
 
-  if (searchPrompt)
+  if (searchPrompt.trim().length > 0)
     query = query.textSearch("ts_vector", searchPrompt, {
       type: "websearch",
     });
@@ -60,34 +121,33 @@ export async function getPrivateEssays(
       query = query.lte("created_at", cursor.createdAt);
     else {
       const mainSortingComparison = (operator: "lt" | "eq") =>
-        `${sortingCriteria}.${operator}.${sortingCriteria === "average_band_score" ? cursor.bandScore : cursor.bandScore}`;
+        `${sortingCriteria}.${operator}.${sortingCriteria === "average_band_score" ? cursor.bandScore : cursor.reactionsCount}`;
       query = query.or(
         `${mainSortingComparison("lt")},and(${mainSortingComparison("eq")},created_at.lte.${cursor.createdAt})`,
       );
     }
   }
 
-  const { data, error } = await query;
+  return query;
+}
 
-  if (error) throw error;
-
+function getItemsWithNextCursor<T extends PrivateEssay[] | PublicEssay[]>(
+  data: T,
+) {
   const hasNextPage = data.length > PAGE_SIZE;
   const items = data.slice(0, PAGE_SIZE);
 
   return {
-    items,
+    items: items as T,
     nextCursor: hasNextPage
       ? {
           createdAt: data[data.length - 1].created_at!,
           bandScore: data[data.length - 1].average_band_score!,
+          reactionsCount: data[data.length - 1].reactions_count!,
         }
       : null,
   };
 }
-
-export type PrivateEssay = Awaited<
-  ReturnType<typeof getPrivateEssays>
->["items"][number];
 
 export async function insertEssay({
   type,
@@ -140,6 +200,19 @@ export async function updateEssay(
     .eq("id", id);
 
   if (error) throw error;
+}
+
+export async function updateEssayPrivacy(id: number, isPublic: boolean) {
+  const { error } = await supabase
+    .from("essays")
+    .update({
+      is_public: isPublic,
+    })
+    .eq("id", id);
+
+  if (error) throw error;
+
+  return isPublic;
 }
 
 export async function deleteEssay(id: number) {

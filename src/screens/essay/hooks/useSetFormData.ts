@@ -11,6 +11,7 @@ interface UseSetFormDataParams {
   setType: React.Dispatch<React.SetStateAction<EssayType>>;
   setSecondsFromStart: React.Dispatch<React.SetStateAction<number>>;
   setImageData: React.Dispatch<React.SetStateAction<ImageData>>;
+  setIsPublic: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function useSetFormData({
@@ -19,6 +20,7 @@ export default function useSetFormData({
   setType,
   setSecondsFromStart,
   setImageData,
+  setIsPublic,
 }: UseSetFormDataParams) {
   const isInitialDataSetRef = useRef(false);
 
@@ -31,6 +33,7 @@ export default function useSetFormData({
         });
         setType(data.type);
         setSecondsFromStart(data.time || 0);
+        setIsPublic(data.is_public);
 
         if (data.image_url) {
           setImageData({
@@ -49,5 +52,5 @@ export default function useSetFormData({
     };
 
     setData();
-  }, [data, reset, setType, setSecondsFromStart, setImageData]);
+  }, [data, reset, setType, setSecondsFromStart, setImageData, setIsPublic]);
 }

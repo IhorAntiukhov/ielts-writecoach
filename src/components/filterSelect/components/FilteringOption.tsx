@@ -3,22 +3,24 @@ import {
   ActionsheetItemText,
 } from "@/components/ui/actionsheet";
 import { clsx } from "clsx";
-import FilteringValue from "../types/filteringValue";
+import {
+  PrivateFilteringValue,
+  PublicFilteringValue,
+} from "../types/filteringValue";
 
-interface FilteringOptionProps {
-  value: FilteringValue;
+interface FilteringOptionProps<
+  T extends PrivateFilteringValue | PublicFilteringValue,
+> {
+  value: T;
   label: string;
-  values: FilteringValue[];
-  setValues: React.Dispatch<React.SetStateAction<FilteringValue[]>>;
+  values: T[];
+  setValues: React.Dispatch<React.SetStateAction<T[]>>;
 }
 
-export default function FilteringOption({
-  value,
-  label,
-  values,
-  setValues,
-}: FilteringOptionProps) {
-  const toggleValue = (value: FilteringValue) => {
+export default function FilteringOption<
+  T extends PrivateFilteringValue | PublicFilteringValue,
+>({ value, label, values, setValues }: FilteringOptionProps<T>) {
+  const toggleValue = (value: T) => {
     const valueIndex = values.indexOf(value);
     if (valueIndex === -1) {
       setValues((values) => [...values, value]);

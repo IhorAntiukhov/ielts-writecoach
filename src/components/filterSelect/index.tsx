@@ -6,20 +6,24 @@ import {
   ActionsheetDragIndicatorWrapper,
 } from "@/components/ui/actionsheet";
 import { VStack } from "@/components/ui/vstack";
-import EssayFeedContext from "@/src/screens/private/context/EssayFeedContext";
+import EssayFeedContext from "@/src/components/essayFeed/context/EssayFeedContext";
 import IconButton from "@/src/ui/button/IconButton";
 import IndicatorText from "@/src/ui/IndicatorText";
 import cssInteropIcon from "@/src/utils/cssInteropIcon";
 import { FunnelPlus, FunnelX } from "lucide-react-native";
 import { use, useState } from "react";
 import FilteringOption from "./components/FilteringOption";
-import filteringOptions from "./constants/filteringOptions";
+import {
+  privateFilteringOptions,
+  publicFilteringOptions,
+} from "./constants/filteringOptions";
 
 cssInteropIcon(FunnelPlus);
 cssInteropIcon(FunnelX);
 
 export default function FilterSelect() {
-  const { filteringCriteria, setFilteringCriteria } = use(EssayFeedContext)!;
+  const { type, filteringCriteria, setFilteringCriteria } =
+    use(EssayFeedContext)!;
   const [isOpen, setIsOpen] = useState(false);
 
   const Icon = filteringCriteria.length ? FunnelX : FunnelPlus;
@@ -50,15 +54,25 @@ export default function FilterSelect() {
           </ActionsheetDragIndicatorWrapper>
           <VStack className="w-full p-4" space="md">
             <IndicatorText>Filtering options</IndicatorText>
-            {filteringOptions.map(({ value, label }, index) => (
-              <FilteringOption
-                key={index}
-                value={value}
-                label={label}
-                values={filteringCriteria}
-                setValues={setFilteringCriteria}
-              />
-            ))}
+            {type === "private"
+              ? privateFilteringOptions.map(({ value, label }, index) => (
+                  <FilteringOption
+                    key={index}
+                    value={value}
+                    label={label}
+                    values={filteringCriteria}
+                    setValues={setFilteringCriteria}
+                  />
+                ))
+              : publicFilteringOptions.map(({ value, label }, index) => (
+                  <FilteringOption
+                    key={index}
+                    value={value}
+                    label={label}
+                    values={filteringCriteria}
+                    setValues={setFilteringCriteria}
+                  />
+                ))}
           </VStack>
         </ActionsheetContent>
       </Actionsheet>

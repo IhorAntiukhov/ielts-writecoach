@@ -10,6 +10,7 @@ interface UseEssayMutationParams<
   toastTitle: string;
   toastSuccessMessage: string;
   redirectToReview: boolean;
+  isPublic?: boolean;
 }
 
 export default UseEssayMutationParams;
