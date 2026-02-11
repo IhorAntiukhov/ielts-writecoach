@@ -9,7 +9,7 @@ export default function TabLayout() {
 
       <TabList asChild>
         <TabBar>
-          <TabTrigger name="index" href="/(tabs)/index" asChild>
+          <TabTrigger name="index" href="/(tabs)/home" asChild>
             <Tab title="Community" icon="Handshake" />
           </TabTrigger>
 

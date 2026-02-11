@@ -1,4 +1,4 @@
-import EssayNavigationProvider from "@/src/screens/essay/context/EssayNavigationProvider";
+import EssayNavigationProvider from "@/src/screens/essay/shared/context/EssayNavigationProvider";
 import { Stack } from "expo-router";
 
 export default function PrivateLayout() {

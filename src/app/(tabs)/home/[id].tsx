@@ -1,10 +1,10 @@
 import KeyboardScrollView from "@/src/layout/KeyboardScrollView";
-import PrivateEssayScreen from "@/src/screens/essay/private";
+import PublicEssayScreen from "@/src/screens/essay/public";
 
-export default function Essay() {
+export default function PublicEssay() {
   return (
     <KeyboardScrollView>
-      <PrivateEssayScreen />
+      <PublicEssayScreen />
     </KeyboardScrollView>
   );
 }

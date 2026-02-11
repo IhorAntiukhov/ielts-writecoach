@@ -7,7 +7,7 @@ import { clsx } from "clsx";
 import { Pause, Play, Square } from "lucide-react-native";
 import React, { use, useEffect, useRef } from "react";
 import { Text } from "react-native";
-import formatSeconds from "../utils/formatSeconds";
+import formatSeconds from "../../shared/utils/formatSeconds";
 
 cssInteropIcon(Play);
 cssInteropIcon(Pause);

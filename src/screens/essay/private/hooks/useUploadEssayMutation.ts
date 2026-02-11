@@ -3,7 +3,7 @@ import useToast from "@/src/hooks/useToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { use } from "react";
-import { EssayNavigationContext } from "../context/EssayNavigationProvider";
+import { EssayNavigationContext } from "../../shared/context/EssayNavigationProvider";
 import { InsertEssayParams } from "../types/saveEssayParams";
 import UseEssayMutationParams from "../types/useEssayMutationParams";
 

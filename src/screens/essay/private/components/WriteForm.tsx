@@ -12,7 +12,6 @@ import TextAreaInput from "@/src/ui/input/TextAreaInput";
 import SmallCardBox from "@/src/ui/SmallCardBox";
 import { getNounByNumber } from "@/src/utils/getNounByNumber";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import { Save, Sparkles } from "lucide-react-native";
 import { use, useState } from "react";
@@ -22,12 +21,10 @@ import {
   saveExistingEssayWithAnalysis,
   uploadNewEssayWithAnalysis,
 } from "../api/analyzeEssay";
-import getEssayWithImageData from "../api/getEssayWithImageData";
 import { saveExistingEssay, uploadNewEssay } from "../api/saveEssay";
+import EssayDataContext from "../../shared/context/EssayDataContext";
 import { WritingFormData, writingFormSchema } from "../forms/writingForm";
-import useSetFormData from "../hooks/useSetFormData";
-import useUpdateEssayMutation from "../hooks/useUpdateEssayMutation";
-import useUploadEssayMutation from "../hooks/useUploadEssayMutation";
+import getWordCount from "../utils/getWordCount";
 import ImageData from "../types/imageData";
 import {
   InsertEssayParams,
@@ -35,10 +32,12 @@ import {
   UpdateEssayParams,
   UpdateEssayWithAnalysisParams,
 } from "../types/saveEssayParams";
-import getWordCount from "../utils/getWordCount";
-import EssayImagePicker from "./EssayImagePicker";
 import Timer from "./Timer";
 import UpdateEssayPrivacyButton from "./UpdateEssayPrivacyButton";
+import useSetFormData from "../hooks/useSetFormData";
+import useUploadEssayMutation from "../hooks/useUploadEssayMutation";
+import useUpdateEssayMutation from "../hooks/useUpdateEssayMutation";
+import EssayImagePicker from "./EssayImagePicker";
 
 export default function WriteForm() {
   const { id } = useLocalSearchParams();
@@ -57,6 +56,16 @@ export default function WriteForm() {
   const { user } = use(AuthContext).session!;
 
   const {
+    type: privacyType,
+    data,
+    error,
+    isPending,
+    isError,
+  } = use(EssayDataContext)!;
+
+  if (privacyType !== "private") throw Error("Essay must be public");
+
+  const {
     control,
     formState: { errors },
     handleSubmit: handleSubmitDraft,
@@ -67,12 +76,6 @@ export default function WriteForm() {
   });
 
   const responseWordCount = getWordCount(watch("response"));
-
-  const { data, error, isPending, isError } = useQuery({
-    queryKey: ["essay", id],
-    queryFn: () => getEssayWithImageData(Number(id as string)),
-    enabled: !isNewEssay,
-  });
 
   useSetFormData({
     data,
@@ -131,7 +134,7 @@ export default function WriteForm() {
   if (isError) {
     return (
       <IndicatorText isError>
-        Failed to get the essay data: {error.message}
+        Failed to get the essay data: {error?.message}
       </IndicatorText>
     );
   }

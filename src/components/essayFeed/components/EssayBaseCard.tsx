@@ -1,15 +1,14 @@
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
 import {
-  PrivateEssay,
-  PublicEssay,
-} from "@/src/api/essaysRepo/types/essayTypes";
-import useOpenEssay from "@/src/hooks/useOpenEssay";
-import { Image } from "expo-image";
+  PrivateFeedEssay,
+  PublicFeedEssay,
+} from "@/src/api/essaysRepo/types/feedEssayTypes";
 import { LinearGradient } from "expo-linear-gradient";
 import { cssInterop, useColorScheme } from "nativewind";
 import { useState } from "react";
-import { Pressable, Text, TextLayoutEvent, View } from "react-native";
+import { Text, TextLayoutEvent, View } from "react-native";
+import EssayInstructions from "../../essayInstructions";
 import EssayBandScore from "./EssayBandScore";
 
 cssInterop(LinearGradient, {
@@ -18,12 +17,12 @@ cssInterop(LinearGradient, {
 
 interface PrivateEssayCardProps {
   type: "private";
-  data: PrivateEssay;
+  data: PrivateFeedEssay;
 }
 
 interface PublicEssayCardProps {
   type: "public";
-  data: PublicEssay;
+  data: PublicFeedEssay;
 }
 
 type EssayBaseCardProps = PrivateEssayCardProps | PublicEssayCardProps;
@@ -32,13 +31,6 @@ export default function EssayBaseCard({ type, data }: EssayBaseCardProps) {
   const [isOverflowing, setIsOverflowing] = useState(false);
 
   const { colorScheme } = useColorScheme();
-
-  const essayType =
-    data.type === "task-1A"
-      ? "Academic Task 1"
-      : data.type === "task-1G"
-        ? "General Task 1"
-        : "Task 2";
 
   const handleTextLayout = (event: TextLayoutEvent) => {
     const height = event.nativeEvent.lines.reduce(
@@ -49,37 +41,12 @@ export default function EssayBaseCard({ type, data }: EssayBaseCardProps) {
     setIsOverflowing(height > 200);
   };
 
-  const { openEssay } = useOpenEssay(
-    type === "private",
-    data.id!,
-    data.user_id!,
-  );
-
   const gradientEndColor =
     colorScheme === "dark" ? "rgb(18, 18, 18)" : "rgb(255, 255, 255)";
 
   return (
     <VStack space="2xl">
-      <Pressable onPress={openEssay}>
-        <Text className="text-typography-950 text-lg">
-          <Text className="font-bold">{`${essayType}: `}</Text>
-          {data.instructions}
-        </Text>
-      </Pressable>
-
-      {data.image_url && (
-        <Image
-          source={{ uri: data.image_url }}
-          className="w-full rounded-lg border border-y border-outline-300"
-          style={{
-            aspectRatio:
-              data.image_width && data.image_height
-                ? data.image_width / data.image_height
-                : 1920 / 1080,
-          }}
-          contentFit="contain"
-        />
-      )}
+      <EssayInstructions type={type} data={data} />
 
       <View className="relative">
         <Text

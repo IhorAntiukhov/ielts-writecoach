@@ -6,7 +6,7 @@ import SortingValue from "@/src/components/sortSelect/types/sortingValue";
 import {
   InsertEssayParams,
   UpdateEssayParams,
-} from "@/src/screens/essay/types/saveEssayParams";
+} from "@/src/screens/essay/private/types/saveEssayParams";
 import supabase from "../supabaseClient";
 import {
   createPrivateFeedBaseQuery,
@@ -19,12 +19,24 @@ import {
   PublicFeedBaseQueryType,
 } from "./types/baseQueryTypes";
 import Cursor from "./types/cursorType";
-import { PrivateEssay, PublicEssay } from "./types/essayTypes";
+import { PrivateFeedEssay, PublicFeedEssay } from "./types/feedEssayTypes";
 
-export async function getEssay(id: number) {
+export async function getPublicEssay(id: number) {
   const { data, error } = await supabase
     .from("essays")
-    .select("*")
+    .select("*, reviews ( * ), reactions ( * ), profiles ( * )")
+    .eq("id", id)
+    .single();
+
+  if (error) throw error;
+
+  return data;
+}
+
+export async function getPrivateEssay(id: number) {
+  const { data, error } = await supabase
+    .from("essays")
+    .select("*, reviews ( * ), reactions ( * )")
     .eq("id", id)
     .single();
 
@@ -131,9 +143,9 @@ function applyFilters({
   return query;
 }
 
-function getItemsWithNextCursor<T extends PrivateEssay[] | PublicEssay[]>(
-  data: T,
-) {
+function getItemsWithNextCursor<
+  T extends PublicFeedEssay[] | PrivateFeedEssay[],
+>(data: T) {
   const hasNextPage = data.length > PAGE_SIZE;
   const items = data.slice(0, PAGE_SIZE);
 

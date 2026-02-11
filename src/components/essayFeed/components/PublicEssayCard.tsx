@@ -5,35 +5,26 @@ import {
 } from "@/components/ui/avatar";
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
-import { PublicEssay } from "@/src/api/essaysRepo/types/essayTypes";
+import { PublicFeedEssay } from "@/src/api/essaysRepo/types/feedEssayTypes";
+import useOpenUserProfile from "@/src/hooks/useOpenUserProfile";
 import CardBox from "@/src/ui/CardBox";
-import formatDate from "@/src/utils/formatDate";
-import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
+import PublishedDate from "../../publishedDate";
 import EssayBaseCard from "./EssayBaseCard";
 import OpenEssayButton from "./OpenEssayButton";
 
 interface PublicEssayCardProps {
-  data: PublicEssay;
+  data: PublicFeedEssay;
 }
 
 export default function PublicEssayCard({ data }: PublicEssayCardProps) {
-  const router = useRouter();
-
-  const handleOpenUserProfile = () => {
-    router.push({
-      pathname: "/(tabs)/index/users/[id]",
-      params: {
-        id: data.user_id!.toString(),
-      },
-    });
-  };
+  const { openUserProfile } = useOpenUserProfile(data.user_id!);
 
   return (
     <CardBox>
       <VStack space="lg">
         <HStack space="md" className="items-center justify-between">
-          <Pressable onPress={handleOpenUserProfile}>
+          <Pressable onPress={openUserProfile}>
             <HStack space="md">
               <Avatar size="md">
                 <AvatarFallbackText>{data.user_name}</AvatarFallbackText>
@@ -44,9 +35,7 @@ export default function PublicEssayCard({ data }: PublicEssayCardProps) {
                 <Text className="text-typography-950 text-lg">
                   {data.user_name}
                 </Text>
-                <Text className="text-typography-500 text-md">
-                  {formatDate(data.created_at!)}
-                </Text>
+                <PublishedDate createdAt={data.created_at!} />
               </VStack>
             </HStack>
           </Pressable>

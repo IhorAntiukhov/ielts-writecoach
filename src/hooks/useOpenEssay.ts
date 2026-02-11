@@ -12,7 +12,7 @@ export default function useOpenEssay(
 
   const openEssay = () => {
     router.push({
-      pathname: `/(tabs)/${isPrivateFeed || user.id === userId ? "private" : "index"}/[id]`,
+      pathname: `/(tabs)/${isPrivateFeed || user.id === userId ? "private" : "home"}/[id]`,
       params: {
         id: Number(essayId),
       },

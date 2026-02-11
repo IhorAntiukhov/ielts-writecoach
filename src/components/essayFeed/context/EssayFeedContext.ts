@@ -1,7 +1,7 @@
 import {
-  PrivateEssay,
-  PublicEssay,
-} from "@/src/api/essaysRepo/types/essayTypes";
+  PrivateFeedEssay,
+  PublicFeedEssay,
+} from "@/src/api/essaysRepo/types/feedEssayTypes";
 import {
   PrivateFilteringValue,
   PublicFilteringValue,
@@ -28,7 +28,7 @@ interface PrivateEssayFeedContextProps extends BaseEssayFeedContextProps {
   setFilteringCriteria: React.Dispatch<
     React.SetStateAction<PrivateFilteringValue[]>
   >;
-  data?: PrivateEssay[];
+  data?: PrivateFeedEssay[];
 }
 
 interface PublicEssayFeedContextProps extends BaseEssayFeedContextProps {
@@ -37,7 +37,7 @@ interface PublicEssayFeedContextProps extends BaseEssayFeedContextProps {
   setFilteringCriteria: React.Dispatch<
     React.SetStateAction<PublicFilteringValue[]>
   >;
-  data?: PublicEssay[];
+  data?: PublicFeedEssay[];
 }
 
 type EssayFeedContextProps =

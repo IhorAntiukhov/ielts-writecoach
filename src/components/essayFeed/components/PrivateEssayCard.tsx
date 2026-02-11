@@ -1,6 +1,6 @@
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
-import { PrivateEssay } from "@/src/api/essaysRepo/types/essayTypes";
+import { PrivateEssay } from "@/src/api/essaysRepo/types/feedEssayTypes";
 import queryKeyPrefixes from "@/src/constants/queryKeyPrefixes";
 import { AlertDialogContext } from "@/src/context/AlertDialogProvider";
 import useOpenEssay from "@/src/hooks/useOpenEssay";
@@ -8,11 +8,11 @@ import useToast from "@/src/hooks/useToast";
 import IconButton from "@/src/ui/button/IconButton";
 import CardBox from "@/src/ui/CardBox";
 import cssInteropIcon from "@/src/utils/cssInteropIcon";
-import formatDate from "@/src/utils/formatDate";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Eye, Pencil, Trash } from "lucide-react-native";
 import { use } from "react";
 import { Text, View } from "react-native";
+import PublishedDate from "../../publishedDate";
 import deleteEssayWithImage from "../api/deleteEssay";
 import EssayBaseCard from "./EssayBaseCard";
 
@@ -72,9 +72,7 @@ export default function PrivateEssayCard({ data }: PrivateEssayCardProps) {
               </View>
             }
 
-            <Text className="text-typography-500 text-md">
-              {formatDate(data.created_at!)}
-            </Text>
+            <PublishedDate createdAt={data.created_at!} />
           </VStack>
 
           <HStack space="sm" className="-mr-2">

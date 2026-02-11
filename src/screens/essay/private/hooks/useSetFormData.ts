@@ -1,12 +1,12 @@
+import { FullPrivateEssay } from "@/src/api/essaysRepo/types/fullEssayTypes";
 import EssayType from "@/src/types/essayType";
 import { useEffect, useRef } from "react";
 import { UseFormReset } from "react-hook-form";
-import getEssayWithImageData from "../api/getEssayWithImageData";
 import { WritingFormData } from "../forms/writingForm";
 import ImageData from "../types/imageData";
 
 interface UseSetFormDataParams {
-  data: Awaited<ReturnType<typeof getEssayWithImageData>> | undefined;
+  data: FullPrivateEssay | undefined;
   reset: UseFormReset<WritingFormData>;
   setType: React.Dispatch<React.SetStateAction<EssayType>>;
   setSecondsFromStart: React.Dispatch<React.SetStateAction<number>>;

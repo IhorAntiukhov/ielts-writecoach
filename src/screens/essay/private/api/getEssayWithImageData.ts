@@ -1,7 +1,7 @@
-import { getEssay } from "@/src/api/essaysRepo";
+import { getPrivateEssay } from "@/src/api/essaysRepo";
 
 export default async function getEssayWithImageData(id: number) {
-  const data = await getEssay(id);
+  const data = await getPrivateEssay(id);
 
   let mimeType = "image/jpeg";
   let base64 = "";
