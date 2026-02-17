@@ -5,7 +5,7 @@ import EssayFeedContext from "@/src/components/essayFeed/context/EssayFeedContex
 import IndicatorText from "@/src/ui/IndicatorText";
 import SkeletonCard from "@/src/ui/SkeletonCard";
 import { use } from "react";
-import { FlatList } from "react-native";
+import { FlatList, FlatListProps } from "react-native";
 import FilterSelect from "../filterSelect";
 import SortSelect from "../sortSelect";
 import NewEssayButton from "./components/NewEssayButton";
@@ -27,7 +27,8 @@ export default function EssayFeed() {
     isFetchingNextPage,
   } = use(EssayFeedContext)!;
 
-  const flatListProps = {
+  const flatListProps: Partial<FlatListProps<any>> = {
+    keyExtractor: (item) => item.id!.toString(),
     contentContainerClassName: "gap-4",
     onEndReached: () => {
       if (hasNextPage && !isFetchingNextPage) fetchNextPage();

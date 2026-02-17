@@ -15,9 +15,9 @@ export default function RootLayout() {
   const scheme = useColorScheme();
 
   return (
-    <GluestackUIProvider mode={scheme || "light"}>
-      <AlertDialogProvider>
-        <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <GluestackUIProvider mode={scheme || "light"}>
+        <AlertDialogProvider>
           <KeyboardProvider>
             <SafeArea>
               <AuthProvider>
@@ -25,8 +25,8 @@ export default function RootLayout() {
               </AuthProvider>
             </SafeArea>
           </KeyboardProvider>
-        </QueryClientProvider>
-      </AlertDialogProvider>
-    </GluestackUIProvider>
+        </AlertDialogProvider>
+      </GluestackUIProvider>
+    </QueryClientProvider>
   );
 }

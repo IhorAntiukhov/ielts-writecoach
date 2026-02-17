@@ -1,6 +1,7 @@
 import { VStack } from "@/components/ui/vstack";
 import Pager from "@/src/components/Pager";
 import SegmentedButtons from "@/src/components/segmentedButtons";
+import queryKeyPrefixes from "@/src/constants/queryKeyPrefixes";
 import Container from "@/src/ui/Container";
 import TopBar from "@/src/ui/TopBar";
 import { useQuery } from "@tanstack/react-query";
@@ -32,7 +33,7 @@ export default function PrivateEssayScreen() {
   }, [navigationIntent, setNavigationIntent]);
 
   const { data, error, isPending, isError } = useQuery({
-    queryKey: ["essay", id],
+    queryKey: [queryKeyPrefixes.privateEssay, Number(id as string)],
     queryFn: () => getEssayWithImageData(Number(id as string)),
     enabled: !isNewEssay,
   });

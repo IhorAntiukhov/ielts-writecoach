@@ -1,8 +1,3 @@
-import {
-  Avatar,
-  AvatarFallbackText,
-  AvatarImage,
-} from "@/components/ui/avatar";
 import { HStack } from "@/components/ui/hstack";
 import {
   FullPrivateEssay,
@@ -11,6 +6,7 @@ import {
 import PublishedDate from "@/src/components/publishedDate";
 import useOpenUserProfile from "@/src/hooks/useOpenUserProfile";
 import { Pressable, Text } from "react-native";
+import UserAvatar from "../../shared/components/UserAvatar";
 
 interface PublicEssayHeaderProps {
   type: "public";
@@ -35,10 +31,7 @@ export default function EssayHeader({ type, data }: EssayHeaderProps) {
     <HStack space="md" className="items-center justify-between">
       <Pressable onPress={openUserProfile}>
         <HStack space="md" className="items-center">
-          <Avatar size="md">
-            <AvatarFallbackText>{profile.user_name}</AvatarFallbackText>
-            <AvatarImage source={{ uri: profile.avatar_url! }} />
-          </Avatar>
+          <UserAvatar profile={profile} />
 
           <Text className="text-typography-950 text-lg">
             {profile.user_name}

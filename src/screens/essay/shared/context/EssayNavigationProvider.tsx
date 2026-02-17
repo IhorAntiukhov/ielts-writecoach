@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 
-type NavigationIntent = "review" | "reactions" | null;
+type NavigationIntent = "review" | "comment" | null;
 
 interface EssayFormsContextProps {
   navigationIntent: NavigationIntent;

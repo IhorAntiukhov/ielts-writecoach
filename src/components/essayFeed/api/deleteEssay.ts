@@ -7,7 +7,6 @@ export default async function deleteEssayWithImage(
 ) {
   if (imageUrl && !imageUrl.startsWith("file:")) {
     const imagePath = imageUrl.slice(imageUrl.indexOf("essay_images/") + 14);
-    console.log("deleteee", imageUrl, imagePath);
 
     await deleteImage("essay_images", imagePath);
   }

@@ -1,3 +1,5 @@
-type EssayType = "task-1G" | "task-1A" | "task-2";
+import { Database } from "./supabase";
+
+type EssayType = Database["public"]["Enums"]["EssayType"];
 
 export default EssayType;

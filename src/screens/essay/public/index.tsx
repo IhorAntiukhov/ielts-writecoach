@@ -2,14 +2,16 @@ import { VStack } from "@/components/ui/vstack";
 import { getPublicEssay } from "@/src/api/essaysRepo";
 import Pager from "@/src/components/Pager";
 import SegmentedButtons from "@/src/components/segmentedButtons";
+import queryKeyPrefixes from "@/src/constants/queryKeyPrefixes";
 import Container from "@/src/ui/Container";
 import TopBar from "@/src/ui/TopBar";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import ReactionsForm from "../shared/components/ReactionsPage";
 import ReviewForm from "../shared/components/ReviewPage";
 import EssayDataContext from "../shared/context/EssayDataContext";
+import { EssayNavigationContext } from "../shared/context/EssayNavigationProvider";
 import { PublicPage } from "../shared/types/page";
 import TaskPage from "./components/TaskPage";
 
@@ -18,8 +20,18 @@ export default function PublicEssayScreen() {
 
   const [page, setPage] = useState<PublicPage>("task");
 
+  const { navigationIntent, setNavigationIntent } = use(
+    EssayNavigationContext,
+  )!;
+
+  useEffect(() => {
+    if (navigationIntent === "comment") {
+      setPage("reactions");
+    }
+  }, [navigationIntent, setNavigationIntent]);
+
   const { data, error, isPending, isError } = useQuery({
-    queryKey: ["essay", id],
+    queryKey: [queryKeyPrefixes.publicEssay, Number(id as string)],
     queryFn: () => getPublicEssay(Number(id as string)),
   });
 

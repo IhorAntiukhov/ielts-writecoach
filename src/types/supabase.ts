@@ -369,6 +369,14 @@ export type Database = {
       };
     };
     Functions: {
+      handle_essay_reaction: {
+        Args: {
+          essay_id: number;
+          reaction_type: Database["public"]["Enums"]["ReactionType"];
+          user_id: string;
+        };
+        Returns: undefined;
+      };
       save_essay_analysis: {
         Args: {
           coherence_band: number;

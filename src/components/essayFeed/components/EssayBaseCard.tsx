@@ -1,3 +1,4 @@
+import { Divider } from "@/components/ui/divider";
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
 import {
@@ -10,6 +11,7 @@ import { useState } from "react";
 import { Text, TextLayoutEvent, View } from "react-native";
 import EssayInstructions from "../../essayInstructions";
 import EssayBandScore from "./EssayBandScore";
+import ReactionsCardFooter from "./ReactionsCardFooter";
 
 cssInterop(LinearGradient, {
   className: "style",
@@ -84,6 +86,12 @@ export default function EssayBaseCard({ type, data }: EssayBaseCardProps) {
           <EssayBandScore category="Grammar" bandScore={data.grammar_band!} />
         </HStack>
       )}
+
+      <View className="-mx-8">
+        <Divider />
+      </View>
+
+      <ReactionsCardFooter data={data} />
     </VStack>
   );
 }

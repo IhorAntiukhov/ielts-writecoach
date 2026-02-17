@@ -24,7 +24,9 @@ import { PrivateFeedEssay, PublicFeedEssay } from "./types/feedEssayTypes";
 export async function getPublicEssay(id: number) {
   const { data, error } = await supabase
     .from("essays")
-    .select("*, reviews ( * ), reactions ( * ), profiles ( * )")
+    .select(
+      "*, reviews ( * ), reactions ( * ), profiles ( user_name, avatar_url )",
+    )
     .eq("id", id)
     .single();
 

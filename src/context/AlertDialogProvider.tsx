@@ -10,7 +10,7 @@ import { Button, ButtonText } from "@/components/ui/button";
 import { createContext, useState } from "react";
 import { Text } from "react-native";
 
-interface ShowDialogParams {
+export interface ShowDialogParams {
   title: string;
   content: string;
   confirmButtonText?: string;

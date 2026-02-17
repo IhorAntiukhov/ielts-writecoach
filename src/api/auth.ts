@@ -25,8 +25,6 @@ export async function signInWithGoogle() {
     },
   });
 
-  console.log(redirectToLogin);
-
   if (error) throw error;
 
   const res = await WebBrowser.openAuthSessionAsync(data.url, redirectToLogin);
