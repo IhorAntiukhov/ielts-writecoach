@@ -1,6 +1,5 @@
 import { HStack } from "@/components/ui/hstack";
 import { Spinner } from "@/components/ui/spinner";
-import { VStack } from "@/components/ui/vstack";
 import useToast from "@/src/hooks/useToast";
 import IconButton from "@/src/ui/button/IconButton";
 import UnderlinedInput from "@/src/ui/input/UnderlinedInput";
@@ -10,10 +9,11 @@ import { MutationFunction, useMutation } from "@tanstack/react-query";
 import { Check, Pencil } from "lucide-react-native";
 import { useState } from "react";
 import { DefaultValues, FieldValues, Path, useForm } from "react-hook-form";
-import { KeyboardTypeOptions, Text } from "react-native";
+import { KeyboardTypeOptions } from "react-native";
 import { $ZodType, $ZodTypeInternals } from "zod/v4/core";
+import DisplayableUserProperty from "../../shared/components/DisplayableUserProperty";
 
-interface UserPropertyProps<T extends FieldValues> {
+interface EditableUserPropertyProps<T extends FieldValues> {
   name: string;
   value: string;
   controlName: Path<T>;
@@ -28,7 +28,7 @@ interface UserPropertyProps<T extends FieldValues> {
 const EditIcon = cssInteropIcon(Pencil);
 const SaveIcon = cssInteropIcon(Check);
 
-export default function UserProperty<T extends FieldValues>({
+export default function EditableUserProperty<T extends FieldValues>({
   name,
   value,
   controlName,
@@ -38,7 +38,7 @@ export default function UserProperty<T extends FieldValues>({
   keyboardType,
   toastTitle,
   toastSuccessMessage,
-}: UserPropertyProps<T>) {
+}: EditableUserPropertyProps<T>) {
   const [isEditModeOn, setIsEditModeOn] = useState(false);
 
   const Icon = isEditModeOn ? SaveIcon : EditIcon;
@@ -78,9 +78,12 @@ export default function UserProperty<T extends FieldValues>({
 
   return (
     <HStack space="md" className="items-center justify-between">
-      <VStack space="xs" className="flex-grow">
-        <Text className="text-typography-500">{name}</Text>
-        {isEditModeOn ? (
+      <DisplayableUserProperty
+        type="editable"
+        name={name}
+        value={value}
+        isEditModeOn={isEditModeOn}
+        editInputComponent={
           <UnderlinedInput
             name={controlName}
             control={control}
@@ -88,10 +91,8 @@ export default function UserProperty<T extends FieldValues>({
             keyboardType={keyboardType}
             errors={errors}
           />
-        ) : (
-          <Text className="text-typography-950">{value}</Text>
-        )}
-      </VStack>
+        }
+      />
 
       <IconButton
         action="secondary"

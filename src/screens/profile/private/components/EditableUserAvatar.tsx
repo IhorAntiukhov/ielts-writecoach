@@ -16,7 +16,7 @@ import uploadAvatar from "../api/uploadAvatar";
 
 const Icon = cssInteropIcon(ImagePlus);
 
-export default function UserAvatar() {
+export default function EditableUserAvatar() {
   const { user } = use(AuthContext).session!;
 
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);

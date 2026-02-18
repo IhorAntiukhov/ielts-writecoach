@@ -4,6 +4,8 @@ const queryKeyPrefixes = {
   privateEssay: "private-essay",
   publicEssay: "public-essay",
   comments: "comments",
+  userData: "user-data",
+  userStats: "user-stats",
 } as const;
 
 export default queryKeyPrefixes;

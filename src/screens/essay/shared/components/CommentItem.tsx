@@ -6,23 +6,37 @@ import EditDeleteButtons from "@/src/components/editDeleteButtons";
 import PublishedDate from "@/src/components/publishedDate";
 import queryKeyPrefixes from "@/src/constants/queryKeyPrefixes";
 import { ShowDialogParams } from "@/src/context/AlertDialogProvider";
+import useOpenUserProfile from "@/src/hooks/useOpenUserProfile";
 import useToast from "@/src/hooks/useToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Text } from "react-native";
+import { Pressable, Text } from "react-native";
 import UserAvatar from "./UserAvatar";
 
 interface CommentProps {
   data: Comment;
   showDialog: (params: ShowDialogParams) => void;
+  ownUserId: string;
+  setIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function CommentItem({ data, showDialog }: CommentProps) {
+export default function CommentItem({
+  data,
+  showDialog,
+  ownUserId,
+  setIsOpened,
+}: CommentProps) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [newCommentText, setNewCommentText] = useState("");
 
   const toast = useToast();
   const queryClient = useQueryClient();
+
+  const { openUserProfile } = useOpenUserProfile(data.user_id, ownUserId);
+  const handleOpenProfile = () => {
+    setIsOpened(false);
+    openUserProfile();
+  };
 
   const { mutate: updateCommentMutation, isPending: isUpdatePending } =
     useMutation({
@@ -68,29 +82,35 @@ export default function CommentItem({ data, showDialog }: CommentProps) {
 
   return (
     <HStack space="md">
-      <UserAvatar profile={profile} />
+      <Pressable onPress={handleOpenProfile}>
+        <UserAvatar profile={profile} />
+      </Pressable>
 
       <VStack space="lg" className="items-center">
         <VStack space="sm">
           <HStack space="lg" className="items-center justify-between">
             <HStack space="lg" className="items-center">
-              <Text className="text-md text-typography-950">
-                {profile.user_name}
-              </Text>
+              <Pressable onPress={handleOpenProfile}>
+                <Text className="text-md text-typography-950">
+                  {profile.user_name}
+                </Text>
+              </Pressable>
 
               <PublishedDate createdAt={data.created_at} />
             </HStack>
 
-            <EditDeleteButtons
-              type="comment"
-              onEdit={() => setIsEditMode(true)}
-              onDelete={deleteCommentMutation}
-              isEditCommentMode={isEditMode}
-              updateComment={handleUpdateComment}
-              showDialog={showDialog}
-              isUpdatePending={isUpdatePending}
-              isDeletionPending={isDeletionPending}
-            />
+            {data.user_id === ownUserId && (
+              <EditDeleteButtons
+                type="comment"
+                onEdit={() => setIsEditMode(true)}
+                onDelete={deleteCommentMutation}
+                isEditCommentMode={isEditMode}
+                updateComment={handleUpdateComment}
+                showDialog={showDialog}
+                isUpdatePending={isUpdatePending}
+                isDeletionPending={isDeletionPending}
+              />
+            )}
           </HStack>
 
           {isEditMode ? (

@@ -1,5 +1,5 @@
 import KeyboardScrollView from "@/src/layout/KeyboardScrollView";
-import ProfileScreen from "@/src/screens/profile";
+import ProfileScreen from "@/src/screens/profile/private";
 import React from "react";
 
 export default function Profile() {

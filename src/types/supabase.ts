@@ -369,6 +369,15 @@ export type Database = {
       };
     };
     Functions: {
+      get_user_stats: {
+        Args: { is_public_profile: boolean; p_user_id: string };
+        Returns: {
+          average_band_score: number;
+          total_comments_left: number;
+          total_essays_count: number;
+          total_reactions_left: number;
+        }[];
+      };
       handle_essay_reaction: {
         Args: {
           essay_id: number;

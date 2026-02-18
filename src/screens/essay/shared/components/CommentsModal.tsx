@@ -76,7 +76,12 @@ export default function CommentsModal({
             <ActionsheetFlatList
               data={commentsData}
               renderItem={({ item }) => (
-                <CommentItem data={item as Comment} showDialog={showDialog} />
+                <CommentItem
+                  data={item as Comment}
+                  showDialog={showDialog}
+                  ownUserId={user.id}
+                  setIsOpened={setIsOpened}
+                />
               )}
               keyExtractor={(item) => (item as Comment).id!.toString()}
               contentContainerClassName="gap-4"
