@@ -6,6 +6,11 @@ const queryKeyPrefixes = {
   comments: "comments",
   userData: "user-data",
   userStats: "user-stats",
+  analytics: {
+    essayCounts: "essay-counts",
+    userAnalytics: "user-analytics",
+    reactionCounts: "reaction-counts",
+  },
 } as const;
 
 export default queryKeyPrefixes;

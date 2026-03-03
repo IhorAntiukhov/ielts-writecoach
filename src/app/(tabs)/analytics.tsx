@@ -1,10 +1,11 @@
+import KeyboardScrollView from "@/src/layout/KeyboardScrollView";
+import AnalyticsScreen from "@/src/screens/analytics";
 import React from "react";
-import { Text, View } from "react-native";
 
 export default function Analytics() {
   return (
-    <View>
-      <Text>Analytics</Text>
-    </View>
+    <KeyboardScrollView>
+      <AnalyticsScreen />
+    </KeyboardScrollView>
   );
 }

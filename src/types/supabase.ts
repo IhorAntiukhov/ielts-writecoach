@@ -151,6 +151,38 @@ export type Database = {
           },
         ];
       };
+      global_reports: {
+        Row: {
+          end_date: string;
+          id: number;
+          report: string;
+          start_date: string;
+          user_id: string;
+        };
+        Insert: {
+          end_date?: string;
+          id?: number;
+          report: string;
+          start_date: string;
+          user_id: string;
+        };
+        Update: {
+          end_date?: string;
+          id?: number;
+          report?: string;
+          start_date?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "global_reports_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       profiles: {
         Row: {
           avatar_url: string | null;
@@ -369,6 +401,39 @@ export type Database = {
       };
     };
     Functions: {
+      get_user_analytics: {
+        Args: {
+          essay_type?: Database["public"]["Enums"]["EssayType"];
+          p_user_id: string;
+          time_interval: number;
+        };
+        Returns: {
+          coherence_band: number;
+          created_at: string;
+          grammar_band: number;
+          task_response_band: number;
+          vocabulary_band: number;
+          words_to_time_ratio: number;
+        }[];
+      };
+      get_user_essay_counts: {
+        Args: { p_user_id: string; time_interval: number };
+        Returns: {
+          essay_count: number;
+          type: Database["public"]["Enums"]["EssayType"];
+        }[];
+      };
+      get_user_reaction_counts: {
+        Args: {
+          essay_type?: Database["public"]["Enums"]["EssayType"];
+          p_user_id: string;
+          time_interval: number;
+        };
+        Returns: {
+          reaction_count: number;
+          type: Database["public"]["Enums"]["ReactionType"];
+        }[];
+      };
       get_user_stats: {
         Args: { is_public_profile: boolean; p_user_id: string };
         Returns: {
@@ -398,6 +463,15 @@ export type Database = {
           user_id: string;
           vocabulary_band: number;
           vocabulary_feedback: string;
+        };
+        Returns: undefined;
+      };
+      save_global_report: {
+        Args: {
+          p_end_date: string;
+          p_report: string;
+          p_start_date: string;
+          p_user_id: string;
         };
         Returns: undefined;
       };

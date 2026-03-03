@@ -1,6 +1,7 @@
 import { HStack } from "@/components/ui/hstack";
 import { Skeleton } from "@/components/ui/skeleton";
 import { VStack } from "@/components/ui/vstack";
+import essayTypeOptions from "@/src/constants/essayTypeOptions";
 import { AuthContext } from "@/src/context/AuthProvider";
 import EssayType from "@/src/types/essayType";
 import PrimaryButton from "@/src/ui/button/PrimaryButton";
@@ -17,14 +18,16 @@ import { Save, Sparkles } from "lucide-react-native";
 import { use, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Text } from "react-native";
+import EssayDataContext from "../../shared/context/EssayDataContext";
 import {
   saveExistingEssayWithAnalysis,
   uploadNewEssayWithAnalysis,
 } from "../api/analyzeEssay";
 import { saveExistingEssay, uploadNewEssay } from "../api/saveEssay";
-import EssayDataContext from "../../shared/context/EssayDataContext";
 import { WritingFormData, writingFormSchema } from "../forms/writingForm";
-import getWordCount from "../utils/getWordCount";
+import useSetFormData from "../hooks/useSetFormData";
+import useUpdateEssayMutation from "../hooks/useUpdateEssayMutation";
+import useUploadEssayMutation from "../hooks/useUploadEssayMutation";
 import ImageData from "../types/imageData";
 import {
   InsertEssayParams,
@@ -32,12 +35,10 @@ import {
   UpdateEssayParams,
   UpdateEssayWithAnalysisParams,
 } from "../types/saveEssayParams";
+import getWordCount from "../utils/getWordCount";
+import EssayImagePicker from "./EssayImagePicker";
 import Timer from "./Timer";
 import UpdateEssayPrivacyButton from "./UpdateEssayPrivacyButton";
-import useSetFormData from "../hooks/useSetFormData";
-import useUploadEssayMutation from "../hooks/useUploadEssayMutation";
-import useUpdateEssayMutation from "../hooks/useUpdateEssayMutation";
-import EssayImagePicker from "./EssayImagePicker";
 
 export default function WriteForm() {
   const { id } = useLocalSearchParams();
@@ -187,20 +188,7 @@ export default function WriteForm() {
           <Dropdown<EssayType>
             selectedValue={type}
             onChange={setType}
-            options={[
-              {
-                label: "General Task 1",
-                value: "task-1G",
-              },
-              {
-                label: "Academic Task 1",
-                value: "task-1A",
-              },
-              {
-                label: "Task 2",
-                value: "task-2",
-              },
-            ]}
+            options={essayTypeOptions}
             initialLabel="Academic Task 1"
           />
 
