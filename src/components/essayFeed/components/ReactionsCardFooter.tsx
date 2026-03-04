@@ -15,8 +15,8 @@ import MenuButton from "@/src/ui/button/MenuButton";
 import cssInteropIcon from "@/src/utils/cssInteropIcon";
 import { getNounByNumber } from "@/src/utils/getNounByNumber";
 import { Award, MessageCircle } from "lucide-react-native";
-import { use, useState } from "react";
-import { LayoutChangeEvent, Pressable, Text, View } from "react-native";
+import { use } from "react";
+import { Pressable, Text, View } from "react-native";
 
 cssInteropIcon(Award);
 cssInteropIcon(MessageCircle);
@@ -34,10 +34,6 @@ interface ReactionsCardFooterProps {
 export default function ReactionsCardFooter({
   data,
 }: ReactionsCardFooterProps) {
-  const [commentsCountHeight, setCommentsCountHeight] = useState<
-    number | undefined
-  >();
-
   const { user } = use(AuthContext).session!;
   const { setNavigationIntent } = use(EssayNavigationContext);
 
@@ -48,26 +44,20 @@ export default function ReactionsCardFooter({
     false,
   );
 
-  const handleReactionsCountLayout = (event: LayoutChangeEvent) => {
-    setCommentsCountHeight(event.nativeEvent.layout.height);
-  };
-
   const handleOpenComments = () => {
     setNavigationIntent?.("comment");
     openEssay();
   };
 
   return (
-    <HStack space="md" className="items-center justify-between flex-1">
+    <HStack space="md" className="items-stretch justify-between">
       <VStack space="lg" className="items-center">
-        <HStack
-          space="md"
-          className="items-center"
-          onLayout={data.top_reaction ? handleReactionsCountLayout : undefined}
-        >
-          <View className="p-1.5 bg-background-50 rounded-full">
-            {data.top_reaction && reactionIcons[data.top_reaction]}
-          </View>
+        <HStack space="md" className="items-center">
+          {data.top_reaction && (
+            <View className="p-1.5 bg-background-50 rounded-full">
+              {reactionIcons[data.top_reaction]}
+            </View>
+          )}
 
           <Text className="text-typography-700 text-md">
             {data.reactions_count}{" "}
@@ -97,15 +87,12 @@ export default function ReactionsCardFooter({
       )}
 
       <VStack space="lg" className="items-center">
-        <Text
-          className="text-typography-700 text-md align-middle"
-          style={{
-            height: data.top_reaction ? commentsCountHeight : undefined,
-          }}
-        >
-          {data.comments_count}{" "}
-          {getNounByNumber(data.comments_count!, "comment")}
-        </Text>
+        <View className="flex justify-center max-h-[32.7px] flex-grow">
+          <Text className="text-typography-700 text-md align-middle">
+            {data.comments_count}{" "}
+            {getNounByNumber(data.comments_count!, "comment")}
+          </Text>
+        </View>
 
         {data.user_id !== user.id && (
           <Pressable onPress={handleOpenComments}>

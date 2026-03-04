@@ -4,7 +4,7 @@ import { VStack } from "@/components/ui/vstack";
 import EssayFeedContext from "@/src/components/essayFeed/context/EssayFeedContext";
 import IndicatorText from "@/src/ui/IndicatorText";
 import SkeletonCard from "@/src/ui/SkeletonCard";
-import { use } from "react";
+import { use, useMemo } from "react";
 import { FlatList, FlatListProps } from "react-native";
 import FilterSelect from "../filterSelect";
 import SortSelect from "../sortSelect";
@@ -27,18 +27,22 @@ export default function EssayFeed() {
     isFetchingNextPage,
   } = use(EssayFeedContext)!;
 
-  const flatListProps: Partial<FlatListProps<any>> = {
-    keyExtractor: (item) => item.id!.toString(),
-    contentContainerClassName: "gap-4",
-    onEndReached: () => {
-      if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-    },
-    onEndReachedThreshold: 0.4,
-    ListFooterComponent: () =>
-      isFetchingNextPage && (
-        <Spinner size={32} className="text-typography-950" />
-      ),
-  };
+  const flatListProps: Partial<FlatListProps<any>> = useMemo(
+    () => ({
+      removeClippedSubviews: false,
+      keyExtractor: (item) => item.id!.toString(),
+      contentContainerClassName: "gap-4",
+      onEndReached: () => {
+        if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+      },
+      onEndReachedThreshold: 0.4,
+      ListFooterComponent: () =>
+        isFetchingNextPage && (
+          <Spinner size={32} className="text-typography-950" />
+        ),
+    }),
+    [hasNextPage, isFetchingNextPage, fetchNextPage],
+  );
 
   return (
     <VStack className="flex-1" space="2xl">
