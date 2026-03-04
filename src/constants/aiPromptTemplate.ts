@@ -1,6 +1,6 @@
 import AiPromptEssayType from "../types/aiPromptEssayType";
 
-export function getAiPromptTemplate(
+export function getEssayAnalysisPrompt(
   taskType: AiPromptEssayType,
   isImageIncluded: boolean,
   instructions: string,
@@ -38,3 +38,33 @@ Rules:
 
 export const systemInstruction =
   "You are an experienced IELTS Writing examiner. Evaluate essays strictly using official IELTS band descriptors." as const;
+
+export function getFullEssayRewritePrompt(
+  taskType: AiPromptEssayType,
+  isImageIncluded: boolean,
+  instructions: string,
+  originalEssay: string,
+) {
+  return `
+Rewrite the following IELTS ${taskType} essay to improve clarity, coherence, vocabulary, and grammatical accuracy while preserving the student's original ideas as much as possible.
+
+Requirements:
+- Fully address the task
+- Keep the original meaning and arguments unless they are clearly incorrect
+- Improve logical flow and paragraph structure
+- Use natural, academic language appropriate for IELTS
+- Do NOT make it unnecessarily complex
+- Do NOT add completely new arguments
+- Keep the length appropriate for ${taskType}
+
+Essay instructions${isImageIncluded ? " (see image)" : ""}:
+${instructions}
+
+Original essay:
+${originalEssay}
+
+Output:
+Provide only the improved full essay text.
+Do not include explanations, comments, or analysis.
+`;
+}

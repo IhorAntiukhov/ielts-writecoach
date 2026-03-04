@@ -31,7 +31,7 @@ export default function ReactionCount({
   total,
   isPublicEssay,
 }: ReactionCountProps) {
-  const { data } = use(EssayDataContext)!;
+  const { type: essayType, data } = use(EssayDataContext)!;
   const { user } = use(AuthContext).session!;
 
   const { handleEssayReactionMutation, isPending } = useHandleReaction(
@@ -59,7 +59,10 @@ export default function ReactionCount({
   };
 
   return (
-    <Pressable onPress={handleEssayReaction} disabled={isPending}>
+    <Pressable
+      onPress={handleEssayReaction}
+      disabled={isPending || essayType === "private"}
+    >
       <VStack space="md">
         <HStack space="md" className="items-center justify-between">
           <HStack space="md" className="items-center">
@@ -68,22 +71,24 @@ export default function ReactionCount({
               {type}
             </Text>
 
-            <View
-              className={clsx(
-                "rounded-full p-1",
-                isReactionSelected
-                  ? "bg-primary-500"
-                  : "border-2 border-primary-500",
-              )}
-            >
-              {isReactionSelected ? (
-                <Check className="text-white" size={18} />
-              ) : isPending ? (
-                <Spinner className="text-white" size={14} />
-              ) : (
-                <View className="size-[14px]"></View>
-              )}
-            </View>
+            {essayType === "public" && (
+              <View
+                className={clsx(
+                  "rounded-full p-1",
+                  isReactionSelected
+                    ? "bg-primary-500"
+                    : "border-2 border-primary-500",
+                )}
+              >
+                {isReactionSelected ? (
+                  <Check className="text-white" size={18} />
+                ) : isPending ? (
+                  <Spinner className="text-white" size={14} />
+                ) : (
+                  <View className="size-[14px]"></View>
+                )}
+              </View>
+            )}
           </HStack>
 
           <Text className="text-lg font-bold text-typography-950">{count}</Text>

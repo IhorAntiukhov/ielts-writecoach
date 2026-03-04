@@ -41,3 +41,14 @@ export async function getEssayReview(essayId: number) {
 
   return data;
 }
+
+export async function saveFullRewrite(essayId: number, fullRewrite: string) {
+  const { error } = await supabase
+    .from("reviews")
+    .update({
+      full_rewrite: fullRewrite,
+    })
+    .eq("essay_id", essayId);
+
+  if (error) throw error;
+}

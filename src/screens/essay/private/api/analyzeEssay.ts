@@ -1,4 +1,4 @@
-import generateEssayReview from "@/src/api/gemini";
+import { generateEssayReview } from "@/src/api/gemini";
 import { saveEssayReview } from "@/src/api/reviewsRepo";
 import AiPromptEssayType from "@/src/types/aiPromptEssayType";
 import {
@@ -72,7 +72,7 @@ async function generateAndParseEssayReview(
 
   const feedback = response.candidates?.[0].content?.parts?.[0].text;
 
-  if (!feedback) throw Error("Failed to generate Ai review");
+  if (!feedback) throw Error("Failed to generate Ai essay rewrite");
 
   return JSON.parse(feedback);
 }

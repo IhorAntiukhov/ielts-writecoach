@@ -1,7 +1,8 @@
 import { updateEssayPrivacy } from "@/src/api/essaysRepo";
+import queryKeyPrefixes from "@/src/constants/queryKeyPrefixes";
 import PopoverButton from "@/src/ui/button/PopoverButton";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Users } from "lucide-react-native";
 
 interface UpdateEssayPrivacyButtonProps {
@@ -15,6 +16,8 @@ export default function UpdateEssayPrivacyButton({
   isPublic,
   setIsPublic,
 }: UpdateEssayPrivacyButtonProps) {
+  const queryClient = useQueryClient();
+
   const {
     mutate: updateEssayPrivacyMutation,
     isPending: isUpdateEssayPrivacyMutationPending,
@@ -23,6 +26,14 @@ export default function UpdateEssayPrivacyButton({
       updateEssayPrivacy(Number(id as string), isPublic),
     onSuccess: (data) => {
       setIsPublic(data);
+
+      queryClient.invalidateQueries({
+        predicate: ({ queryKey }) =>
+          queryKey[0] === queryKeyPrefixes.publicFeed ||
+          queryKey[0] === queryKeyPrefixes.privateFeed ||
+          (queryKey[0] === queryKeyPrefixes.privateEssay &&
+            queryKey[1] === Number(id as string)),
+      });
     },
   });
 

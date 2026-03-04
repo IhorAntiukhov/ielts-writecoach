@@ -263,6 +263,7 @@ export type Database = {
           coherence_band: number;
           coherence_feedback: string;
           essay_id: number;
+          full_rewrite: string | null;
           grammar_band: number;
           grammar_feedback: string;
           id: number;
@@ -277,6 +278,7 @@ export type Database = {
           coherence_band: number;
           coherence_feedback: string;
           essay_id: number;
+          full_rewrite?: string | null;
           grammar_band: number;
           grammar_feedback: string;
           id?: number;
@@ -291,6 +293,7 @@ export type Database = {
           coherence_band?: number;
           coherence_feedback?: string;
           essay_id?: number;
+          full_rewrite?: string | null;
           grammar_band?: number;
           grammar_feedback?: string;
           id?: number;

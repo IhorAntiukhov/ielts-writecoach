@@ -3,6 +3,7 @@ import {
   FullPublicEssay,
 } from "@/src/api/essaysRepo/types/fullEssayTypes";
 import { createContext } from "react";
+import ImageData from "../../private/types/imageData";
 
 interface BaseEssayDataContextProps {
   error: Error | null;
@@ -18,6 +19,8 @@ interface PublicEssayDataContextProps extends BaseEssayDataContextProps {
 interface PrivateEssayDataContextProps extends BaseEssayDataContextProps {
   type: "private";
   data: FullPrivateEssay | undefined;
+  imageData: ImageData;
+  setImageData: React.Dispatch<React.SetStateAction<ImageData>>;
 }
 
 type EssayDataContextProps =

@@ -14,12 +14,14 @@ import { EssayNavigationContext } from "../shared/context/EssayNavigationProvide
 import { PrivatePage } from "../shared/types/page";
 import getEssayWithImageData from "./api/getEssayWithImageData";
 import WriteForm from "./components/WriteForm";
+import ImageData from "./types/imageData";
 
 export default function PrivateEssayScreen() {
   const { id } = useLocalSearchParams();
   const isNewEssay = id === "new-essay";
 
   const [page, setPage] = useState<PrivatePage>("write");
+  const [imageData, setImageData] = useState<ImageData>(null);
 
   const { navigationIntent, setNavigationIntent } = use(
     EssayNavigationContext,
@@ -75,6 +77,8 @@ export default function PrivateEssayScreen() {
               error,
               isPending,
               isError,
+              imageData,
+              setImageData,
             }}
           >
             <Pager

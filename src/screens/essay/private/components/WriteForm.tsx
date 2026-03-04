@@ -28,7 +28,6 @@ import { WritingFormData, writingFormSchema } from "../forms/writingForm";
 import useSetFormData from "../hooks/useSetFormData";
 import useUpdateEssayMutation from "../hooks/useUpdateEssayMutation";
 import useUploadEssayMutation from "../hooks/useUploadEssayMutation";
-import ImageData from "../types/imageData";
 import {
   InsertEssayParams,
   InsertEssayWithAnalysisParams,
@@ -47,8 +46,6 @@ export default function WriteForm() {
 
   const [type, setType] = useState<EssayType>("task-1A");
 
-  const [imageData, setImageData] = useState<ImageData>(null);
-
   const [secondsFromStart, setSecondsFromStart] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
@@ -56,15 +53,12 @@ export default function WriteForm() {
 
   const { user } = use(AuthContext).session!;
 
-  const {
-    type: privacyType,
-    data,
-    error,
-    isPending,
-    isError,
-  } = use(EssayDataContext)!;
+  const essayData = use(EssayDataContext)!;
 
-  if (privacyType !== "private") throw Error("Essay must be public");
+  if (essayData.type !== "private") throw Error("Essay must be private");
+
+  const { data, error, isPending, isError, imageData, setImageData } =
+    essayData;
 
   const {
     control,

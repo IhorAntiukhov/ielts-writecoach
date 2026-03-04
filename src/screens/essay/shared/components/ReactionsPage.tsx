@@ -53,6 +53,8 @@ export default function ReactionsPage() {
         <IndicatorText>
           You have to save your essay to access reactions
         </IndicatorText>
+      ) : !data.is_public ? (
+        <IndicatorText>You have to share your essay with others</IndicatorText>
       ) : (
         <>
           <CardBox>
