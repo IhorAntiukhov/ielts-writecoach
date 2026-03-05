@@ -21,7 +21,7 @@ export default function ReviewPage() {
     <VStack space="2xl">
       {!review && (!isPending || isNewEssay) ? (
         <IndicatorText>
-          {`${type === "private" ? "You haven't" : "The user hasn't"} generated an AI review yet`}
+          {`${type === "private" ? "You haven't" : "The author hasn't"} generated an AI review yet`}
         </IndicatorText>
       ) : isError ? (
         <IndicatorText isError>

@@ -14,6 +14,7 @@ import ReactionType from "@/src/types/reactionType";
 import MenuButton from "@/src/ui/button/MenuButton";
 import cssInteropIcon from "@/src/utils/cssInteropIcon";
 import { getNounByNumber } from "@/src/utils/getNounByNumber";
+import { clsx } from "clsx";
 import { Award, MessageCircle } from "lucide-react-native";
 import { use } from "react";
 import { Pressable, Text, View } from "react-native";
@@ -49,6 +50,11 @@ export default function ReactionsCardFooter({
     openEssay();
   };
 
+  const reactionsDisabled = data.feedback_availability === "no-feedback";
+  const commentsDisabled =
+    data.feedback_availability === "no-feedback" ||
+    data.feedback_availability === "reactions-only";
+
   return (
     <HStack space="md" className="items-stretch justify-between">
       <VStack space="lg" className="items-center">
@@ -72,12 +78,25 @@ export default function ReactionsCardFooter({
             }
             trigger={
               <HStack space="sm" className="items-center justify-center">
-                <Award className="text-primary-500" size={22} />
+                <Award
+                  className={clsx(
+                    reactionsDisabled ? "text-primary-300" : "text-primary-500",
+                  )}
+                  size={22}
+                />
 
-                <Text className="text-primary-500 text-md font-bold">Like</Text>
+                <Text
+                  className={clsx(
+                    reactionsDisabled ? "text-primary-300" : "text-primary-500",
+                    "text-md font-bold",
+                  )}
+                >
+                  Like
+                </Text>
               </HStack>
             }
             options={menuOptions}
+            disabled={reactionsDisabled}
           />
         )}
       </VStack>
@@ -95,11 +114,21 @@ export default function ReactionsCardFooter({
         </View>
 
         {data.user_id !== user.id && (
-          <Pressable onPress={handleOpenComments}>
+          <Pressable onPress={handleOpenComments} disabled={commentsDisabled}>
             <HStack space="sm" className="items-center justify-center">
-              <MessageCircle className="text-primary-500" size={22} />
+              <MessageCircle
+                className={clsx(
+                  commentsDisabled ? "text-primary-300" : "text-primary-500",
+                )}
+                size={22}
+              />
 
-              <Text className="text-primary-500 text-md font-bold">
+              <Text
+                className={clsx(
+                  commentsDisabled ? "text-primary-300" : "text-primary-500",
+                  "text-md font-bold",
+                )}
+              >
                 Comment
               </Text>
             </HStack>

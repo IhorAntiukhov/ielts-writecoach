@@ -4,6 +4,7 @@ import CardBox from "@/src/ui/CardBox";
 import IndicatorText from "@/src/ui/IndicatorText";
 import SkeletonCard from "@/src/ui/SkeletonCard";
 import { use, useEffect, useState } from "react";
+import SelectFeedbackAvailability from "../../private/components/SelectFeedbackAvailability";
 import EssayDataContext from "../context/EssayDataContext";
 import { EssayNavigationContext } from "../context/EssayNavigationProvider";
 import useReactionCount from "../hooks/useReactionCount";
@@ -57,49 +58,60 @@ export default function ReactionsPage() {
         <IndicatorText>You have to share your essay with others</IndicatorText>
       ) : (
         <>
-          <CardBox>
-            <VStack space="2xl">
-              <ReactionCount
-                type="Clear and Natural"
-                count={clearAndNaturalReactions!}
-                total={reactions?.length!}
-                isPublicEssay={isPublicEssay}
-              />
+          {data.user_id === user.id && <SelectFeedbackAvailability />}
 
-              <ReactionCount
-                type="Good Ideas"
-                count={goodIdeasReactions!}
-                total={reactions?.length!}
-                isPublicEssay={isPublicEssay}
-              />
+          {data.feedback_availability === "reactions-only" ||
+          data.feedback_availability === "reactions-and-comments" ? (
+            <CardBox>
+              <VStack space="2xl">
+                <ReactionCount
+                  type="Clear and Natural"
+                  count={clearAndNaturalReactions!}
+                  total={reactions?.length!}
+                  isPublicEssay={isPublicEssay}
+                />
 
-              <ReactionCount
-                type="Well Structured"
-                count={wellStructuredReactions!}
-                total={reactions?.length!}
-                isPublicEssay={isPublicEssay}
-              />
+                <ReactionCount
+                  type="Good Ideas"
+                  count={goodIdeasReactions!}
+                  total={reactions?.length!}
+                  isPublicEssay={isPublicEssay}
+                />
 
-              <ReactionCount
-                type="Language needs Work"
-                count={languageNeedsWorkReactions!}
-                total={reactions?.length!}
-                isPublicEssay={isPublicEssay}
-              />
+                <ReactionCount
+                  type="Well Structured"
+                  count={wellStructuredReactions!}
+                  total={reactions?.length!}
+                  isPublicEssay={isPublicEssay}
+                />
 
-              <ReactionCount
-                type="Hard to Follow"
-                count={hardToFollowReactions!}
-                total={reactions?.length!}
-                isPublicEssay={isPublicEssay}
-              />
-            </VStack>
-          </CardBox>
+                <ReactionCount
+                  type="Language needs Work"
+                  count={languageNeedsWorkReactions!}
+                  total={reactions?.length!}
+                  isPublicEssay={isPublicEssay}
+                />
 
-          <CommentsModal
-            isOpened={isModalOpened}
-            setIsOpened={setIsModalOpened}
-          />
+                <ReactionCount
+                  type="Hard to Follow"
+                  count={hardToFollowReactions!}
+                  total={reactions?.length!}
+                  isPublicEssay={isPublicEssay}
+                />
+              </VStack>
+            </CardBox>
+          ) : (
+            <IndicatorText>The author disabled reactions</IndicatorText>
+          )}
+
+          {data.feedback_availability === "reactions-and-comments" ? (
+            <CommentsModal
+              isOpened={isModalOpened}
+              setIsOpened={setIsModalOpened}
+            />
+          ) : (
+            <IndicatorText>The author disabled comments</IndicatorText>
+          )}
         </>
       )}
     </VStack>

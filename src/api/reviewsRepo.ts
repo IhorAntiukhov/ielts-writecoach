@@ -1,3 +1,4 @@
+import FeedbackAvailabilityType from "../types/feedbackAvailabilityType";
 import supabase from "./supabaseClient";
 
 interface SaveEssayReviewParams {
@@ -49,6 +50,20 @@ export async function saveFullRewrite(essayId: number, fullRewrite: string) {
       full_rewrite: fullRewrite,
     })
     .eq("essay_id", essayId);
+
+  if (error) throw error;
+}
+
+export async function changeFeedbackAvailability(
+  essayId: number,
+  feedbackAvailability: FeedbackAvailabilityType,
+) {
+  const { error } = await supabase
+    .from("essays")
+    .update({
+      feedback_availability: feedbackAvailability,
+    })
+    .eq("id", essayId);
 
   if (error) throw error;
 }

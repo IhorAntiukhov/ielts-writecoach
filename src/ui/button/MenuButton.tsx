@@ -11,12 +11,14 @@ interface MenuButtonProps<T extends string> {
     value: T;
     label: string;
   }[];
+  disabled?: boolean;
 }
 
 export default function MenuButton<T extends string>({
   onChange,
   trigger,
   options,
+  disabled,
 }: MenuButtonProps<T>) {
   return (
     <Menu
@@ -27,7 +29,11 @@ export default function MenuButton<T extends string>({
       offset={10}
       selectionMode="single"
       trigger={({ ...triggerProps }) => {
-        return <Pressable {...triggerProps}>{trigger}</Pressable>;
+        return (
+          <Pressable {...triggerProps} disabled={disabled}>
+            {trigger}
+          </Pressable>
+        );
       }}
     >
       {options.map(({ icon, value, label }) => (
