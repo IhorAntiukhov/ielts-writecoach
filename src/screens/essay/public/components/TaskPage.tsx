@@ -43,7 +43,7 @@ export default function TaskPage() {
 
           <CardBox>
             <VStack space="lg">
-              {data.time && (
+              {!!data.time && (
                 <Text className="text-typography-500 text-md">
                   Completed in {formatSeconds(data.time)}
                 </Text>

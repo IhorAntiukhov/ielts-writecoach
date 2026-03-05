@@ -18,7 +18,7 @@ import PrimaryButton from "@/src/ui/button/PrimaryButton";
 import IndicatorText from "@/src/ui/IndicatorText";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { MessageCircle } from "lucide-react-native";
-import { use } from "react";
+import { use, useMemo } from "react";
 import { KeyboardAvoidingView, Text, View } from "react-native";
 import EssayDataContext from "../context/EssayDataContext";
 import CommentInput from "./CommentInput";
@@ -53,7 +53,10 @@ export default function CommentsModal({
     initialPageParam: "",
   });
 
-  const commentsData = data?.pages.flatMap((page) => page.items);
+  const commentsData = useMemo(
+    () => data?.pages.flatMap((page) => page.items),
+    [data],
+  );
 
   return (
     <>
@@ -99,7 +102,7 @@ export default function CommentsModal({
                   <IndicatorText>Be the first to comment!</IndicatorText>
                 )
               }
-              onEndReachedThreshold={1}
+              onEndReachedThreshold={0.4}
               ListFooterComponent={() =>
                 isFetchingNextPage && (
                   <Spinner size={32} className="text-typography-950" />

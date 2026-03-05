@@ -18,7 +18,7 @@ export default function AuthNavigator() {
     }
 
     if (session !== null && segments[0] === "(auth)") {
-      router.replace("/(tabs)");
+      router.replace("/(tabs)/home");
     }
   }, [router, segments, session, authIntent, setAuthIntent]);
 
@@ -36,7 +36,11 @@ export default function AuthNavigator() {
   return (
     <View className="flex-1">
       <StatusBar style="auto" />
-      <Stack screenOptions={{ headerShown: false }}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
         <Stack.Protected guard={!session}>
           <Stack.Screen name="(auth)" />
         </Stack.Protected>

@@ -1,10 +1,20 @@
 import EssayNavigationProvider from "@/src/screens/essay/shared/context/EssayNavigationProvider";
 import { Stack } from "expo-router";
+import { View } from "react-native";
 
 export default function IndexLayout() {
   return (
     <EssayNavigationProvider>
-      <Stack screenOptions={{ headerShown: false }} />
+      <View className="bg-background-50 flex-1">
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: "tranparent",
+            },
+          }}
+        />
+      </View>
     </EssayNavigationProvider>
   );
 }

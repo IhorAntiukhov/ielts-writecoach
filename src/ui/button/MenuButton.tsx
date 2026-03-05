@@ -20,14 +20,15 @@ export default function MenuButton<T extends string>({
 }: MenuButtonProps<T>) {
   return (
     <Menu
-      onSelectionChange={([key]) => onChange(key.toString() as T)}
+      onSelectionChange={([key]) => {
+        onChange(key.toString() as T);
+      }}
       placement="top"
       offset={10}
       selectionMode="single"
       trigger={({ ...triggerProps }) => {
         return <Pressable {...triggerProps}>{trigger}</Pressable>;
       }}
-      closeOnSelect
     >
       {options.map(({ icon, value, label }) => (
         <MenuItem key={value} textValue={value}>
