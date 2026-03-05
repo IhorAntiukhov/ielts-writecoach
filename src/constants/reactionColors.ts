@@ -2,7 +2,7 @@ export const reactionColors = {
   1: "#16a34a",
   2: "#ca8a04",
   3: "#2563eb",
-  4: "#d97706",
+  4: "#d1661f",
   5: "#dc2626",
 } as const;
 

@@ -1,25 +1,19 @@
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
 import { AnalyticsDataType } from "@/src/api/analyticsRepo/types/returnDataTypes";
-import IconButton from "@/src/ui/button/IconButton";
 import IndicatorText from "@/src/ui/IndicatorText";
 import cssInteropIcon from "@/src/utils/cssInteropIcon";
 import { DashPathEffect } from "@shopify/react-native-skia";
-import { CircleQuestionMark, RefreshCcw } from "lucide-react-native";
+import { CircleQuestionMark } from "lucide-react-native";
 import React, { useMemo } from "react";
 import { NonUndefined } from "react-hook-form";
 import { Text, View } from "react-native";
-import {
-  CartesianChart,
-  Line,
-  setScale,
-  useChartTransformState,
-} from "victory-native";
+import { CartesianChart, Line, useChartTransformState } from "victory-native";
 import useChartFont from "../../hooks/useChartFont";
 import ChartLegend from "../legends/ChartLegend";
 import BaseEssayMetricCard from "../shared/BaseEssayMetricCard";
+import ChartZoomPanel from "./ChartZoomPanel";
 
-cssInteropIcon(RefreshCcw);
 cssInteropIcon(CircleQuestionMark);
 
 interface LineChartCardProps {
@@ -53,8 +47,6 @@ export default function LineChartCard({
         })),
     [data],
   );
-
-  console.log(chartData);
 
   const yKeys: (keyof NonUndefined<typeof chartData>[number])[] = useMemo(
     () =>
@@ -96,114 +88,104 @@ export default function LineChartCard({
       strokeCap: "round",
     };
 
-  console.log(isBandScoresChart, domain);
-
-  const resetChartZoom = () => {
-    transformState.matrix.set(setScale(transformState.matrix.value, 0.85, 1.0));
-  };
-
   return (
     <BaseEssayMetricCard title={title} isPending={isPending} skeletonLines={3}>
       {chartData && chartData.length > 0 ? (
         <VStack space={isBandScoresChart ? "lg" : "2xl"}>
-          <View className="relative h-72">
-            <CartesianChart
-              data={chartData}
-              xKey="created_at"
-              yKeys={yKeys}
-              xAxis={{
-                font,
-                labelColor: "rgb(83, 82, 82)",
-                formatXLabel: (label) =>
-                  label
-                    ? new Date(label).toLocaleDateString("en-GB", {
-                        year: "2-digit",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })
-                    : "",
-                tickValues,
-                enableRescaling: true,
-              }}
-              yAxis={[
-                {
+          <VStack space="md">
+            <View className="h-72">
+              <CartesianChart
+                data={chartData}
+                xKey="created_at"
+                yKeys={yKeys}
+                xAxis={{
                   font,
                   labelColor: "rgb(83, 82, 82)",
-                  lineColor: "rgb(83, 82, 82)",
-                  lineWidth: 1,
-                  linePathEffect: <DashPathEffect intervals={[2, 4]} />,
-                  formatYLabel: (label) =>
-                    isBandScoresChart
-                      ? label.toString().padEnd(3, ".0")
-                      : `${label} w/m`,
-                  tickCount: 5,
-                  tickValues: isBandScoresChart ? [1, 3, 5, 7, 9] : undefined,
-                  domain: isBandScoresChart ? [1, 9] : domain,
-                },
-              ]}
-              domainPadding={{
-                left: 20,
-                right: 20,
-                top: 15,
-                bottom: 15,
-              }}
-              transformState={transformState}
-              transformConfig={{
-                pan: {
-                  enabled: true,
-                  dimensions: "x",
-                },
-                pinch: {
-                  enabled: true,
-                  dimensions: "x",
-                },
-              }}
-            >
-              {({ points }) =>
-                isBandScoresChart ? (
-                  <>
+                  formatXLabel: (label) =>
+                    label
+                      ? new Date(label).toLocaleDateString("en-GB", {
+                          year: "2-digit",
+                          month: "2-digit",
+                          day: "2-digit",
+                        })
+                      : "",
+                  tickValues,
+                  enableRescaling: true,
+                }}
+                yAxis={[
+                  {
+                    font,
+                    labelColor: "rgb(83, 82, 82)",
+                    lineColor: "rgb(83, 82, 82)",
+                    lineWidth: 1,
+                    linePathEffect: <DashPathEffect intervals={[2, 4]} />,
+                    formatYLabel: (label) =>
+                      isBandScoresChart
+                        ? label.toString().padEnd(3, ".0")
+                        : `${label} w/m`,
+                    tickCount: 5,
+                    tickValues: isBandScoresChart ? [1, 3, 5, 7, 9] : undefined,
+                    domain: isBandScoresChart ? [1, 9] : domain,
+                  },
+                ]}
+                domainPadding={{
+                  left: 20,
+                  right: 20,
+                  top: 15,
+                  bottom: 15,
+                }}
+                transformState={transformState}
+                transformConfig={{
+                  pan: {
+                    enabled: true,
+                    dimensions: "x",
+                  },
+                  pinch: {
+                    enabled: true,
+                    dimensions: "x",
+                  },
+                }}
+              >
+                {({ points }) =>
+                  isBandScoresChart ? (
+                    <>
+                      <Line
+                        points={points.task_response_band}
+                        color="red"
+                        {...sharedLineProps}
+                      />
+
+                      <Line
+                        points={points.coherence_band}
+                        color="blue"
+                        {...sharedLineProps}
+                      />
+
+                      <Line
+                        points={points.vocabulary_band}
+                        color="green"
+                        {...sharedLineProps}
+                      />
+
+                      <Line
+                        points={points.grammar_band}
+                        color="purple"
+                        {...sharedLineProps}
+                      />
+                    </>
+                  ) : (
                     <Line
-                      points={points.task_response_band}
-                      color="red"
+                      points={points.words_to_time_ratio}
+                      color="orange"
                       {...sharedLineProps}
                     />
+                  )
+                }
+              </CartesianChart>
+            </View>
 
-                    <Line
-                      points={points.coherence_band}
-                      color="blue"
-                      {...sharedLineProps}
-                    />
-
-                    <Line
-                      points={points.vocabulary_band}
-                      color="green"
-                      {...sharedLineProps}
-                    />
-
-                    <Line
-                      points={points.grammar_band}
-                      color="purple"
-                      {...sharedLineProps}
-                    />
-                  </>
-                ) : (
-                  <Line
-                    points={points.words_to_time_ratio}
-                    color="orange"
-                    {...sharedLineProps}
-                  />
-                )
-              }
-            </CartesianChart>
-
-            <IconButton
-              action="secondary"
-              onPress={resetChartZoom}
-              className="absolute bottom-8 right-0"
-            >
-              <RefreshCcw className="text-white" size={20} />
-            </IconButton>
-          </View>
+            <ChartZoomPanel transformState={transformState} />
+          </VStack>
 
           <ChartLegend chartType={title} />
 

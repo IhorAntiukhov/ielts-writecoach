@@ -15,7 +15,11 @@ import { AuthContext } from "@/src/context/AuthProvider";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
 import Container from "@/src/ui/Container";
 import IndicatorText from "@/src/ui/IndicatorText";
-import { useQueries, UseQueryResult } from "@tanstack/react-query";
+import {
+  useQueries,
+  useQueryClient,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import { RefreshCcw } from "lucide-react-native";
 import { use, useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
@@ -34,6 +38,8 @@ export default function AnalyticsScreen() {
 
   const { user } = use(AuthContext).session!;
 
+  const queryClient = useQueryClient();
+
   const combine = useCallback(
     (
       results: (
@@ -49,7 +55,6 @@ export default function AnalyticsScreen() {
         errors: results
           .filter((result) => !!result.error)
           .map((result) => result.error.message),
-        refetch: () => results.forEach((result) => result.refetch()),
       };
     },
     [],
@@ -87,10 +92,19 @@ export default function AnalyticsScreen() {
     [timeInterval, user.id, essayType],
   );
 
-  const { data, errors, isPending, isError, refetch } = useQueries({
+  const { data, errors, isPending, isError } = useQueries({
     queries,
     combine,
   });
+
+  const refreshData = () => {
+    queryClient.invalidateQueries({
+      predicate: ({ queryKey }) =>
+        queryKey[0] === queryKeyPrefixes.analytics.essayCounts ||
+        queryKey[0] === queryKeyPrefixes.analytics.userAnalytics ||
+        queryKey[0] === queryKeyPrefixes.analytics.reactionCounts,
+    });
+  };
 
   return (
     <Container topAlignment>
@@ -141,7 +155,7 @@ export default function AnalyticsScreen() {
         <SecondaryButton
           icon={RefreshCcw}
           onPress={() => {
-            refetch();
+            refreshData();
           }}
         >
           Refresh analytics

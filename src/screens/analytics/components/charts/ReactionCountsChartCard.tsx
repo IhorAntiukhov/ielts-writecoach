@@ -26,26 +26,29 @@ export default function ReactionCountsChartCard({
 }: ReactionTypesChartCardProps) {
   const { font } = useChartFont();
 
-  const chartData = useMemo(
-    () =>
-      data
-        ?.find((analysis) => analysis?.type === "reactionCounts")
-        ?.items.map(({ type, reaction_count }) => ({
-          x:
-            type === "Clear and Natural"
-              ? 1
-              : type === "Good Ideas"
-                ? 2
-                : type === "Well Structured"
-                  ? 3
-                  : type === "Language needs Work"
-                    ? 4
-                    : 5,
-          reaction_count,
-        }))
-        .sort((a, b) => a.x - b.x),
-    [data],
-  );
+  const chartData = useMemo(() => {
+    if (!data) return;
+
+    const newData = [...data]
+      ?.find((analysis) => analysis?.type === "reactionCounts")
+      ?.items.map(({ type, reaction_count }) => ({
+        x:
+          type === "Clear and Natural"
+            ? 1
+            : type === "Good Ideas"
+              ? 2
+              : type === "Well Structured"
+                ? 3
+                : type === "Language needs Work"
+                  ? 4
+                  : 5,
+        reaction_count,
+      }));
+
+    newData?.sort((a, b) => a.x - b.x);
+
+    return newData;
+  }, [data]);
 
   const yTickValues = useMemo(
     () =>
@@ -90,15 +93,15 @@ export default function ReactionCountsChartCard({
               ]}
               domainPadding={{
                 top: 15,
-                left: 50,
-                right: 50,
+                left: 70,
+                right: 70,
               }}
             >
               {({ points, chartBounds }) =>
                 points.reaction_count.map((point) => (
                   <Bar
                     key={point.xValue}
-                    barCount={points.reaction_count.length}
+                    barCount={5}
                     chartBounds={chartBounds}
                     animate={{ type: "spring" }}
                     points={[point]}
@@ -111,7 +114,7 @@ export default function ReactionCountsChartCard({
                   >
                     <LinearGradient
                       start={vec(0, 0)}
-                      end={vec(0, 600)}
+                      end={vec(0, 400)}
                       colors={[
                         reactionColors[point.xValue as ReactionIndex],
                         `${reactionColors[point.xValue as ReactionIndex]}a50`,
