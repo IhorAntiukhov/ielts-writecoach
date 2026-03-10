@@ -30,6 +30,7 @@ export default function useUpdateEssayMutation<T extends UpdateEssayParams>({
       queryClient.invalidateQueries({
         predicate: ({ queryKey }) =>
           queryKey[0] === queryKeyPrefixes.privateFeed ||
+          queryKey[0] === queryKeyPrefixes.privateEssay ||
           !!(isPublic && queryKey[0] === queryKeyPrefixes.publicFeed),
       });
 

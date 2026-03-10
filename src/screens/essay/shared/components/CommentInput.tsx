@@ -25,6 +25,8 @@ export default function CommentInput({ essayId, userId }: CommentInputProps) {
   const { mutate: addCommentMutation, isPending } = useMutation({
     mutationFn: () => insertComment(text, essayId, userId),
     onSuccess: () => {
+      setText("");
+
       queryClient.invalidateQueries({
         predicate: ({ queryKey }) =>
           queryKey[0] === queryKeyPrefixes.comments && queryKey[1] === essayId,

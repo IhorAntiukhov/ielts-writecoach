@@ -42,13 +42,13 @@ export async function saveExistingEssayWithAnalysis(
 function formatEssayReviewObject(feedback: any) {
   return {
     taskResponseBand: feedback.taskResponseBand,
-    taskResponseFeedback: feedback.taskResponseFeedback,
+    taskResponseFeedback: JSON.stringify(feedback.taskResponseFeedback),
     coherenceBand: feedback.coherenceBand,
-    coherenceFeedback: feedback.coherenceFeedback,
+    coherenceFeedback: JSON.stringify(feedback.coherenceFeedback),
     vocabularyBand: feedback.lexicalResourceBand,
-    vocabularyFeedback: feedback.lexicalResourceFeedback,
+    vocabularyFeedback: JSON.stringify(feedback.lexicalResourceFeedback),
     grammarBand: feedback.grammaticalRangeBand,
-    grammarFeedback: feedback.grammaticalRangeFeedback,
+    grammarFeedback: JSON.stringify(feedback.grammaticalRangeFeedback),
   };
 }
 

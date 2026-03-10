@@ -30,7 +30,8 @@ export default function useUploadEssayMutation<T extends InsertEssayParams>({
 
       queryClient.invalidateQueries({
         predicate: ({ queryKey }) =>
-          queryKey[0] === queryKeyPrefixes.privateFeed,
+          queryKey[0] === queryKeyPrefixes.privateFeed ||
+          queryKey[0] === queryKeyPrefixes.privateEssay,
       });
 
       router.navigate({

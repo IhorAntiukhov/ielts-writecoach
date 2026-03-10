@@ -37,7 +37,6 @@ export async function generateEssayReview(
       thinkingConfig: {
         thinkingLevel: ThinkingLevel.MEDIUM,
       },
-      temperature: 0.7,
       systemInstruction,
       responseMimeType: "application/json",
       responseJsonSchema: essayReviewSchema.toJSONSchema(),

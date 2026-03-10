@@ -11,6 +11,7 @@ import Dropdown from "@/src/ui/Dropdown";
 import IndicatorText from "@/src/ui/IndicatorText";
 import TextAreaInput from "@/src/ui/input/TextAreaInput";
 import SmallCardBox from "@/src/ui/SmallCardBox";
+import formatEssayType from "@/src/utils/formatEssayType";
 import { getNounByNumber } from "@/src/utils/getNounByNumber";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocalSearchParams } from "expo-router";
@@ -179,17 +180,25 @@ export default function WriteForm() {
     <VStack space="2xl">
       <CardBox>
         <VStack space="2xl">
-          <Dropdown<EssayType>
-            selectedValue={type}
-            onChange={setType}
-            options={essayTypeOptions}
-            initialLabel="Academic Task 1"
-          />
+          <Skeleton
+            variant="rounded"
+            isLoaded={!isPending || isNewEssay}
+            className="rounded-lg h-[2.2rem]"
+          >
+            <Dropdown<EssayType>
+              selectedValue={type}
+              onChange={setType}
+              options={essayTypeOptions}
+              initialLabel={
+                data?.type ? formatEssayType(data.type) : "Academic Task 1"
+              }
+            />
+          </Skeleton>
 
           <Skeleton
             variant="rounded"
             isLoaded={!isPending || isNewEssay}
-            className="rounded-lg h-[6.25rem]"
+            className="rounded-lg h-32"
           >
             <TextAreaInput
               name="instructions"
@@ -198,6 +207,7 @@ export default function WriteForm() {
               keyboardType="default"
               errors={errors}
               maxLength={500}
+              heightType="instructions"
             />
           </Skeleton>
 
@@ -236,7 +246,7 @@ export default function WriteForm() {
           <Skeleton
             variant="rounded"
             isLoaded={!isPending || isNewEssay}
-            className=" rounded-lg h-72"
+            className="rounded-lg h-72"
           >
             <TextAreaInput
               name="response"
@@ -246,7 +256,7 @@ export default function WriteForm() {
               errors={errors}
               autoCorrect={false}
               maxLength={5000}
-              largeTextArea
+              heightType="response"
             />
           </Skeleton>
         </VStack>

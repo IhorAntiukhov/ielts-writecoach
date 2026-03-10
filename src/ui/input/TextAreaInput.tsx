@@ -12,14 +12,18 @@ export default function TextAreaInput<T extends FieldValues>({
   errors,
   maxLength,
   autoCorrect,
-  largeTextArea,
+  heightType,
 }: TextAreaInputProps<T>) {
   return (
     <FormWrapper name={name} errors={errors}>
       <Textarea
         className={clsx(
           "bg-background-50 rounded-lg px-1.5 pt-1.5 pb-4",
-          largeTextArea && `h-72`,
+          heightType === "instructions"
+            ? "h-32"
+            : heightType === "response"
+              ? "h-72"
+              : "",
         )}
       >
         <Controller

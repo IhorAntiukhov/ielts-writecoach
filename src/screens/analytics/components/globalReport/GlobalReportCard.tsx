@@ -12,11 +12,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, RefreshCcw } from "lucide-react-native";
 import React, { use, useMemo, useState } from "react";
 import { Text } from "react-native";
+import formatJSON from "../../../../utils/formatJSON";
 import getGlobalReport from "../../api/getGlobalReport";
 import EssayAndAllType from "../../types/essayAndAllType";
 import FormattedReport from "../../types/formattedReport";
 import TimeIntervalType from "../../types/timeInterval";
-import formatGlobalReport from "../../utils/formatGlobalReport";
 import ReportList from "./ReportList";
 import TimeIntervalChevronSelect from "./TimeIntervalChevronSelect";
 
@@ -64,9 +64,7 @@ export default function GlobalReportCard({
   const reports = useMemo(
     () =>
       data
-        ? (data.map(({ report }) =>
-            formatGlobalReport(report),
-          ) as FormattedReport[])
+        ? (data.map(({ report }) => formatJSON(report)) as FormattedReport[])
         : undefined,
     [data],
   );

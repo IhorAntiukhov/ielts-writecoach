@@ -7,7 +7,7 @@ import SkeletonCard from "@/src/ui/SkeletonCard";
 import { clsx } from "clsx";
 import { cssInterop } from "nativewind";
 import { Text, View } from "react-native";
-import formatFeedback from "../utils/formatFeedback";
+import FormattedFeedbackCategory from "./FormattedFeedbackCategory";
 
 interface ReviewCategoryProps {
   title: string;
@@ -80,9 +80,7 @@ export default function ReviewCategory({
               <Divider />
             </View>
 
-            <Text className="text-md text-typography-950">
-              {formatFeedback(detailedFeedback)}
-            </Text>
+            <FormattedFeedbackCategory feedback={detailedFeedback} />
           </>
         )}
       </VStack>
