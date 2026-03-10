@@ -11,6 +11,7 @@ const queryKeyPrefixes = {
     userAnalytics: "user-analytics",
     reactionCounts: "reaction-counts",
   },
+  globalReport: "global-report",
 } as const;
 
 export default queryKeyPrefixes;

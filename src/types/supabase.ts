@@ -404,6 +404,24 @@ export type Database = {
       };
     };
     Functions: {
+      get_essay_reviews: {
+        Args: {
+          essay_type?: Database["public"]["Enums"]["EssayType"];
+          p_user_id: string;
+          time_interval: number;
+        };
+        Returns: {
+          coherence_band: number;
+          coherence_feedback: string;
+          grammar_band: number;
+          grammar_feedback: string;
+          task_response_band: number;
+          task_response_feedback: string;
+          type: Database["public"]["Enums"]["EssayType"];
+          vocabulary_band: number;
+          vocabulary_feedback: string;
+        }[];
+      };
       get_user_analytics: {
         Args: {
           essay_type?: Database["public"]["Enums"]["EssayType"];

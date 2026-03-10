@@ -1,4 +1,6 @@
+import EssayReview from "../screens/analytics/types/essayReviewsType";
 import AiPromptEssayType from "../types/aiPromptEssayType";
+import formatAiPromptEssayType from "../utils/formatAiPromptEssayType";
 
 export function getEssayAnalysisPrompt(
   taskType: AiPromptEssayType,
@@ -66,5 +68,49 @@ ${originalEssay}
 Output:
 Provide only the improved full essay text.
 Do not include explanations, comments, or analysis.
+`;
+}
+
+export function getGlobalReportPrompt(essayReviews: EssayReview[]) {
+  return `
+You are analyzing a student's progress in IELTS writing.
+
+Below are multiple past essay reviews. Each review contains feedback on:
+- Task Response
+- Coherence and Cohesion
+- Lexical Resource
+- Grammatical Range and Accuracy
+
+Your task:
+
+1. Identify recurring strengths (mentioned in at least TWO different essays).
+2. Identify recurring weaknesses (mentioned in at least TWO different essays).
+3. Identify the SINGLE most prominent weakness overall.
+4. Provide 3 clear, prioritized improvement recommendations.
+5. If no clear recurring patterns exist, state that explicitly.
+
+Important rules:
+- Base your analysis ONLY on the provided feedback.
+- Do NOT invent issues that are mentioned only once.
+- Focus on patterns, not isolated comments.
+- Be concise but specific.
+- Do NOT evaluate the essays again.
+
+Student review history:
+${essayReviews.map(
+  (review, index) =>
+    `
+Essay #${index + 1} (${formatAiPromptEssayType(review.type)}):
+Task Response: ${review.task_response_band}
+${review.task_response_feedback}
+Coherence & Cohesion: ${review.coherence_band}
+${review.coherence_feedback}
+Lexical Resource: ${review.vocabulary_band}
+${review.vocabulary_feedback}
+Grammatical range & Accuracy: ${review.grammar_band}
+${review.grammar_feedback}
+
+`,
+)}
 `;
 }

@@ -1,3 +1,4 @@
+import { Divider } from "@/components/ui/divider";
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
 import {
@@ -27,6 +28,7 @@ import AllEssayCountCard from "./components/charts/AllEssayCountCard";
 import EssayTypesChartCard from "./components/charts/EssayTypesChartCard";
 import LineChartCard from "./components/charts/LineChartCard";
 import ReactionCountsChartCard from "./components/charts/ReactionCountsChartCard";
+import GlobalReportCard from "./components/globalReport/GlobalReportCard";
 import SelectEssayType from "./components/selects/SelectEssayType";
 import SelectTimeInterval from "./components/selects/SelectTimeInterval";
 import EssayAndAllType from "./types/essayAndAllType";
@@ -128,6 +130,15 @@ export default function AnalyticsScreen() {
           </IndicatorText>
         ) : (
           <>
+            <GlobalReportCard
+              timeInterval={timeInterval}
+              essayType={essayType}
+            />
+
+            <View className="-mx-8">
+              <Divider />
+            </View>
+
             <AllEssayCountCard
               data={data}
               isPending={isPending}

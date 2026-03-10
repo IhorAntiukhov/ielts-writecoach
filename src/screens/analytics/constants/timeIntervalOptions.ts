@@ -24,7 +24,7 @@ const timeIntervalOptions: Option[] = [
   },
   {
     label: "All time",
-    value: "2147483647",
+    value: "999999",
   },
 ];
 

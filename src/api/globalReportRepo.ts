@@ -1,3 +1,4 @@
+import { Tables } from "../types/supabase";
 import supabase from "./supabaseClient";
 
 export async function getGlobalReports(userId: string) {
@@ -12,6 +13,8 @@ export async function getGlobalReports(userId: string) {
 
   return data;
 }
+
+export type GlobalReport = Tables<"global_reports">;
 
 export async function saveGlobalReport(
   startDate: Date,

@@ -2,9 +2,12 @@ import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 import {
   getEssayAnalysisPrompt,
   getFullEssayRewritePrompt,
+  getGlobalReportPrompt,
   systemInstruction,
 } from "../constants/aiPromptTemplate";
 import essayReviewSchema from "../schemas/essayReviewSchema";
+import globalReportSchema from "../schemas/globalReportSchema";
+import EssayReview from "../screens/analytics/types/essayReviewsType";
 import AiPromptEssayType from "../types/aiPromptEssayType";
 
 const ai = new GoogleGenAI({ apiKey: process.env.EXPO_PUBLIC_GEMINI_API_KEY });
@@ -69,6 +72,24 @@ export async function generateFullEssayRewrite(
       },
       temperature: 0.7,
       responseMimeType: "text/plain",
+    },
+  });
+
+  return response;
+}
+
+export async function generateGlobalReport(essayReviews: EssayReview[]) {
+  const contents = getGlobalReportPrompt(essayReviews);
+
+  const response = await ai.models.generateContent({
+    model,
+    contents,
+    config: {
+      thinkingConfig: {
+        thinkingLevel: ThinkingLevel.MEDIUM,
+      },
+      responseMimeType: "application/json",
+      responseJsonSchema: globalReportSchema.toJSONSchema(),
     },
   });
 
