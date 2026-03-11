@@ -24,7 +24,7 @@ const Tab = React.forwardRef<View, TabProps>(
     );
 
     return (
-      <View className="flex items-center flex-1">
+      <View className="flex items-center justify-center flex-1">
         <Pressable ref={ref} {...rest}>
           <VStack className="items-center">
             <Icon

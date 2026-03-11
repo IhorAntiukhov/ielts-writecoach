@@ -5,6 +5,7 @@ import useToast from "@/src/hooks/useToast";
 import IconButton from "@/src/ui/button/IconButton";
 import cssInteropIcon from "@/src/utils/cssInteropIcon";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { clsx } from "clsx";
 import { SendHorizonal } from "lucide-react-native";
 import { useState } from "react";
 
@@ -47,9 +48,9 @@ export default function CommentInput({ essayId, userId }: CommentInputProps) {
 
       <IconButton
         action="primary"
-        className="self-end"
+        className={clsx("self-end", (isPending || !text) && "opacity-70")}
         onPress={() => addCommentMutation()}
-        disabled={isPending}
+        disabled={isPending || !text}
       >
         <SendHorizonal className="text-white" size={20} />
       </IconButton>

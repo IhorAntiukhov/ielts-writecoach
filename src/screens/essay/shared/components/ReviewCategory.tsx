@@ -1,12 +1,12 @@
-import { Divider } from "@/components/ui/divider";
 import { HStack } from "@/components/ui/hstack";
 import { Progress, ProgressFilledTrack } from "@/components/ui/progress";
 import { VStack } from "@/components/ui/vstack";
 import CardBox from "@/src/ui/CardBox";
+import DividerWithMargins from "@/src/ui/DividerWithMargins";
 import SkeletonCard from "@/src/ui/SkeletonCard";
 import { clsx } from "clsx";
 import { cssInterop } from "nativewind";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import FormattedFeedbackCategory from "./FormattedFeedbackCategory";
 
 interface ReviewCategoryProps {
@@ -76,9 +76,7 @@ export default function ReviewCategory({
 
         {detailedFeedback && (
           <>
-            <View className="-mx-8">
-              <Divider />
-            </View>
+            <DividerWithMargins />
 
             <FormattedFeedbackCategory feedback={detailedFeedback} />
           </>

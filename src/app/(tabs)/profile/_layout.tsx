@@ -1,11 +1,6 @@
-import { Stack } from "expo-router";
+import StackWithBackgroundColor from "@/src/layout/StackWithBackgroundColor";
 import React from "react";
 
 export default function ProfileLayout() {
-  return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" />
-      <Stack.Screen name="change-password" />
-    </Stack>
-  );
+  return <StackWithBackgroundColor />;
 }

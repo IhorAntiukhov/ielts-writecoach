@@ -1,9 +1,8 @@
-import { Divider } from "@/components/ui/divider";
 import { VStack } from "@/components/ui/vstack";
+import DividerWithMargins from "@/src/ui/DividerWithMargins";
 import IndicatorText from "@/src/ui/IndicatorText";
 import { useLocalSearchParams } from "expo-router";
 import { use } from "react";
-import { View } from "react-native";
 import FullRewriteCard from "../../private/components/FullRewriteCard";
 import EssayDataContext from "../context/EssayDataContext";
 import ReviewCategory from "./ReviewCategory";
@@ -69,9 +68,7 @@ export default function ReviewPage() {
 
           {type === "private" && !!review && (
             <>
-              <View className="-mx-8">
-                <Divider />
-              </View>
+              <DividerWithMargins />
 
               <FullRewriteCard />
             </>

@@ -1,14 +1,20 @@
-import { Divider } from "@/components/ui/divider";
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
 import {
   PrivateFeedEssay,
   PublicFeedEssay,
 } from "@/src/api/essaysRepo/types/feedEssayTypes";
+import DividerWithMargins from "@/src/ui/DividerWithMargins";
 import { LinearGradient } from "expo-linear-gradient";
-import { cssInterop, useColorScheme } from "nativewind";
-import { useState } from "react";
-import { Text, TextLayoutEvent, View } from "react-native";
+import { cssInterop } from "nativewind";
+import { useEffect, useRef, useState } from "react";
+import {
+  Platform,
+  Text,
+  TextLayoutEvent,
+  useColorScheme,
+  View,
+} from "react-native";
 import EssayInstructions from "../../essayInstructions";
 import EssayBandScore from "./EssayBandScore";
 import ReactionsCardFooter from "./ReactionsCardFooter";
@@ -32,7 +38,20 @@ type EssayBaseCardProps = PrivateEssayCardProps | PublicEssayCardProps;
 export default function EssayBaseCard({ type, data }: EssayBaseCardProps) {
   const [isOverflowing, setIsOverflowing] = useState(false);
 
-  const { colorScheme } = useColorScheme();
+  const textRef = useRef<Text>(null);
+
+  const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    if (Platform.OS === "web" && textRef.current) {
+      textRef.current.measureLayout(
+        textRef.current,
+        (_left, _top, _width, height) => {
+          setIsOverflowing(height >= 200);
+        },
+      );
+    }
+  }, [data.response]);
 
   const handleTextLayout = (event: TextLayoutEvent) => {
     const height = event.nativeEvent.lines.reduce(
@@ -52,8 +71,9 @@ export default function EssayBaseCard({ type, data }: EssayBaseCardProps) {
 
       <View className="relative">
         <Text
-          className="max-h-[200px] text-typography-950 text-md"
-          onTextLayout={handleTextLayout}
+          ref={textRef}
+          className="max-h-[200px] text-typography-950 text-md overflow-y-hidden"
+          onTextLayout={Platform.OS === "web" ? undefined : handleTextLayout}
         >
           {data.response}
         </Text>
@@ -87,9 +107,7 @@ export default function EssayBaseCard({ type, data }: EssayBaseCardProps) {
         </HStack>
       )}
 
-      <View className="-mx-8">
-        <Divider />
-      </View>
+      <DividerWithMargins />
 
       <ReactionsCardFooter data={data} />
     </VStack>

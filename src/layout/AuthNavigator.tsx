@@ -7,20 +7,21 @@ import useResetPassword from "../hooks/useResetPassword";
 
 export default function AuthNavigator() {
   const { session, authIntent, setAuthIntent } = use(AuthContext);
+
   const segments = useSegments();
   const router = useRouter();
 
   useResetPassword();
 
-  useEffect(() => {
-    if (session === null && segments[0] !== "(auth)") {
-      router.replace("/(auth)");
-    }
+  // useEffect(() => {
+  //   if (session === null && segments[0] !== "(auth)") {
+  //     router.replace("/(auth)");
+  //   }
 
-    if (session !== null && segments[0] === "(auth)") {
-      router.replace("/(tabs)/home");
-    }
-  }, [router, segments, session, authIntent, setAuthIntent]);
+  //   if (session !== null && segments[0] === "(auth)") {
+  //     router.replace("/(tabs)/home");
+  //   }
+  // }, [router, segments, session, authIntent, setAuthIntent]);
 
   useEffect(() => {
     if (!session || authIntent !== "password-reset" || segments[0] !== "(tabs)")

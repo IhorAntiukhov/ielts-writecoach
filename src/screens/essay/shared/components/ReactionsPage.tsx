@@ -3,6 +3,7 @@ import { AuthContext } from "@/src/context/AuthProvider";
 import CardBox from "@/src/ui/CardBox";
 import IndicatorText from "@/src/ui/IndicatorText";
 import SkeletonCard from "@/src/ui/SkeletonCard";
+import { useLocalSearchParams } from "expo-router";
 import { use, useEffect, useState } from "react";
 import SelectFeedbackAvailability from "../../private/components/SelectFeedbackAvailability";
 import EssayDataContext from "../context/EssayDataContext";
@@ -12,6 +13,10 @@ import CommentsModal from "./CommentsModal";
 import ReactionCount from "./ReactionCount";
 
 export default function ReactionsPage() {
+  const { id } = useLocalSearchParams();
+
+  const isNewEssay = id === "new-essay";
+
   const [isModalOpened, setIsModalOpened] = useState(false);
 
   const { data, isPending } = use(EssayDataContext)!;
@@ -48,9 +53,9 @@ export default function ReactionsPage() {
 
   return (
     <VStack space="2xl">
-      {isPending ? (
+      {!isNewEssay && isPending ? (
         <SkeletonCard />
-      ) : !data ? (
+      ) : isNewEssay || !data ? (
         <IndicatorText>
           You have to save your essay to access reactions
         </IndicatorText>

@@ -1,4 +1,3 @@
-import { Divider } from "@/components/ui/divider";
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
 import {
@@ -15,6 +14,7 @@ import queryKeyPrefixes from "@/src/constants/queryKeyPrefixes";
 import { AuthContext } from "@/src/context/AuthProvider";
 import SecondaryButton from "@/src/ui/button/SecondaryButton";
 import Container from "@/src/ui/Container";
+import DividerWithMargins from "@/src/ui/DividerWithMargins";
 import IndicatorText from "@/src/ui/IndicatorText";
 import {
   useQueries,
@@ -23,7 +23,7 @@ import {
 } from "@tanstack/react-query";
 import { RefreshCcw } from "lucide-react-native";
 import { use, useCallback, useMemo, useState } from "react";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import AllEssayCountCard from "./components/charts/AllEssayCountCard";
 import EssayTypesChartCard from "./components/charts/EssayTypesChartCard";
 import LineChartCard from "./components/charts/LineChartCard";
@@ -135,9 +135,7 @@ export default function AnalyticsScreen() {
               essayType={essayType}
             />
 
-            <View className="-mx-8">
-              <Divider />
-            </View>
+            <DividerWithMargins />
 
             <AllEssayCountCard
               data={data}
@@ -145,21 +143,26 @@ export default function AnalyticsScreen() {
               essayType={essayType}
             />
 
-            <LineChartCard
-              title="Band scores"
-              data={data}
-              isPending={isPending}
-            />
-
-            <LineChartCard
-              title="Time to words"
-              data={data}
-              isPending={isPending}
-            />
-
-            <ReactionCountsChartCard data={data} isPending={isPending} />
-
-            <EssayTypesChartCard data={data} isPending={isPending} />
+            {Platform.OS === "web" ? (
+              <IndicatorText>
+                Download the Android app to access charts
+              </IndicatorText>
+            ) : (
+              <>
+                <LineChartCard
+                  title="Band scores"
+                  data={data}
+                  isPending={isPending}
+                />
+                <LineChartCard
+                  title="Time to words"
+                  data={data}
+                  isPending={isPending}
+                />
+                <ReactionCountsChartCard data={data} isPending={isPending} />
+                <EssayTypesChartCard data={data} isPending={isPending} />{" "}
+              </>
+            )}
           </>
         )}
 

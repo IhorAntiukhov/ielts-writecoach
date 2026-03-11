@@ -49,7 +49,7 @@ export default function PrivateEssayScreen() {
       />
 
       <Container topAlignment>
-        <VStack space="2xl">
+        <VStack space="2xl" className="w-full max-w-[600px]">
           <SegmentedButtons<PrivatePage>
             buttons={[
               {

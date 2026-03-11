@@ -40,7 +40,7 @@ export default function PublicEssayScreen() {
       <TopBar title="Public essay" backToHref="/(tabs)/home" solidBackground />
 
       <Container topAlignment>
-        <VStack space="2xl">
+        <VStack space="2xl" className="w-full max-w-[600px]">
           <SegmentedButtons<PublicPage>
             buttons={[
               {

@@ -32,6 +32,7 @@ export default function EssayFeed() {
       removeClippedSubviews: false,
       keyExtractor: (item) => item.id!.toString(),
       contentContainerClassName: "gap-4",
+      className: "h-full",
       onEndReached: () => {
         if (hasNextPage && !isFetchingNextPage) fetchNextPage();
       },
@@ -45,7 +46,7 @@ export default function EssayFeed() {
   );
 
   return (
-    <VStack className="flex-1" space="2xl">
+    <VStack className="flex-1 w-full max-w-[600px]" space="2xl">
       <VStack space="xl">
         <SearchBar />
 

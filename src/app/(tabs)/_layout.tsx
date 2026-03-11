@@ -1,10 +1,14 @@
 import TabBar from "@/src/components/tabBar";
 import Tab from "@/src/components/tabBar/Tab";
+import useIsLargeScreen from "@/src/hooks/useIsLargeScreen";
+import { clsx } from "clsx";
 import { TabList, Tabs, TabSlot, TabTrigger } from "expo-router/ui";
 
 export default function TabLayout() {
+  const isLargeScreen = useIsLargeScreen();
+
   return (
-    <Tabs>
+    <Tabs className={clsx(isLargeScreen && "flex flex-row")}>
       <TabSlot />
 
       <TabList asChild>
