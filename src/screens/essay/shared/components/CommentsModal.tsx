@@ -19,7 +19,7 @@ import IndicatorText from "@/src/ui/IndicatorText";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { MessageCircle } from "lucide-react-native";
 import { use, useMemo } from "react";
-import { KeyboardAvoidingView, Text, View } from "react-native";
+import { KeyboardAvoidingView, Platform, Text, View } from "react-native";
 import EssayDataContext from "../context/EssayDataContext";
 import CommentInput from "./CommentInput";
 import CommentItem from "./CommentItem";
@@ -93,7 +93,11 @@ export default function CommentsModal({
               }}
               ListEmptyComponent={
                 isPending ? (
-                  <SkeletonText className="h-2" _lines={3} />
+                  Platform.OS === "web" ? (
+                    <></>
+                  ) : (
+                    <SkeletonText className="h-2" _lines={3} />
+                  )
                 ) : isError ? (
                   <IndicatorText isError>
                     Failed to get comments: {error.message}

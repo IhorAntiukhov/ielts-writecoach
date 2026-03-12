@@ -8,7 +8,7 @@ import useOpenEssay from "@/src/hooks/useOpenEssay";
 import PrivacyType from "@/src/types/privacyType";
 import SmallCardBox from "@/src/ui/SmallCardBox";
 import { Image } from "expo-image";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 import EssayTitle from "./EssayTitle";
 
 interface EssayInstructionsProps {
@@ -29,7 +29,7 @@ export default function EssayInstructions({
   );
 
   return (
-    <VStack space="2xl">
+    <VStack space="2xl" className="w-full">
       <Pressable onPress={openEssay}>
         {isFullPublicEssay ? (
           <SmallCardBox className="items-stretch justify-stretch px-3 py-2">
@@ -41,17 +41,20 @@ export default function EssayInstructions({
       </Pressable>
 
       {data.image_url && (
-        <Image
-          source={{ uri: data.image_url }}
-          className="w-full rounded-lg border border-y border-outline-300"
+        <View
           style={{
             aspectRatio:
               data.image_width && data.image_height
                 ? data.image_width / data.image_height
                 : 1920 / 1080,
           }}
-          contentFit="contain"
-        />
+        >
+          <Image
+            source={{ uri: data.image_url }}
+            className="w-full h-full rounded-lg border border-y border-outline-300"
+            contentFit="contain"
+          />
+        </View>
       )}
     </VStack>
   );

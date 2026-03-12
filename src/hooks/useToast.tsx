@@ -6,10 +6,13 @@ import {
 } from "@/components/ui/toast";
 import { clsx } from "clsx";
 import { useSegments } from "expo-router";
+import useIsLargeScreen from "./useIsLargeScreen";
 
 export default function useToast() {
   const segments = useSegments();
   const toast = useRawToast();
+
+  const isLargeScreen = useIsLargeScreen();
 
   return (
     action: "error" | "warning" | "success" | "info" | "muted",
@@ -29,7 +32,9 @@ export default function useToast() {
           variant="solid"
           className={clsx(
             "max-w-full",
-            segments[0] === "(tabs)" ? "mb-[6.5rem] -mt-[6rem]" : "mb-4",
+            segments[0] === "(tabs)" && !isLargeScreen
+              ? "mb-[6.5rem] -mt-[6rem]"
+              : "mb-4",
           )}
         >
           <ToastTitle>{title}</ToastTitle>

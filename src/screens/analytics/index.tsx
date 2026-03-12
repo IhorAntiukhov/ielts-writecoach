@@ -110,7 +110,7 @@ export default function AnalyticsScreen() {
 
   return (
     <Container topAlignment>
-      <VStack space="2xl">
+      <VStack space="2xl" className="w-full max-w-[600px]">
         <HStack space="md">
           <View className="flex-1">
             <SelectTimeInterval
@@ -135,7 +135,7 @@ export default function AnalyticsScreen() {
               essayType={essayType}
             />
 
-            <DividerWithMargins />
+            <DividerWithMargins notInCard />
 
             <AllEssayCountCard
               data={data}
@@ -160,7 +160,7 @@ export default function AnalyticsScreen() {
                   isPending={isPending}
                 />
                 <ReactionCountsChartCard data={data} isPending={isPending} />
-                <EssayTypesChartCard data={data} isPending={isPending} />{" "}
+                <EssayTypesChartCard data={data} isPending={isPending} />
               </>
             )}
           </>

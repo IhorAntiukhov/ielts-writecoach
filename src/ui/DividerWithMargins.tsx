@@ -1,10 +1,19 @@
 import { Divider } from "@/components/ui/divider";
 import { clsx } from "clsx";
-import { Platform, View } from "react-native";
+import { View } from "react-native";
+import useIsLargeScreen from "../hooks/useIsLargeScreen";
 
-export default function DividerWithMargins() {
+interface DividerWithMarginsProps {
+  notInCard?: boolean;
+}
+
+export default function DividerWithMargins({
+  notInCard,
+}: DividerWithMarginsProps) {
+  const isLargeScreen = useIsLargeScreen();
+
   return (
-    <View className={clsx(Platform.OS !== "web" && "-mx-8")}>
+    <View className={clsx((!isLargeScreen || !notInCard) && "-mx-8")}>
       <Divider />
     </View>
   );

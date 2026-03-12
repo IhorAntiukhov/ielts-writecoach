@@ -13,16 +13,6 @@ export default function AuthNavigator() {
 
   useResetPassword();
 
-  // useEffect(() => {
-  //   if (session === null && segments[0] !== "(auth)") {
-  //     router.replace("/(auth)");
-  //   }
-
-  //   if (session !== null && segments[0] === "(auth)") {
-  //     router.replace("/(tabs)/home");
-  //   }
-  // }, [router, segments, session, authIntent, setAuthIntent]);
-
   useEffect(() => {
     if (!session || authIntent !== "password-reset" || segments[0] !== "(tabs)")
       return;

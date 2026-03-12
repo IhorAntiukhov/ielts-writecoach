@@ -68,7 +68,7 @@ export default function ReviewPage() {
 
           {type === "private" && !!review && (
             <>
-              <DividerWithMargins />
+              <DividerWithMargins notInCard />
 
               <FullRewriteCard />
             </>
