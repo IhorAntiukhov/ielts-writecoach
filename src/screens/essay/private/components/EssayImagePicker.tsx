@@ -8,7 +8,7 @@ import selectImage from "@/src/utils/selectImage";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { ImageIcon, X } from "lucide-react-native";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 import ImageData from "../types/imageData";
 
 cssInteropIcon(ImageIcon);
@@ -51,16 +51,21 @@ export default function EssayImagePicker({
     <Pressable onPress={() => handleSelectImage()} className="relative">
       {imageData ? (
         <>
-          <Image
-            source={{ uri: imageData.uri }}
-            className="w-full rounded-lg border border-y border-outline-300"
+          <View
             style={{
+              width: "100%",
               aspectRatio:
                 imageData.imageDimensions.width /
                 imageData.imageDimensions.height,
             }}
-            contentFit="contain"
-          />
+          >
+            <Image
+              source={{ uri: imageData.uri }}
+              style={{ width: "100%", height: "100%" }}
+              className="w-full h-full rounded-lg border border-y border-outline-300"
+              contentFit="contain"
+            />
+          </View>
 
           <IconButton
             action="secondary"

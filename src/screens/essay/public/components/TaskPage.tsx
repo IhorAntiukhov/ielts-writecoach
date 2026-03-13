@@ -16,7 +16,7 @@ export default function TaskPage() {
 
   if (type !== "public") throw Error("Essay must be public");
 
-  if (isError || !data) {
+  if (isError || (!data && !isPending)) {
     return (
       <IndicatorText isError>
         Failed to get the essay data: {error?.message}
@@ -26,7 +26,7 @@ export default function TaskPage() {
 
   return (
     <VStack space="2xl">
-      {isPending ? (
+      {isPending || !data ? (
         <>
           <SkeletonCard />
           <SkeletonCard />

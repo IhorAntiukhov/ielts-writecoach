@@ -43,6 +43,7 @@ export default function EssayInstructions({
       {data.image_url && (
         <View
           style={{
+            width: "100%",
             aspectRatio:
               data.image_width && data.image_height
                 ? data.image_width / data.image_height
@@ -51,8 +52,11 @@ export default function EssayInstructions({
         >
           <Image
             source={{ uri: data.image_url }}
+            style={{ width: "100%", height: "100%" }}
             className="w-full h-full rounded-lg border border-y border-outline-300"
             contentFit="contain"
+            alt="Task 1 instructions image"
+            priority="high"
           />
         </View>
       )}

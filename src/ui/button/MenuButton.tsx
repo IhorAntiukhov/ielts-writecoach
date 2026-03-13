@@ -2,6 +2,7 @@ import { HStack } from "@/components/ui/hstack";
 import { Menu, MenuItem, MenuItemLabel } from "@/components/ui/menu";
 import React from "react";
 import { Platform, Pressable, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface MenuButtonProps<T extends string> {
   onChange: (value: T) => void;
@@ -20,13 +21,15 @@ export default function MenuButton<T extends string>({
   options,
   disabled,
 }: MenuButtonProps<T>) {
+  const { bottom } = useSafeAreaInsets();
+
   return (
     <Menu
       onSelectionChange={([key]) => {
         onChange(key.toString() as T);
       }}
       placement="top"
-      offset={10}
+      offset={10 + (Platform.OS !== "web" ? bottom : 0)}
       selectionMode="single"
       trigger={({ ...triggerProps }) => {
         return (

@@ -20,6 +20,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { MessageCircle } from "lucide-react-native";
 import { use, useMemo } from "react";
 import { KeyboardAvoidingView, Platform, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import EssayDataContext from "../context/EssayDataContext";
 import CommentInput from "./CommentInput";
 import CommentItem from "./CommentItem";
@@ -37,6 +38,8 @@ export default function CommentsModal({
   const { showDialog } = use(AlertDialogContext)!;
 
   const { data: essayData } = use(EssayDataContext)!;
+
+  const { bottom } = useSafeAreaInsets();
 
   const {
     data,
@@ -116,7 +119,11 @@ export default function CommentsModal({
             />
 
             {essayData && (
-              <KeyboardAvoidingView behavior="position" className="w-full pb-8">
+              <KeyboardAvoidingView
+                behavior="position"
+                keyboardVerticalOffset={Platform.OS !== "web" ? bottom : 0}
+                className="w-full pb-8"
+              >
                 <CommentInput essayId={essayData.id} userId={user.id} />
               </KeyboardAvoidingView>
             )}
