@@ -8,7 +8,7 @@ import selectImage from "@/src/utils/selectImage";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { ImageIcon, X } from "lucide-react-native";
-import { Pressable, View } from "react-native";
+import { Platform, Pressable, View } from "react-native";
 import ImageData from "../types/imageData";
 
 cssInteropIcon(ImageIcon);
@@ -61,7 +61,11 @@ export default function EssayImagePicker({
           >
             <Image
               source={{ uri: imageData.uri }}
-              style={{ width: "100%", height: "100%" }}
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: Platform.OS !== "web" ? 8 : undefined,
+              }}
               className="w-full h-full rounded-lg border border-y border-outline-300"
               contentFit="contain"
             />

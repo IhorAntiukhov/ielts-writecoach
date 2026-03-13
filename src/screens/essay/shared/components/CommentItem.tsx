@@ -87,7 +87,7 @@ export default function CommentItem({
       </Pressable>
 
       <VStack space="lg" className="items-center">
-        <VStack space="sm">
+        <VStack space={data.user_id === ownUserId ? "xs" : "sm"}>
           <HStack space="lg" className="items-center justify-between">
             <HStack space="lg" className="items-center">
               <Pressable onPress={handleOpenProfile}>

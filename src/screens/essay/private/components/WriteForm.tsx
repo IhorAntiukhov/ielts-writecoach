@@ -10,15 +10,12 @@ import CardBox from "@/src/ui/CardBox";
 import Dropdown from "@/src/ui/Dropdown";
 import IndicatorText from "@/src/ui/IndicatorText";
 import TextAreaInput from "@/src/ui/input/TextAreaInput";
-import SmallCardBox from "@/src/ui/SmallCardBox";
 import formatEssayType from "@/src/utils/formatEssayType";
-import { getNounByNumber } from "@/src/utils/getNounByNumber";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocalSearchParams } from "expo-router";
 import { Save, Sparkles } from "lucide-react-native";
 import { use, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Text } from "react-native";
 import EssayDataContext from "../../shared/context/EssayDataContext";
 import {
   saveExistingEssayWithAnalysis,
@@ -39,6 +36,7 @@ import getWordCount from "../utils/getWordCount";
 import EssayImagePicker from "./EssayImagePicker";
 import Timer from "./Timer";
 import UpdateEssayPrivacyButton from "./UpdateEssayPrivacyButton";
+import WordCounter from "./WordCounter";
 
 export default function WriteForm() {
   const { id } = useLocalSearchParams();
@@ -236,11 +234,7 @@ export default function WriteForm() {
               setIsRunning={setIsTimerRunning}
             />
 
-            <SmallCardBox className="flex-grow">
-              <Text className="text-typography-950 text-lg">
-                {`${responseWordCount}/${type === "task-2" ? 250 : 150}${responseWordCount < 100 ? getNounByNumber(responseWordCount, " word") : ""}`}
-              </Text>
-            </SmallCardBox>
+            <WordCounter responseWordCount={responseWordCount} type={type} />
           </HStack>
 
           <Skeleton

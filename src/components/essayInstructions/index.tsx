@@ -8,7 +8,7 @@ import useOpenEssay from "@/src/hooks/useOpenEssay";
 import PrivacyType from "@/src/types/privacyType";
 import SmallCardBox from "@/src/ui/SmallCardBox";
 import { Image } from "expo-image";
-import { Pressable, View } from "react-native";
+import { Platform, Pressable, View } from "react-native";
 import EssayTitle from "./EssayTitle";
 
 interface EssayInstructionsProps {
@@ -52,7 +52,11 @@ export default function EssayInstructions({
         >
           <Image
             source={{ uri: data.image_url }}
-            style={{ width: "100%", height: "100%" }}
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: Platform.OS !== "web" ? 8 : undefined,
+            }}
             className="w-full h-full rounded-lg border border-y border-outline-300"
             contentFit="contain"
             alt="Task 1 instructions image"
