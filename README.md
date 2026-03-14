@@ -1,7 +1,7 @@
 <div align="center">
-   <img src="./assets/images/android-icon-foreground.png" width="128" height="128" />
+   <img src="./assets/images/splash-icon.png" width="100" height="100" />
 
-   <p style="font-size: 28px; font-weight: bold">IELTS Write Coach</p>
+   <p style="font-size: 40px; font-weight: bold">IELTS Write Coach</p>
 
    <div style="display: flex; justify-content: center; gap: 5px; margin-bottom: 15px">
    <img src="https://img.shields.io/badge/expo-1C1E24?style=for-the-badge&logo=expo&logoColor=#D04A37" alt="Expo" />
