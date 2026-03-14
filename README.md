@@ -1,50 +1,165 @@
-# Welcome to your Expo app 👋
+<div align="center">
+   <img src="./assets/images/android-icon-foreground.png" width="128" height="128" />
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+   <p style="font-size: 28px; font-weight: bold">IELTS Write Coach</p>
 
-## Get started
+   <div style="display: flex; justify-content: center; gap: 5px; margin-bottom: 15px">
+   <img src="https://img.shields.io/badge/expo-1C1E24?style=for-the-badge&logo=expo&logoColor=#D04A37" alt="Expo" />
 
-1. Install dependencies
+   <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
 
-   ```bash
-   npm install
-   ```
+   <img src="https://img.shields.io/badge/google%20gemini-8E75B2?style=for-the-badge&logo=google%20gemini&logoColor=white" alt="Gemini" />
+   </div>
 
-2. Start the app
+   <p style="margin-bottom: 10px">Write IELTS essays, receive structured AI feedback, track your progress through analytics, and share your essays with the community.</p>
 
-   ```bash
-   npx expo start
-   ```
+[Web version](http://ielts-writecoach.expo.app/) | [Download APK](https://drive.google.com/file/d/1F2u3pjY-u-95GfxeawhvFhEQ1cw0ZUni/view?usp=sharing)
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+</div>
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+<div align="left">
 
-## Get a fresh project
+# 📱 Demo
 
-When you're ready, run:
+<table>
+<tr>
+<td style="font-weight: bold">Write</td>
+
+<td style="font-weight: bold">Feedback</td>
+
+<td style="font-weight: bold">Public feed</td>
+
+<td style="font-weight: bold">Analytics</td>
+</tr>
+
+<tr>
+<td><img src="github-images/write-page.gif" width=200 alt="Write screen" /></td>
+
+<td><img src="github-images/review-page.gif" width=200  alt="Feedback screen" /></td>
+
+<td><img src="github-images/public-feed-page.gif" width=200  alt="Public feed screen" /></td>
+
+<td><img src="github-images/analytics-page.gif" width=200 alt="Analytics screen" /></td>
+</tr>
+</table>
+
+---
+
+# 🤔 Why IELTS WriteCoach?
+
+- Write, store, review, and share your essays in one place - no multitooling needed.
+- AI prompts used under the hood are already tailored to get honest and structured feedback every time.
+- Get improvement recommendations from both AI and other people.
+- Access your data across different devices and platforms.
+- No paid features - it's all free!
+
+# ✅ Core features
+
+## ✏️ Writing essays
+
+- Include instructions
+- Attach a chart image for Task 1
+- Timer and word counter
+- Save a draft of your essay
+- Filter, sort, and search your works
+
+## ✨ AI review
+
+- Get your strengths, weaknesses, and improvement suggestions for the official criteria
+- Get a high-band version of your essay
+- Get global report on your essay: recurring strengths, recurring weaknesses, most prominent weakness, priority recommendations
+
+## ❤️ Community
+
+- Share your essays with others
+- Five types of reactions
+- Comments
+
+## 📊 Analytics
+
+- Band scores line graph
+- Writing pace line graph
+- Reaction types bar chart
+- Essay types pie chart
+
+# 🎯 Purpose of this project
+
+This project was built as a portfolio project to explore:
+
+- AI-assisted education tools
+- Full-stack development with Supabase
+- Cross-platform apps with Expo
+
+# 💻 Tech stack
+
+## Frontend
+
+- Expo
+- Gluestack/UI
+- React Hook Form
+- Zod
+- TanStack/Query
+- Lucide Icons
+- NativeWind
+- Victory Native
+
+## Backend
+
+- Supabase
+- Google AI Studio (Gemini)
+
+## Dev tools
+
+- Typescript
+- Eslint
+- Prettier
+
+# 😽 Get started
+
+1. Clone the repository
 
 ```bash
-npm run reset-project
+git clone https://github.com/IhorAntiukhov/ielts-writecoach.git
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Install dependencies
 
-## Learn more
+```bash
+npm install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. Set environment variables in `.env.local`
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
+EXPO_PUBLIC_SUPABASE_API_KEY=
+EXPO_PUBLIC_GEMINI_API_KEY=
+```
 
-## Join the community
+> **Note**: You can obtain these keys from:
+>
+> - Supabase project settings
+> - Google AI Studio
 
-Join our community of developers creating universal apps.
+4. Run the project
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npm run start
+```
+
+# 🗄️ Database Schema
+
+![Database Schema](github-images/database-schema.png)
+
+# 🌟 Help others
+
+If you find this project useful, consider starring it!
+
+This might help other students find it and improve their performance.
+
+# 📄 License
+
+This project is licensed under the MIT license.
+
+</div>
