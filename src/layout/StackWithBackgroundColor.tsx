@@ -10,6 +10,7 @@ export default function StackWithBackgroundColor() {
           contentStyle: {
             backgroundColor: "tranparent",
           },
+          title: "IELTS WriteCoach",
         }}
       />
     </View>
